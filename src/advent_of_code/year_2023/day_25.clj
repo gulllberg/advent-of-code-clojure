@@ -91,9 +91,9 @@
                      (get state node))))
         (keys state)))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 54))}
+           (is= (part-1 test-input) 54))}
   [input]
   (let [state (create-state input)
         all-nodes (keys state)]
@@ -112,7 +112,7 @@
                 (recur (conj cluster1 to) cluster2)))))))))
 
 (comment
-  (time (solve-a input))
+  (time (part-1 input))
   ;; 580800
   ;; "Elapsed time: 2971.056125 msecs"
   )

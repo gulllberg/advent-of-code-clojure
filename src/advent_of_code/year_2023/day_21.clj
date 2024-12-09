@@ -50,16 +50,16 @@
                (if (odd? next-step) (clojure.set/union odd-visited new-perimeter) odd-visited)
                next-step)))))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input 6) 16)
+           (is= (part-1 test-input 6) 16)
            )}
   [input num-steps]
   (let [[state start-pos] (create-state input)
         [even-visited _] (get-possible-end-positions state start-pos num-steps)]
     (count even-visited)))
 
-(defn solve-b
+(defn part-2
   [input]
   (let [[state start-pos] (create-state input)
         ;; Max number of steps is 202300*131+65. Grid is 131x131
@@ -108,11 +108,11 @@
        (count even-visited-perimeter-middle-4))))
 
 (comment
-  (time (solve-a input 64))
+  (time (part-1 input 64))
   ;; 3651
   ;; "Elapsed time: 20.655292 msecs"
 
-  (time (solve-b input))
+  (time (part-2 input))
   ;; 607334325965751
   ;; "Elapsed time: 321.046541 msecs"
   )

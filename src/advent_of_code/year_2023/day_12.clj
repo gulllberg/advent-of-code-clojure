@@ -67,9 +67,9 @@
   [spring-groups damaged-springs]
   (solve-spring-groups spring-groups damaged-springs))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 21))}
+           (is= (part-1 test-input) 21))}
   [input]
   (->> input
        (clojure.string/split-lines)
@@ -79,9 +79,9 @@
                 (solve-spring-groups spring-groups damaged-springs))))
        (reduce +)))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input) 525152))}
+           (is= (part-2 test-input) 525152))}
   [input]
   (->> input
        (clojure.string/split-lines)
@@ -93,7 +93,7 @@
        (reduce +)))
 
 (comment
-  (time (solve-a input))
+  (time (part-1 input))
   ;; 6958
   ;; "Elapsed time: 152.94038 msecs"
 
@@ -101,7 +101,7 @@
   ;; "Elapsed time: 208.884497 msecs"
   ;; "Elapsed time: 23.608101 msecs"
 
-  (time (solve-b input))
+  (time (part-2 input))
   ;; 6555315065024
   ;; "Elapsed time: 13558.893774 msecs"
   )

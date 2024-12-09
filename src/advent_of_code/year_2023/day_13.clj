@@ -39,9 +39,9 @@
       (* 100 row-reflection)
       (find-reflection-point (transpose-landscape rows)))))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 405))}
+           (is= (part-1 test-input) 405))}
   [input]
   (let [landscapes (clojure.string/split input #"\n\n")]
     (reduce (fn [a v]
@@ -49,7 +49,7 @@
             0
             landscapes)))
 
-(defn find-reflection-point-b
+(defn find-reflection-point-2
   [lines]
   (loop [offset 1]
     (when (< offset (count lines))
@@ -61,29 +61,29 @@
           offset
           (recur (inc offset)))))))
 
-(defn solve-landscape-b
+(defn solve-landscape-2
   [landscape]
   (let [rows (clojure.string/split-lines landscape)]
-    (if-let [row-reflection (find-reflection-point-b rows)]
+    (if-let [row-reflection (find-reflection-point-2 rows)]
       (* 100 row-reflection)
-      (find-reflection-point-b (transpose-landscape rows)))))
+      (find-reflection-point-2 (transpose-landscape rows)))))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input) 400))}
+           (is= (part-2 test-input) 400))}
   [input]
   (let [landscapes (clojure.string/split input #"\n\n")]
     (reduce (fn [a v]
-              (+ a (solve-landscape-b v)))
+              (+ a (solve-landscape-2 v)))
             0
             landscapes)))
 
 (comment
-  (time (solve-a input))
+  (time (part-1 input))
   ;; 33735
   ;; "Elapsed time: 4.80943 msecs"
 
-  (time (solve-b input))
+  (time (part-2 input))
   ;; 38063
   ;; "Elapsed time: 19.926282 msecs"
   )

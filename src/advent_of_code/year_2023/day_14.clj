@@ -83,9 +83,9 @@
                0
                state)))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 136))}
+           (is= (part-1 test-input) 136))}
   [input]
   (let [state (make-state input)
         rolled-state (roll-north state)]
@@ -157,9 +157,9 @@
                                 nil
                                 states))))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input) 64))}
+           (is= (part-2 test-input) 64))}
   [input]
   (let [state (make-state input)]
     (loop [state state
@@ -172,11 +172,11 @@
           (recur next-state (assoc states next-state next-n) next-n))))))
 
 (comment
-  (time (solve-a input))
+  (time (part-1 input))
   ;; 109424
   ;; "Elapsed time: 35.420582 msecs"
 
-  (time (solve-b input))
+  (time (part-2 input))
   ;; 102509
   ;; "Elapsed time: 12500.013893 msecs"
 

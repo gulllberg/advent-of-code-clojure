@@ -46,8 +46,8 @@
               (recur t1 t2)
               (- v1 v2))))))))
 
-(defn solve-a
-  {:test (fn [] (is= (solve-a test-input) 6440))}
+(defn part-1
+  {:test (fn [] (is= (part-1 test-input) 6440))}
   [input]
   (->> (clojure.string/split-lines input)
        (map (fn [r] (clojure.string/split r #" ")))
@@ -82,8 +82,8 @@
 
 (def card->value-2 (zipmap [\J \2 \3 \4 \5 \6 \7 \8 \9 \T \Q \K \A] (range 2 15)))
 
-(defn solve-b
-  {:test (fn [] (is= (solve-b test-input) 5905))}
+(defn part-2
+  {:test (fn [] (is= (part-2 test-input) 5905))}
   [input]
   (->> (clojure.string/split-lines input)
        (map (fn [r] (clojure.string/split r #" ")))
@@ -93,11 +93,11 @@
        (reduce +)))
 
 (comment
-  (time (solve-a input))
+  (time (part-1 input))
   ;; 248113761
   ;; "Elapsed time: 19.037125 msecs"
 
-  (time (solve-b input))
+  (time (part-2 input))
   ;; 246285222
   ;; "Elapsed time: 21.611375 msecs"
   )

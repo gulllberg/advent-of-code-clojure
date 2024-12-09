@@ -35,9 +35,9 @@
             0
             my-numbers)))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 13))}
+           (is= (part-1 test-input) 13))}
   [input]
   (reduce (fn [a v]
             (let [num-winning (get-num-winning v)]
@@ -45,9 +45,9 @@
           0
           (clojure.string/split-lines input)))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input) 30))}
+           (is= (part-2 test-input) 30))}
   [input]
   (let [lines (clojure.string/split-lines input)]
     (first (reduce (fn [[a extra-cards] i]
@@ -64,10 +64,12 @@
                    (range (count lines))))))
 
 (comment
-  (solve-a input)
+  (time (part-1 input))
   ;; 24542
+  ;; "Elapsed time: 3.309875 msecs"
 
-  (solve-b input)
+  (time (part-2 input))
   ;; 8736438
+  ;; "Elapsed time: 4.6195 msecs"
   )
 

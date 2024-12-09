@@ -31,9 +31,9 @@
             (and (<= min-xy xi max-xy)
                  (<= min-xy yi max-xy))))))))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input 7 27) 2))}
+           (is= (part-1 test-input 7 27) 2))}
   [input min-xy max-xy]
   (let [hails (->> input
                    (clojure.string/split-lines)
@@ -146,9 +146,9 @@
   [t vz1 z2 vz2]
   (- z2 (* t (- vz1 vz2))))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input) 47))}
+           (is= (part-2 test-input) 47))}
   [input]
   (let [hails (->> input
                    (clojure.string/split-lines)
@@ -196,11 +196,11 @@
       (+ x y z))))
 
 (comment
-  (time (solve-a input 200000000000000 400000000000000))
+  (time (part-1 input 200000000000000 400000000000000))
   ;; 11246
   ;; "Elapsed time: 160.9725 msecs"
 
-  (time (solve-b input))
+  (time (part-2 input))
   ;; 716599937560103
   ;; "Elapsed time: 117888.086292 msecs"
   )

@@ -65,27 +65,27 @@
                      total-distance
                      other-galaxies)))))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 374))}
+           (is= (part-1 test-input) 374))}
   [input]
   (let [galaxy-positions (get-galaxy-positions input 2)]
     (sum-galaxy-distances galaxy-positions)))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input 10) 1030)
-           (is= (solve-b test-input 100) 8410))}
+           (is= (part-2 test-input 10) 1030)
+           (is= (part-2 test-input 100) 8410))}
   [input expansion-factor]
   (let [galaxy-positions (get-galaxy-positions input expansion-factor)]
     (sum-galaxy-distances galaxy-positions)))
 
 (comment
-  (time (solve-a input))
+  (time (part-1 input))
   ;; 9639160
   ;; "Elapsed time: 34.337034 msecs"
 
-  (time (solve-b input 1000000))
+  (time (part-2 input 1000000))
   ;; 752936133304
   ;; "Elapsed time: 34.616014 msecs"
   )

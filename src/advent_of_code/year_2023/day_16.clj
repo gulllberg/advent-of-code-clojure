@@ -123,9 +123,9 @@
        (into #{})
        (count)))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 46))}
+           (is= (part-1 test-input) 46))}
   [input]
   (let [state (make-state input)
         [visited _] (energize state [[0 -1] [0 1]])]
@@ -151,9 +151,9 @@
                             (range 0 (inc max-j)))]
     (clojure.set/union left-side right-side top-side bottom-side)))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input) 51))}
+           (is= (part-2 test-input) 51))}
   [input]
   (let [state (make-state input)
         all-start-beams (get-all-start-beams (:max-i state) (:max-j state))]
@@ -171,11 +171,11 @@
                  (max best res)))))))
 
 (comment
-  (time (solve-a input))
+  (time (part-1 input))
   ;; 7067
   ;; "Elapsed time: 18.029333 msecs"
 
-  (time (solve-b input))
+  (time (part-2 input))
   ;; 7324
   ;; "Elapsed time: 3158.184292 msecs"
 

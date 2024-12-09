@@ -35,8 +35,8 @@
              rest-instructions
              (inc number-of-steps)))))
 
-(defn solve-a
-  {:test (fn [] (is= (solve-a test-input) 2))}
+(defn part-1
+  {:test (fn [] (is= (part-1 test-input) 2))}
   [input]
   (let [left-right-instructions (get-left-right-instructions input)
         desert-map (get-desert-map input)]
@@ -76,8 +76,8 @@
     0
     (/ (abs (* a b)) (gcd a b))))
 
-(defn solve-b
-  {:test (fn [] (is= (solve-b test-input-2) 6))}
+(defn part-2
+  {:test (fn [] (is= (part-2 test-input-2) 6))}
   [input]
   (let [left-right-instructions (get-left-right-instructions input)
         desert-map (get-desert-map input)
@@ -90,11 +90,11 @@
     (reduce lcm cycle-lengths)))
 
 (comment
-  (time (solve-a input))
+  (time (part-1 input))
   ;; 11567
   ;; "Elapsed time: 8.506875 msecs"
 
-  (time (solve-b input))
+  (time (part-2 input))
   ;; 9858474970153
   ;; "Elapsed time: 26.533833 msecs"
   )

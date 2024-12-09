@@ -48,9 +48,9 @@
         (parse-number digits)
         0))))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 4361))}
+           (is= (part-1 test-input) 4361))}
   [input]
   (let [rows (map (fn [line]
                     (clojure.string/split line #""))
@@ -138,9 +138,9 @@
       (* (first gear-numbers) (second gear-numbers))
       0)))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input) 467835))}
+           (is= (part-2 test-input) 467835))}
   [input]
   (let [rows (map (fn [line]
                     (clojure.string/split line #""))
@@ -180,10 +180,12 @@
                  sum))))))
 
 (comment
-  (solve-a input)
+  (time (part-1 input))
   ;; 535078
+  ;; "Elapsed time: 21.897458 msecs"
 
-  (solve-b input)
+  (time (part-2 input))
   ;; 75312571
+  ;; "Elapsed time: 20.776583 msecs"
   )
 

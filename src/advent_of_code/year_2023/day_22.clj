@@ -63,9 +63,9 @@
                                         (get state :z-levels)
                                         (:cells fallen-piece))})))))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 5))}
+           (is= (part-1 test-input) 5))}
   [input]
   (let [state (create-state input)
         fallen-pieces (let-pieces-fall state)]
@@ -80,9 +80,9 @@
             0
             fallen-pieces)))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input) 7))}
+           (is= (part-2 test-input) 7))}
   [input]
   (let [state (create-state input)
         fallen-pieces (let-pieces-fall state)]
@@ -96,11 +96,11 @@
             fallen-pieces)))
 
 (comment
-  (time (solve-a input))
+  (time (part-1 input))
   ;; 495
   ;; "Elapsed time: 28641.563584 msecs"
 
-  (time (solve-b input))
+  (time (part-2 input))
   ;; 76158
   ;; "Elapsed time: 30629.869709 msecs"
   )

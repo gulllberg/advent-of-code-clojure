@@ -15,9 +15,9 @@
           0
           string))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 1320))}
+           (is= (part-1 test-input) 1320))}
   [input]
   (->> (clojure.string/split (clojure.string/trim-newline input) #",")
        (map holiday-ascii-string-helper)
@@ -60,20 +60,20 @@
              0
              state))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input) 145))}
+           (is= (part-2 test-input) 145))}
   [input]
   (->> (clojure.string/split (clojure.string/trim-newline input) #",")
        (reduce holiday-ascii-string-helper-manual-arrangement-procedure {})
        (calculate-focusing-power)))
 
 (comment
-  (time (solve-a input))
+  (time (part-1 input))
   ;; 514281
   ;; "Elapsed time: 2.742333 msecs"
 
-  (time (solve-b input))
+  (time (part-2 input))
   ;; 244199
   ;; "Elapsed time: 6.694208 msecs"
 

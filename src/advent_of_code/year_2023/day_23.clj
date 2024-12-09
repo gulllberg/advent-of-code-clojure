@@ -92,9 +92,9 @@
                            [rq result]))]
           (recur queue result))))))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-map) 94))}
+           (is= (part-1 test-map) 94))}
   [the-map]
   (let [state (create-state the-map)
         goal [(- (:size the-map) 2) (dec (:size the-map))]]
@@ -128,7 +128,7 @@
              #{}
              (dissoc the-map :size)))
 
-(defn create-state-b
+(defn create-state-2
   [the-map]
   (let [goal [(- (:size the-map) 2) (dec (:size the-map))]
         junctures (get-junctures the-map)]
@@ -169,12 +169,12 @@
                            [rq result]))]
           (recur queue result))))))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-map)
+           (is= (part-2 test-map)
                 154))}
   [the-map]
-  (let [state (create-state-b the-map)
+  (let [state (create-state-2 the-map)
         goal [(- (:size the-map) 2) (dec (:size the-map))]]
     (loop [queue (list {:position [1 0] :steps 0 :visited #{[1 0]}})
            winner 0
@@ -200,11 +200,11 @@
           (recur queue winner (inc i)))))))
 
 (comment
-  (time (solve-a prod-map))
+  (time (part-1 prod-map))
   ;; 2246
   ;; "Elapsed time: 356.107208 msecs"
 
-  (time (solve-b prod-map))
+  (time (part-2 prod-map))
   ;; 6622
   ;; "Elapsed time: 17208.057667 msecs"
   )

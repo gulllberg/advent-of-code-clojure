@@ -36,9 +36,9 @@
      (abs (- (second p1) (second p2)))))
 
 ;; https://en.wikipedia.org/wiki/A*_search_algorithm
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 102))}
+           (is= (part-1 test-input) 102))}
   [input]
   (let [[heat-loss-map max-i max-j] (get-heat-loss-map input)
         end-position [max-i max-j]]
@@ -65,7 +65,7 @@
                            neighbours)
                    (assoc visited next-to-process cost-so-far))))))))
 
-(defn get-neighbours-b
+(defn get-neighbours-2
   [heat-loss-map {position :position direction :direction straight :straight}]
   (if (< straight 4)
     (let [new-position (mapv + position direction)]
@@ -83,10 +83,10 @@
                           (= d (mapv * direction [-1 -1]))))
                     [[1 0] [-1 0] [0 1] [0 -1]]))))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input) 94)
-           (is= (solve-b "111111111111\n999999999991\n999999999991\n999999999991\n999999999991") 71))}
+           (is= (part-2 test-input) 94)
+           (is= (part-2 "111111111111\n999999999991\n999999999991\n999999999991\n999999999991") 71))}
   [input]
   (let [[heat-loss-map max-i max-j] (get-heat-loss-map input)
         end-position [max-i max-j]]
@@ -96,7 +96,7 @@
             unvisited (pop unvisited)]
         (if (= (:position next-to-process) end-position)
           cost-so-far
-          (let [neighbours (->> (get-neighbours-b heat-loss-map next-to-process)
+          (let [neighbours (->> (get-neighbours-2 heat-loss-map next-to-process)
                                 (remove (fn [n]
                                           (contains? visited n))))]
             (recur (reduce (fn [unvisited neighbour]
@@ -116,11 +116,11 @@
                    (assoc visited next-to-process cost-so-far))))))))
 
 (comment
-  (time (solve-a input))
+  (time (part-1 input))
   ;; 1128
   ;; "Elapsed time: 1123.751709 msecs"
 
-  (time (solve-b input))
+  (time (part-2 input))
   ;; 1268
   ;; "Elapsed time: 3205.003792 msecs"
   )

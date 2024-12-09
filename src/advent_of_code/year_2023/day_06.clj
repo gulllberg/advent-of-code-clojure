@@ -15,9 +15,9 @@
     (inc (int (- (clojure.math/floor (+ (/ race-time 2) interval-length))
                  (clojure.math/ceil (- (/ race-time 2) interval-length)))))))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 288))}
+           (is= (part-1 test-input) 288))}
   [input]
   (let [rows (clojure.string/split-lines input)
         race-times (map read-string (re-seq #"\d+" (first rows)))
@@ -29,9 +29,9 @@
 
 
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input) 71503))}
+           (is= (part-2 test-input) 71503))}
   [input]
   (let [rows (clojure.string/split-lines input)
         race-time (->> (re-seq #"\d+" (first rows))
@@ -44,11 +44,11 @@
 
 
 (comment
-  (time (solve-a input))
+  (time (part-1 input))
   ; "Elapsed time: 0.46783 msecs"
   ; => 252000
 
-  (time (solve-b input))
+  (time (part-2 input))
   ; "Elapsed time: 0.423096 msecs"
   ; => 36992486
   )

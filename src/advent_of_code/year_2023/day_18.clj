@@ -37,9 +37,9 @@
                                   (map dir->dir ["R" "L" "D" "U"]))]
         (recur (concat rest (into [] new-positions)) (clojure.set/union interior new-positions))))))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 62))}
+           (is= (part-1 test-input) 62))}
   [input]
   (->> (clojure.string/split-lines input)
        (map parse-line)
@@ -54,7 +54,7 @@
        (fill-interior)
        (count)))
 
-(defn dir->dir-b
+(defn dir->dir-2
   [dir]
   (condp = dir
     "0" [0 1]
@@ -79,15 +79,15 @@
         (abs (/ new-res 2))
         (recur new-res p2 (first the-rest) (drop 1 the-rest))))))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input) 952408144115))}
+           (is= (part-2 test-input) 952408144115))}
   [input]
   (let [[_ points exterior-length] (->> (clojure.string/split-lines input)
              (map parse-line)
              (reduce (fn [[pos points exterior-length] [_ _ colour]]
                        (let [steps (Integer/parseInt (subs colour 0 5) 16)
-                             dir (dir->dir-b (subs colour 5))
+                             dir (dir->dir-2 (subs colour 5))
                              new-pos (map + pos (map * dir [steps steps]))]
                          [new-pos (conj points new-pos) (+ exterior-length steps)]))
                      [[0 0] [[0 0]] 0]))]
@@ -95,11 +95,11 @@
     (+ 1 (/ exterior-length 2) (shoelace points))))
 
 (comment
-  (time (solve-a input))
+  (time (part-1 input))
   ;; 66993
   ;; "Elapsed time: 2803.676581 msecs"
 
-  (time (solve-b input))
+  (time (part-2 input))
   ;; 177243763226648
   ;; "Elapsed time: 8.244699 msecs"
   )

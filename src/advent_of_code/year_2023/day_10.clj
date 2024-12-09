@@ -58,9 +58,9 @@
              (conj visited position)))))
 
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 8))}
+           (is= (part-1 test-input) 8))}
   [input]
   (let [state (make-state input)
         start (get-start-position input)]
@@ -110,12 +110,12 @@
           #{}
           (keys state)))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input \F) 1)
-           (is= (solve-b test-input-2 \F) 4)
-           (is= (solve-b test-input-3 \F) 8)
-           (is= (solve-b test-input-4 \7) 10))}
+           (is= (part-2 test-input \F) 1)
+           (is= (part-2 test-input-2 \F) 4)
+           (is= (part-2 test-input-3 \F) 8)
+           (is= (part-2 test-input-4 \7) 10))}
   [input start-pipe-type]
   (let [state (make-state input)
         start (get-start-position input)
@@ -155,11 +155,11 @@
                   starting-positions))))
 
 (comment
-  (time (solve-a input))
+  (time (part-1 input))
   ;; 6786
   ;; "Elapsed time: 14.919167 msecs"
 
-  (time (solve-b input \|))
+  (time (part-2 input \|))
   ;; 495
   ;; "Elapsed time: 757.9455 msecs"
   )

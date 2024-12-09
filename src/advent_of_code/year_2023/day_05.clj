@@ -22,9 +22,9 @@
                               fns))
           x))))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 35))}
+           (is= (part-1 test-input) 35))}
   [input]
   (let [almanac (clojure.string/split input #"\n\n")
         seeds (->> (re-seq #"\d+" (first almanac))
@@ -52,9 +52,9 @@
                                                     seed
                                                     mapping-fns)))))))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input) 46))}
+           (is= (part-2 test-input) 46))}
   [input]
   (let [almanac (clojure.string/split input #"\n\n")
         seed-partitions (->> (re-seq #"\d+" (first almanac))
@@ -72,10 +72,11 @@
 
 
 (comment
-  (solve-a input)
+  (time (part-1 input))
   ;; 173706076
+  ;; "Elapsed time: 2.518167 msecs"
 
-  (time (solve-b input))
+  (time (part-2 input))
   ;; 11611182
   ;; "Elapsed time: 2.7138193503851E7 msecs"
   ;; Oops...

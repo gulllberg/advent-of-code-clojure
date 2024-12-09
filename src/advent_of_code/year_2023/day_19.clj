@@ -37,9 +37,9 @@
                               ((get fns (keyword res)) fns x m a s))
                             (recur conditions))))))}))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 19114))}
+           (is= (part-1 test-input) 19114))}
   [input]
   (let [[conditions ratings] (clojure.string/split input #"\n\n")
         fns (reduce (fn [a c]
@@ -144,9 +144,9 @@
               (inc (- b a))))
        (reduce *)))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input) 167409079868000))}
+           (is= (part-2 test-input) 167409079868000))}
   [input]
   (let [conditions (first (clojure.string/split input #"\n\n"))
         conditions-state (get-conditions-state conditions)]
@@ -163,11 +163,11 @@
                    num-accepted)))))))
 
 (comment
-  (time (solve-a input))
+  (time (part-1 input))
   ;; 367602
   ;; "Elapsed time: 18.701917 msecs"
 
-  (time (solve-b input))
+  (time (part-2 input))
   ;; 125317461667458
   ;; "Elapsed time: 25.511445 msecs"
   )

@@ -24,8 +24,8 @@
   [all-differences]
   (reduce + (map last all-differences)))
 
-(defn solve-a
-  {:test (fn [] (is= (solve-a test-input) 114))}
+(defn part-1
+  {:test (fn [] (is= (part-1 test-input) 114))}
   [input]
   (let [histories (->> input
                        (clojure.string/split-lines)
@@ -42,8 +42,8 @@
           0
           (reverse (drop-last all-differences))))
 
-(defn solve-b
-  {:test (fn [] (is= (solve-b test-input) 2))}
+(defn part-2
+  {:test (fn [] (is= (part-2 test-input) 2))}
   [input]
   (let [histories (->> input
                        (clojure.string/split-lines)
@@ -54,11 +54,11 @@
          (reduce +))))
 
 (comment
-  (time (solve-a input))
+  (time (part-1 input))
   ;; 1666172641
   ;; "Elapsed time: 6.395583 msecs"
 
-  (time (solve-b input))
+  (time (part-2 input))
   ;; 933
   ;; "Elapsed time: 7.930041 msecs"
   )

@@ -6,9 +6,9 @@
 (def test-input "1abc2\npqr3stu8vwx\na1b2c3d4e5f\ntreb7uchet")
 (def test-input-2 "two1nine\neightwothree\nabcone2threexyz\nxtwone3four\n4nineeightseven2\nzoneight234\n7pqrstsixteen")
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 142))}
+           (is= (part-1 test-input) 142))}
   [input]
   (reduce (fn [a line]
             (let [numbers (->> line
@@ -18,9 +18,9 @@
           0
           (clojure.string/split-lines input)))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input-2) 281))}
+           (is= (part-2 test-input-2) 281))}
   [input]
   (reduce (fn [a line]
             (let [numbers (->> line
@@ -34,10 +34,12 @@
           (clojure.string/split-lines input)))
 
 (comment
-  (solve-a input)
+  (time (part-1 input))
   ;; 54927
+  ;; "Elapsed time: 3.118333 msecs"
 
-  (solve-b input)
+  (time (part-2 input))
   ;; 54581
+  ;; "Elapsed time: 13.659542 msecs"
   )
 

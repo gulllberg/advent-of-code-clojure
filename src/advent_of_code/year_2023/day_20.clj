@@ -86,10 +86,10 @@
             [new-state new-pulses] (handle-pulse state pulse)]
         (recur new-state (concat rest-pulses new-pulses) (if is-high-pulse (inc num-high) num-high) (if is-high-pulse num-low (inc num-low)))))))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 32000000)
-           (is= (solve-a test-input-2) 11687500))}
+           (is= (part-1 test-input) 32000000)
+           (is= (part-1 test-input-2) 11687500))}
   [input]
   (let [state (create-state input)]
     (let [[_ num-high num-low] (reduce (fn [[state num-high num-low] _]
@@ -99,7 +99,7 @@
                                        (range 1000))]
       (* num-high num-low))))
 
-(defn push-button-b
+(defn push-button-2
   [state num-pushed cycles]
   (loop [state state
          pulses [[nil :broadcaster :low]]
@@ -115,7 +115,7 @@
                  (assoc cycles (first pulse) num-pushed)
                  cycles))))))
 
-(defn solve-b
+(defn part-2
   [input]
   (let [state (create-state input)]
     (loop [state state
@@ -126,7 +126,7 @@
                    :qh nil
                    :bq nil
                    :vz nil}]
-      (let [[state cycles] (push-button-b state num-pushed cycles)]
+      (let [[state cycles] (push-button-2 state num-pushed cycles)]
         (if (->> cycles
                  (vals)
                  (remove nil?)
@@ -138,11 +138,11 @@
           (recur state (inc num-pushed) cycles))))))
 
 (comment
-  (time (solve-a input))
+  (time (part-1 input))
   ;; 737679780
   ;; "Elapsed time: 50.701541 msecs"
 
-  (time (solve-b input))
+  (time (part-2 input))
   ;; 227411378431763
   ;; "Elapsed time: 178.72825 msecs"
   )
