@@ -123,4 +123,8 @@
   (time (part-2 input))
   ;; 1268
   ;; "Elapsed time: 3205.003792 msecs"
+
+  ;; Note: This day was refactored/improved in several steps (adding priority map and a-star, at first the run times were
+  ;; Part 1 "Elapsed time: 180491.276504 msecs"
+  ;; PArt 2 "Elapsed time: 1516349.454443 msecs"
   )
