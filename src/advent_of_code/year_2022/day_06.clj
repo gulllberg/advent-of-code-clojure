@@ -13,22 +13,24 @@
              (list)
              (into [] (clojure.string/split input #""))))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 7))}
+           (is= (part-1 test-input) 7))}
   [input]
   (detect-start-of input 4))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input) 19))}
+           (is= (part-2 test-input) 19))}
   [input]
   (detect-start-of input 14))
 
 (comment
-  (solve-a input)
+  (time (part-1 input))
   ; 1361
+  ;; "Elapsed time: 1.428125 msecs"
 
-  (solve-b input)
+  (time (part-2 input))
   ; 3263
+  ;; "Elapsed time: 6.325209 msecs"
   )

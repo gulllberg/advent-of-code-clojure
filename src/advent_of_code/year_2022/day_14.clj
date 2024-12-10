@@ -88,9 +88,9 @@
         state
         (recur new-state)))))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 24))}
+           (is= (part-1 test-input) 24))}
   [input]
   (let [[state _] (parse-input input)
         state (simulate-sand state [500 0] nil)]
@@ -99,9 +99,9 @@
          (filter #{:sand})
          (count))))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input) 93))}
+           (is= (part-2 test-input) 93))}
   [input]
   (let [[state floor-level] (parse-input input)
         state (simulate-sand state [500 0] floor-level)]
@@ -111,11 +111,11 @@
          (count))))
 
 (comment
-  (time (solve-a input))
+  (time (part-1 input))
   ; 805
   ; "Elapsed time: 572.253508 msecs"
 
-  (time (solve-b input))
+  (time (part-2 input))
   ; 25161
   ; "Elapsed time: 13276.637445 msecs"
 

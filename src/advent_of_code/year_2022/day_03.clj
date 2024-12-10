@@ -9,9 +9,9 @@
                            {}
                            (into [] (map identity "0abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"))))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 157))}
+           (is= (part-1 test-input) 157))}
   [input]
   (reduce (fn [a line]
             (let [[first-half second-half] (map set (split-at (/ (count line) 2) line))]
@@ -20,9 +20,9 @@
           0
           (clojure.string/split-lines input)))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input) 70))}
+           (is= (part-2 test-input) 70))}
   [input]
   (reduce (fn [a group]
             (+ a (-> (apply clojure.set/intersection (map (fn [line]
@@ -34,9 +34,11 @@
           (partition 3 (clojure.string/split-lines input))))
 
 (comment
-  (solve-a input)
+  (time (part-1 input))
   ; 7811
+  ;; "Elapsed time: 9.949458 msecs"
 
-  (solve-b input)
+  (time (part-2 input))
   ; 2639
+  ;; "Elapsed time: 2.099791 msecs"
   )

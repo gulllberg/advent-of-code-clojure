@@ -205,22 +205,24 @@
                      ;; At start of cycle can always move down - no need to update cycles here since we will be in truthy if-case
                      cycles))))))))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 3068))}
+           (is= (part-1 test-input) 3068))}
   [input]
   (tetris input 2022))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input) 1514285714288))}
+           (is= (part-2 test-input) 1514285714288))}
   [input]
   (tetris input 1000000000000))
 
 (comment
-  (solve-a input)
+  (time (part-1 input))
   ; 3235
+  ;; "Elapsed time: 28.671417 msecs"
 
-  (solve-b input)
+  (time (part-2 input))
   ; 1591860465110
+  ;; "Elapsed time: 741.809709 msecs"
   )

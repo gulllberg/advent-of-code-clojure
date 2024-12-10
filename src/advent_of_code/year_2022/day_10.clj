@@ -39,13 +39,13 @@
           :else
           (recur X (inc cycle-number) line-number (read-string (subs line 5)) new-signal-strength new-drawing))))))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 13140))}
+           (is= (part-1 test-input) 13140))}
   [input]
   (first (crt input)))
 
-(defn solve-b
+(defn part-2
   [input]
   (->> input
        (crt )
@@ -54,11 +54,13 @@
        (map (partial apply str))))
 
 (comment
-  (solve-a input)
+  (time (part-1 input))
   ; 14720
+  ;; "Elapsed time: 0.3005 msecs"
 
-  (solve-b input)
+  (time (part-2 input))
   ; FZBPBFZF
+  ;; "Elapsed time: 0.749042 msecs"
   )
 
 

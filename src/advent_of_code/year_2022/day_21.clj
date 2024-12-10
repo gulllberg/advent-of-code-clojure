@@ -38,9 +38,9 @@
         new-monkeys
         (recur new-monkeys)))))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 152))}
+           (is= (part-1 test-input) 152))}
   [input]
   (-> (parse-input input)
       (find-monkey-numbers)
@@ -72,9 +72,9 @@
           root-number
           (reverse human-number-operations)))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input) 301))}
+           (is= (part-2 test-input) 301))}
   [input]
   (let [monkeys (find-monkey-numbers (assoc-in (parse-input input) ["humn" :number] nil))
         root-deps (get-in monkeys ["root" :deps])
@@ -82,9 +82,11 @@
     (find-human-number root-number (get-human-number-operations monkeys "humn" []))))
 
 (comment
-  (solve-a input)
+  (time (part-1 input))
   ; 24947355373338
+  ;; "Elapsed time: 160.282333 msecs"
 
-  (solve-b input)
+  (time (part-2 input))
   ; 3876907167495
+  ;; "Elapsed time: 105.063542 msecs"
   )

@@ -63,26 +63,26 @@
             0
             (keys state))))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 3))}
+           (is= (part-1 test-input) 3))}
   [input]
   (let [state (mix-file (parse-input input 1) 1)]
     (sum-grove-coordinates state)))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input) 1623178306))}
+           (is= (part-2 test-input) 1623178306))}
   [input]
   (let [state (mix-file (parse-input input 811589153) 10)]
     (sum-grove-coordinates state)))
 
 (comment
-  (time (solve-a input))
+  (time (part-1 input))
   ; 2622
   ; "Elapsed time: 5274.746875 msecs"
 
-  (time (solve-b input))
+  (time (part-2 input))
   ; 1538773034088
   ; "Elapsed time: 49589.860458 msecs"
   )

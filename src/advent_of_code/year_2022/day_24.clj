@@ -95,18 +95,18 @@
                                     positions)]
           (recur (inc iter-n) new-positions new-blizzards goal-points))))))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 18))}
+           (is= (part-1 test-input) 18))}
   [input]
   (let [[points blizzards] (parse-input input)
         starting-point (get-starting-point points)
         goal-point (get-goal-point points)]
     (get-to-goal points blizzards starting-point [goal-point])))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input) 54))}
+           (is= (part-2 test-input) 54))}
   [input]
   (let [[points blizzards] (parse-input input)
         starting-point (get-starting-point points)
@@ -114,11 +114,11 @@
     (get-to-goal points blizzards starting-point [goal-point starting-point goal-point])))
 
 (comment
-  (time (solve-a input))
+  (time (part-1 input))
   ; 221
   ; "Elapsed time: 5460.504375 msecs"
 
-  (time (solve-b input))
+  (time (part-2 input))
   ; 739
   ; "Elapsed time: 18222.491708 msecs"
   )

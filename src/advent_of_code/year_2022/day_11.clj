@@ -65,9 +65,9 @@
             state
             monkeys)))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 10605))}
+           (is= (part-1 test-input) 10605))}
   [input]
   (let [[state magic-number] (parse-input input)
         state (reduce (fn [state _]
@@ -82,9 +82,9 @@
          (take 2)
          (apply *))))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input) 2713310158))}
+           (is= (part-2 test-input) 2713310158))}
   [input]
   (let [[state magic-number] (parse-input input)
         state (reduce (fn [state _]
@@ -100,11 +100,13 @@
          (apply *))))
 
 (comment
-  (solve-a input)
+  (time (part-1 input))
   ; 110264
+  ;; "Elapsed time: 3.567666 msecs"
 
-  (solve-b input)
+  (time (part-2 input))
   ; 23612457316
+  ;; "Elapsed time: 1505.639125 msecs"
   )
 
 

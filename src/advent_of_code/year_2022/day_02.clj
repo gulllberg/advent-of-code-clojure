@@ -27,25 +27,25 @@
     "B" 2
     "C" 3))
 
-(defn get-me-a
+(defn get-me-1
   [choice]
   (condp = choice
     "X" "A"
     "Y" "B"
     "Z" "C"))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 15))}
+           (is= (part-1 test-input) 15))}
   [input]
   (reduce (fn [a line]
             (let [opp (subs line 0 1)
-                  me (get-me-a (subs line 2 3))]
+                  me (get-me-1 (subs line 2 3))]
               (+ a (get-result-score me opp) (get-choice-score me))))
           0
           (clojure.string/split-lines input)))
 
-(defn get-me-b
+(defn get-me-2
   [needed-outcome opp]
   (condp = needed-outcome
     "X" (condp = opp
@@ -61,22 +61,24 @@
           "B" "C"
           "C" "A")))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input) 12))}
+           (is= (part-2 test-input) 12))}
   [input]
   (reduce (fn [a line]
             (let [needed-outcome (subs line 2 3)
                   opp (subs line 0 1)
-                  me (get-me-b needed-outcome opp)]
+                  me (get-me-2 needed-outcome opp)]
               (+ a (get-result-score me opp) (get-choice-score me))))
           0
           (clojure.string/split-lines input)))
 
 (comment
-  (solve-a input)
+  (time (part-1 input))
   ; 10718
+  ;; "Elapsed time: 4.870834 msecs"
 
-  (solve-b input)
+  (time (part-2 input))
   ; 14652
+  ;; "Elapsed time: 2.053541 msecs"
   )

@@ -65,24 +65,26 @@
                      [#{} visited]
                      paths-to-test)))))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 31))}
+           (is= (part-1 test-input) 31))}
   [input]
   (let [{start :start goals :goals heights :heights} (parse-input input \S (int \a) #{\E} (int \z))]
     (find-shortest-path (get-connections heights false) start goals )))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input) 29))}
+           (is= (part-2 test-input) 29))}
   [input]
   (let [{start :start goals :goals heights :heights} (parse-input input \E (int \z) #{\S \a} (int \a))]
     (find-shortest-path (get-connections heights true) start goals)))
 
 (comment
-  (solve-a input)
+  (time (part-1 input))
   ; 456
+  ;; "Elapsed time: 49.985417 msecs"
 
-  (solve-b input)
+  (time (part-2 input))
   ; 454
+  ;; "Elapsed time: 75.781875 msecs"
   )

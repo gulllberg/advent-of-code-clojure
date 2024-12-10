@@ -30,9 +30,9 @@
                            (into []))]
     [configuration instructions]))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input 3) "CMZ"))}
+           (is= (part-1 test-input 3) "CMZ"))}
   [input size]
   (let [[configuration instructions] (parse-input input size)]
     (->> (reduce (fn [a [n from to]]
@@ -50,9 +50,9 @@
          (map first)
          (reduce str))))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input 3) "MCD"))}
+           (is= (part-2 test-input 3) "MCD"))}
   [input size]
   (let [[configuration instructions] (parse-input input size)]
     (->> (reduce (fn [a [n from to]]
@@ -68,10 +68,12 @@
          (reduce str))))
 
 (comment
-  (solve-a input 9)
+  (time (part-1 input 9))
   ; CWMTGHBDW
+  ;; "Elapsed time: 2.227875 msecs"
 
-  (solve-b input 9)
+  (time (part-2 input 9))
   ; SSCGWJCRB
+  ;; "Elapsed time: 3.460084 msecs"
   )
 

@@ -91,25 +91,26 @@
                                                   elves)]
     (- (* (inc (- max-row min-row)) (inc (- max-col min-col))) (count elves))))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 110))}
+           (is= (part-1 test-input) 110))}
   [input]
   (let [elves (parse-input input)]
     (get-n-empty-spaces (move-elves elves 10))))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input) 20))}
+           (is= (part-2 test-input) 20))}
   [input]
   (let [elves (parse-input input)]
     (move-elves elves nil)))
 
 (comment
-  (solve-a input)
+  (time (part-1 input))
   ; 4241
+  ;; "Elapsed time: 141.240083 msecs"
 
-  (time (solve-b input))
+  (time (part-2 input))
   ; 1079
   ; "Elapsed time: 9064.302709 msecs"
   )

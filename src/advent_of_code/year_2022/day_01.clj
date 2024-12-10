@@ -16,22 +16,24 @@
        (take n)
        (reduce +)))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 24000))}
+           (is= (part-1 test-input) 24000))}
   [input]
   (get-sum-of-top-n input 1))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input) 45000))}
+           (is= (part-2 test-input) 45000))}
   [input]
   (get-sum-of-top-n input 3))
 
 (comment
-  (solve-a input)
+  (time (part-1 input))
   ; 71780
+  ;; "Elapsed time: 2.413709 msecs"
 
-  (solve-b input)
+  (time (part-2 input))
   ; 212489
+  ;; "Elapsed time: 1.398041 msecs"
   )

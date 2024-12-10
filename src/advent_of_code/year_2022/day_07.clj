@@ -71,9 +71,9 @@
              0
              (get-in state [name :children]))))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 95437))}
+           (is= (part-1 test-input) 95437))}
   [input]
   (let [state (parse-input input)]
     (reduce (fn [a k]
@@ -85,9 +85,9 @@
             0
             (keys state))))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input) 24933642))}
+           (is= (part-2 test-input) 24933642))}
   [input]
   (let [state (parse-input input)
         disk-size 70000000
@@ -105,10 +105,12 @@
          (first))))
 
 (comment
-  (solve-a input)
+  (time (part-1 input))
   ; 1453349
+  ;; "Elapsed time: 3.101292 msecs"
 
-  (solve-b input)
+  (time (part-2 input))
   ; 2948823
+  ;; "Elapsed time: 4.739708 msecs"
   )
 

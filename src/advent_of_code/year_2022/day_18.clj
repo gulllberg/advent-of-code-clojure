@@ -15,9 +15,9 @@
                    (into []))))
        (into #{})))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 64))}
+           (is= (part-1 test-input) 64))}
   [input]
   (let [points (parse-input input)]
     (reduce (fn [a point]
@@ -67,9 +67,9 @@
                                            points-to-check)]
           (recur (clojure.set/union outside-points next-points-to-check) next-points-to-check))))))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input) 58))}
+           (is= (part-2 test-input) 58))}
   [input]
   (let [droplet-points (parse-input input)
         outside-points (get-outside-points droplet-points)]
@@ -84,9 +84,11 @@
             droplet-points)))
 
 (comment
-  (solve-a input)
+  (time (part-1 input))
   ; 4474
+  ;; "Elapsed time: 18.862125 msecs"
 
-  (solve-b input)
+  (time (part-2 input))
   ; 2518
+  ;; "Elapsed time: 73.121125 msecs"
   )

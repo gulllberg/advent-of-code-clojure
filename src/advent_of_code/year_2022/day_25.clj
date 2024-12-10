@@ -60,9 +60,9 @@
                            (range snafu-number-length))]
     (apply str snafu-list)))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) "2=-1=0"))}
+           (is= (part-1 test-input) "2=-1=0"))}
   [input]
   (let [lines (clojure.string/split-lines input)]
     (decimal->snafu (reduce (fn [a line]
@@ -71,6 +71,7 @@
                             lines))))
 
 (comment
-  (solve-a input)
+  (time (part-1 input))
   ; 2-02===-21---2002==0
+  ;; "Elapsed time: 1.290416 msecs"
   )

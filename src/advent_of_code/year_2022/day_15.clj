@@ -33,9 +33,9 @@
           true
           sensor-beacon-distances))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input 10) 26))}
+           (is= (part-1 test-input 10) 26))}
   [input row-to-check]
   (let [readings (parse-input input)
         beacon-positions (into #{} (map second readings))
@@ -91,9 +91,9 @@
   [x y]
   (+ y (* x 4000000)))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input 20) 56000011))}
+           (is= (part-2 test-input 20) 56000011))}
   [input max-coord]
   (let [readings (parse-input input)
         sensor-beacon-distances (get-sensor-beacon-distances readings)]
@@ -111,11 +111,11 @@
             sensor-beacon-distances)))
 
 (comment
-  (time (solve-a input 2000000))
+  (time (part-1 input 2000000))
   ; 4582667
   ; "Elapsed time: 10454.607125 msecs"
 
-  (time (solve-b input 4000000))
+  (time (part-2 input 4000000))
   ; 10961118625406
   ; "Elapsed time: 28527.998125 msecs"
   )

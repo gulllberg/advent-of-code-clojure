@@ -207,13 +207,13 @@
                                   instructions)]
     (get-score position facing)))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 6032))}
+           (is= (part-1 test-input) 6032))}
   [input]
   (solve input false))
 
-(defn solve-b
+(defn part-2
   ;; Test and real input have different layouts
   ;{:test (fn []
   ;         (is= (solve-b test-input) 5031))}
@@ -221,9 +221,11 @@
   (solve input true))
 
 (comment
-  (solve-a input)
+  (time (part-1 input))
   ; 58248
+  ;; "Elapsed time: 534.202959 msecs"
 
-  (solve-b input)
+  (time (part-2 input))
   ; 179091
+  ;; "Elapsed time: 24.79175 msecs"
   )

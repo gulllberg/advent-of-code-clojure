@@ -48,9 +48,9 @@
                                              {}
                                              states)))))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 1651))}
+           (is= (part-1 test-input) 1651))}
   [input]
   (let [nodes (parse-input input)]
     (->> (find-best-states nodes {["AA" #{}] [0 #{"AA"}]} 30)
@@ -78,9 +78,9 @@
                {}
                states)))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input) 1707))}
+           (is= (part-2 test-input) 1707))}
   [input]
   (let [nodes (parse-input input)
         _ (println "first go")
@@ -101,11 +101,11 @@
          (apply max))))
 
 (comment
-  (time (solve-a input))
+  (time (part-1 input))
   ; 1940
   ; "Elapsed time: 1334.628125 msecs"
 
-  (time (solve-b input))
+  (time (part-2 input))
   ; 2469
   ; "Elapsed time: 43737.954084 msecs"
   )

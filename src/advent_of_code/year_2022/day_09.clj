@@ -27,9 +27,9 @@
       :else
       [t-i t-j])))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 13))}
+           (is= (part-1 test-input) 13))}
   [input]
   (->> (clojure.string/split-lines input)
        (reduce (fn [[visited head-position tail-position] line]
@@ -50,10 +50,10 @@
        (first)
        (count)))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input) 1)
-           (is= (solve-b "R 5\nU 8\nL 8\nD 3\nR 17\nD 10\nL 25\nU 20") 36))}
+           (is= (part-2 test-input) 1)
+           (is= (part-2 "R 5\nU 8\nL 8\nD 3\nR 17\nD 10\nL 25\nU 20") 36))}
   [input]
   (->> (clojure.string/split-lines input)
        (reduce (fn [[visited positions] line]
@@ -87,10 +87,12 @@
        (count)))
 
 (comment
-  (solve-a input)
+  (time (part-1 input))
   ; 5513
+  ;; "Elapsed time: 9.886292 msecs
 
-  (solve-b input)
+  (time (part-2 input))
   ; 2427
+  ;; "Elapsed time: 31.45475 msecs"
   )
 

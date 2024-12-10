@@ -41,9 +41,9 @@
                  [#{} -1]
                  range-to-use)))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 21))}
+           (is= (part-1 test-input) 21))}
   [input]
   (let [[heights num-rows num-columns] (parse-input input)]
     (count (reduce clojure.set/union
@@ -76,9 +76,9 @@
         right (get-viewing-distance heights i j (mapv vector (repeat i) (range (inc j) num-columns)))]
     (* up down left right)))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input) 8))}
+           (is= (part-2 test-input) 8))}
   [input]
   (let [[heights num-rows num-columns] (parse-input input)]
     (reduce (fn [a i]
@@ -90,10 +90,12 @@
             (range num-rows))))
 
 (comment
-  (solve-a input)
+  (time (part-1 input))
   ; 1840
+  ;; "Elapsed time: 17.187333 msecs"
 
-  (solve-b input)
+  (time (part-2 input))
   ; 405769
+  ;; "Elapsed time: 210.125084 msecs"
   )
 

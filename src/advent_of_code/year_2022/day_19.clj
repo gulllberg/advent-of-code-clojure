@@ -59,9 +59,9 @@
                                states)]
         (recur (inc time-passed) new-states)))))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 33))}
+           (is= (part-1 test-input) 33))}
   [input]
   (let [blueprints (parse-input input)]
     (reduce (fn [a blueprint]
@@ -69,7 +69,7 @@
             0
             blueprints)))
 
-(defn solve-b
+(defn part-2
   ;{:test (fn []
   ;         (is= (solve-one-blueprint [1 4 2 3 14 2 7] 32) 56)
   ;         (is= (solve-one-blueprint [2 2 3 3 8 3 12] 32) 62))}
@@ -81,11 +81,11 @@
             (take 3 blueprints))))
 
 (comment
-  (time (solve-a input))
+  (time (part-1 input))
   ; 1365
   ; "Elapsed time: 3699.290875 msecs"
 
-  (time (solve-b input))
+  (time (part-2 input))
   ; 4864
   ; "Elapsed time: 88437.999792 msecs"
   )

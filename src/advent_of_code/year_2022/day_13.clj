@@ -49,9 +49,9 @@
                 (recur (inc i))
                 result))))))))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (is= (solve-a test-input) 13))}
+           (is= (part-1 test-input) 13))}
   [input]
   (let [pairs (->> (clojure.string/split input #"\n\n")
                    (map (fn [two-rows]
@@ -65,9 +65,9 @@
             0
             (range (count pairs)))))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (is= (solve-b test-input) 140))}
+           (is= (part-2 test-input) 140))}
   [input]
   (let [packets (as-> input $
                       (clojure.string/replace $ "\n\n" "\n")
@@ -79,9 +79,11 @@
        (inc (index-of sorted-packets [[6]])))))
 
 (comment
-  (solve-a input)
+  (time (part-1 input))
   ; 6656
+  ;; "Elapsed time: 4.190333 msecs"
 
-  (solve-b input)
+  (time (part-2 input))
   ; 19716
+  ;; "Elapsed time: 7.386583 msecs"
   )
