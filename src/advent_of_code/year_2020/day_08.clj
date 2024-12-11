@@ -7,7 +7,7 @@
   (let [parts (clojure.string/split line #" ")]
     [(first parts) (read-string (second parts))]))
 
-(defn solve-a
+(defn part-1
   []
   (let [lines (clojure.string/split-lines input)]
     (loop [acc 0
@@ -21,8 +21,9 @@
                  (conj visited line-number)))))))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 2080
+  ; "Elapsed time: 1.030541 msecs
   )
 
 (defn does-it-terminate?
@@ -42,7 +43,7 @@
                      (if (= instruction "jmp") (+ line-number number) (inc line-number))
                      (conj visited line-number))))))
 
-(defn solve-b
+(defn part-2
   []
   (let [lines (clojure.string/split-lines input)]
     (loop [line-number-to-modify 0]
@@ -51,6 +52,7 @@
         (recur (inc line-number-to-modify))))))
 
 (comment
-  (solve-b)
+  (time (part-2))
   ; 2477
+  ; "Elapsed time: 69.985458 msecs"
   )

@@ -57,13 +57,14 @@
   (let [i (clojure.string/index-of cups "1")]
     (str (subs cups (inc i)) (subs cups 0 i))))
 
-(defn solve-a
+(defn part-1
   []
   (get-answer (play-game 100 input "3")))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 72496583
+  ; "Elapsed time: 0.432333 msecs"
   )
 
 ; All numbers keep track of the one they have after them
@@ -108,9 +109,9 @@
           [cups destination-cup]
           (range 4)))
 
-(defn get-next-state-b
+(defn get-next-state-2
   {:test (fn []
-           (is= (get-next-state-b [nil nil 5 2 6 4 7 3 nil nil] [8 9 1] 3 9) [nil 5 8 2 6 4 7 3 9 1]))}
+           (is= (get-next-state-2 [nil nil 5 2 6 4 7 3 nil nil] [8 9 1] 3 9) [nil 5 8 2 6 4 7 3 9 1]))}
   [remaining-cups picked-up-cups current-cup max-label]
   (let [destination-cup (loop [cup-to-look-for (dec current-cup)]
                           (if (nth remaining-cups cup-to-look-for)
@@ -120,9 +121,9 @@
                               (recur (dec cup-to-look-for)))))]
     (put-back-picked-up-cups remaining-cups picked-up-cups destination-cup)))
 
-(defn play-game-b
+(defn play-game-2
   {:test (fn []
-           (is= (play-game-b 10 (create-starting-cup-state "389125467" 9) 3) (create-starting-cup-state "583741926" 9)))}
+           (is= (play-game-2 10 (create-starting-cup-state "389125467" 9) 3) (create-starting-cup-state "583741926" 9)))}
   [rounds cups starting-cup]
   (let [max-label (dec (count cups))]
     (loop [i 0
@@ -131,7 +132,7 @@
       (if (= i rounds)
         cups
         (let [[remaining-cups picked-up-cups] (pick-up-cups cups current-cup)
-              next-cup-state (get-next-state-b remaining-cups picked-up-cups current-cup max-label)]
+              next-cup-state (get-next-state-2 remaining-cups picked-up-cups current-cup max-label)]
           (recur (inc i) next-cup-state (nth next-cup-state current-cup)))))))
 
 
@@ -303,26 +304,27 @@
         cup-after-that (aget cups cup-after-1)]
     (* (inc cup-after-that) (inc cup-after-that))))
 
-(defn get-answer-b
+(defn get-answer-2
   {:test (fn []
-           (is= (get-answer-b {7 4, 1 9, 4 1, 6 5, 3 7, 2 6, 9 2, 5 8, 8 3}) 18))}
+           (is= (get-answer-2 {7 4, 1 9, 4 1, 6 5, 3 7, 2 6, 9 2, 5 8, 8 3}) 18))}
   [cups]
   (let [cup-after-1 (get cups 1)
         cup-after-that (get cups cup-after-1)]
     (* cup-after-1 cup-after-that)))
 
-(defn solve-b
+(defn part-2
   []
-  (get-answer-b (play-game-b 10000000 (create-starting-cup-state input 1000000) 3)))
+  (get-answer-2 (play-game-2 10000000 (create-starting-cup-state input 1000000) 3)))
 
-(defn solve-b-java
+(defn solve-2-java
   []
   (get-answer-java (play-game-java 10000000 (create-starting-cup-state-java input 1000000) 2)))
 
 (comment
-  (solve-b)
+  (time (part-2))
   ; 41785843847
+  ; "Elapsed time: 11191.88625 msecs"
 
   ; java does not run
-  (solve-b-java)
+  (solve-2-java)
   )

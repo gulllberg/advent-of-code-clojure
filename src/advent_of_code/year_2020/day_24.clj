@@ -37,15 +37,16 @@
        (filter (fn [v] (= v :black)))
        (count)))
 
-(defn solve-a
+(defn part-1
   []
   (->> (clojure.string/split-lines input)
        (execute-instructions)
        (count-black-tiles)))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 228
+  ; "Elapsed time: 5.340875 msecs"
   )
 
 (defn get-neighbours
@@ -100,7 +101,7 @@
       (dissoc room :candidates)
       (recur (inc i) (living-art room)))))
 
-(defn solve-b
+(defn part-2
   []
   (->> (clojure.string/split-lines input)
        (execute-instructions)
@@ -109,6 +110,7 @@
        (count-black-tiles)))
 
 (comment
-  (solve-b)
+  (time (part-2))
   ; 3672
+  ; "Elapsed time: 2289.578583 msecs"
   )

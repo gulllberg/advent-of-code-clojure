@@ -79,21 +79,22 @@
           0
           messages))
 
-(defn solve-a
+(defn part-1
   []
   (check-messages (clojure.string/split-lines messages-input) (create-rules-state rules-input) ["0"]))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 113
+  ; "Elapsed time: 16.203208 msecs"
   )
 
 ; Rule 0 only considers the two special (with loops) rules 8 and 11
 ; Rules 8 and 11 consider (apart from themselves) rules 42 and 42 + 31 respectively.
 ; We can therefore just iterate over various combinations of loops and see if any work
-(defn outer-check-message-b
+(defn outer-check-message-2
   {:test (fn []
-           (is (outer-check-message-b "babbbbaabbbbbabbbbbbaabaaabaaa" modified-rules-state-for-advanced-test)))}
+           (is (outer-check-message-2 "babbbbaabbbbbabbbbbbaabaaabaaa" modified-rules-state-for-advanced-test)))}
   ; Don't take rules-to-fulfill as argument, we know it's 0: 8 11
   [message rules-state]
   ; Needs range to end at 6 to give right answer. However, does not take very long to run with higher number instead
@@ -106,9 +107,9 @@
             true
             (recur (inc i))))))))
 
-(defn check-messages-b
+(defn check-messages-2
   {:test (fn []
-           (is= (check-messages-b (clojure.string/split-lines messages-for-advanced-test)
+           (is= (check-messages-2 (clojure.string/split-lines messages-for-advanced-test)
                                   (create-rules-state (-> rules-for-advanced-test
                                                           (clojure.string/replace-first "8: 42" "8: 42 | 42 8")
                                                           (clojure.string/replace-first "11: 42 31" "11: 42 31 | 42 11 31"))))
@@ -116,20 +117,21 @@
   ; Don't take rules-to-fulfill as argument, we know it's 0: 8 11
   [messages rules-state]
   (reduce (fn [a message]
-            (if (outer-check-message-b message rules-state)
+            (if (outer-check-message-2 message rules-state)
               (inc a)
               a))
           0
           messages))
 
-(defn solve-b
+(defn part-2
   []
-  (check-messages-b (clojure.string/split-lines messages-input)
+  (check-messages-2 (clojure.string/split-lines messages-input)
                     (create-rules-state (-> rules-input
                                             (clojure.string/replace-first "8: 42" "8: 42 | 42 8")
                                             (clojure.string/replace-first "11: 42 31" "11: 42 31 | 42 11 31")))))
 
 (comment
-  (solve-b)
+  (time (part-2))
   ; 253
+  ; "Elapsed time: 183.240458 msecs"
   )

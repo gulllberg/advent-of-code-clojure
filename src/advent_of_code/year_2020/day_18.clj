@@ -39,18 +39,19 @@
           (recur (inc i) depth (str curr c) operators numbers))))
     ))
 
-(defn solve-a
+(defn part-1
   []
   (apply + (map evaluate-line (clojure.string/split-lines input))))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 510009915468
+  ; "Elapsed time: 483.542 msecs"
   )
 
-(defn compute-result-b
+(defn compute-result-2
   {:test (fn []
-           (is= (compute-result-b ["1" "2" "3" "4" "5" "6"] ["+" "*" "+" "*" "+"]) 231))}
+           (is= (compute-result-2 ["1" "2" "3" "4" "5" "6"] ["+" "*" "+" "*" "+"]) 231))}
   [numbers operators]
   (loop [i 0
          ns []
@@ -63,10 +64,10 @@
           (recur (inc i) ns os (str (eval (read-string (str "(+ " n " " (nth numbers (inc i)) ")")))))
           (recur (inc i) (conj ns n)  (conj os operator) (nth numbers (inc i))))))))
 
-(defn evaluate-line-b
+(defn evaluate-line-2
   {:test (fn []
-           (is= (evaluate-line-b "1 + 2 * 3 + 4 * 5 + 6") 231)
-           (is= (evaluate-line-b "1 + (2 * 3) + (4 * (5 + 6))") 51))}
+           (is= (evaluate-line-2 "1 + 2 * 3 + 4 * 5 + 6") 231)
+           (is= (evaluate-line-2 "1 + (2 * 3) + (4 * (5 + 6))") 51))}
   [line]
   (loop [i 0
          depth 0
@@ -74,7 +75,7 @@
          operators {0 []}
          numbers {0 []}]
     (if (= i (count line))
-      (compute-result-b (concat (get numbers 0) (if curr [curr] [])) (get operators 0))
+      (compute-result-2 (concat (get numbers 0) (if curr [curr] [])) (get operators 0))
       (let [c (str (nth line i))]
         (condp = c
           " " (if curr
@@ -85,16 +86,17 @@
           "(" (recur (inc i) (inc depth) nil (assoc operators (inc depth) []) (assoc numbers (inc depth) []))
           ")" (recur (inc i) (dec depth) nil (dissoc operators depth) (-> numbers
                                                                           (dissoc depth)
-                                                                          (update (dec depth) conj (str (compute-result-b (concat (get numbers depth) (if curr [curr] [])) (get operators depth))))))
+                                                                          (update (dec depth) conj (str (compute-result-2 (concat (get numbers depth) (if curr [curr] [])) (get operators depth))))))
           ; a digit
           (recur (inc i) depth (str curr c) operators numbers))))
     ))
 
-(defn solve-b
+(defn part-2
   []
-  (apply + (map evaluate-line-b (clojure.string/split-lines input))))
+  (apply + (map evaluate-line-2 (clojure.string/split-lines input))))
 
 (comment
-  (solve-b)
+  (time (part-2))
   ; 321176691637769
+  ; "Elapsed time: 553.619542 msecs"
   )

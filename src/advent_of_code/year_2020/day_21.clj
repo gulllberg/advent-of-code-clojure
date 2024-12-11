@@ -11,7 +11,7 @@
                    (clojure.string/replace-first ")" "")
                    (clojure.string/split #", ")))]))
 
-(defn solve-a
+(defn part-1
   []
   (let [parsed-lines (map parse-line (clojure.string/split-lines input))
         allergens (apply clojure.set/union (map second parsed-lines))
@@ -35,11 +35,12 @@
             ingredients-that-can't-have-allergens)))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 2020
+  ; "Elapsed time: 5.854792 msecs"
   )
 
-(defn solve-b
+(defn part-2
   []
   (let [parsed-lines (map parse-line (clojure.string/split-lines input))
         allergens (apply clojure.set/union (map second parsed-lines))
@@ -56,7 +57,8 @@
     ingredients-that-may-have-allergens))
 
 (comment
-  (solve-b)
+  (time (part-2))
+  ; "Elapsed time: 2.300542 msecs"
   ; Raw
   ; {"sesame" #{"bcdgf" "lbnmsr" "bvcrrfbr"},
   ; "peanuts" #{"xcgtv" "dhbxtb"},

@@ -65,7 +65,7 @@
           false
           (get dependency-map outer)))
 
-(defn solve-a
+(defn part-1
   []
   (let [dependency-map (create-dependency-map input #"[a-z]+ [a-z]+")]
     (reduce (fn [a k]
@@ -76,8 +76,9 @@
             (keys dependency-map))))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 172
+  ; "Elapsed time: 24.763125 msecs"
   )
 
 (defn count-containing-bags
@@ -101,12 +102,13 @@
           0
           (get dependency-map outer)))
 
-(defn solve-b
+(defn part-2
   []
   (let [dependency-map (create-dependency-map input #"\d*[ ]?[a-z]+ [a-z]+")]
     (count-containing-bags dependency-map "shiny gold")))
 
 (comment
-  (solve-b)
+  (time (part-2))
   ; 39645
+  ; "Elapsed time: 2.169292 msecs"
   )

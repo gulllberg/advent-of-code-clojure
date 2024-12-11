@@ -3,13 +3,11 @@
 
 (def input (slurp "src/advent_of_code/year_2020/inputs/day02.txt"))
 
-; https://adventofcode.com/2020/day/2
-
-(defn check-password-a
+(defn check-password-1
   {:test (fn []
-           (is (check-password-a 1 3 "a" "abcde"))
-           (is-not (check-password-a 1 3 "b" "cdefg"))
-           (is (check-password-a 2 9 "c" "ccccccccc")))}
+           (is (check-password-1 1 3 "a" "abcde"))
+           (is-not (check-password-1 1 3 "b" "cdefg"))
+           (is (check-password-1 2 9 "c" "ccccccccc")))}
   [min max char password]
   (let [n-char-in-password (->> password
                                 (filter (fn [c]
@@ -17,7 +15,7 @@
                                 (count))]
     (<= min n-char-in-password max)))
 
-(defn solve-a
+(defn part-1
   []
     (let [lines (clojure.string/split-lines input)]
     (->> lines
@@ -28,25 +26,26 @@
                          max (read-string (nth numbers 1))
                          char (str (nth (nth parts 1) 0))
                          password (nth parts 2)]
-                     (check-password-a min max char password))))
+                     (check-password-1 min max char password))))
          (count))))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 477
+  ; "Elapsed time: 4.754459 msecs"
   )
 
-(defn check-password-b
+(defn check-password-2
   {:test (fn []
-           (is (check-password-b 1 3 (nth "a" 0) "abcde"))
-           (is-not (check-password-b 1 3 (nth "b" 0) "cdefg"))
-           (is-not (check-password-b 2 9 (nth "c" 0) "ccccccccc")))}
+           (is (check-password-2 1 3 (nth "a" 0) "abcde"))
+           (is-not (check-password-2 1 3 (nth "b" 0) "cdefg"))
+           (is-not (check-password-2 2 9 (nth "c" 0) "ccccccccc")))}
   [p1 p2 char password]
   (let [p1-check (= (nth password (dec p1)) char)
         p2-check (= (nth password (dec p2)) char)]
     (not= p1-check p2-check)))
 
-(defn solve-b
+(defn part-2
   []
   (let [lines (clojure.string/split-lines input)]
     (->> lines
@@ -57,10 +56,11 @@
                          p2 (read-string (nth numbers 1))
                          char (nth (nth parts 1) 0)
                          password (nth parts 2)]
-                     (check-password-b p1 p2 char password))))
+                     (check-password-2 p1 p2 char password))))
          (count))))
 
 (comment
-  (solve-b)
+  (time (part-2))
   ; 686
+  ; "Elapsed time: 2.73075 msecs"
   )

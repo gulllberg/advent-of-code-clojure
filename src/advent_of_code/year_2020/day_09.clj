@@ -18,7 +18,7 @@
       (= j (dec (count numbers))) (recur (inc i) (+ i 2))
       :else (recur i (inc j)))))
 
-(defn solve-a
+(defn part-1
   []
   (let [preamble-length 25
         numbers (vec (map read-string (clojure.string/split-lines input)))]
@@ -28,11 +28,12 @@
         (nth numbers (+ i preamble-length))))))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 26796446
+  ; "Elapsed time: 6.352958 msecs"
   )
 
-(defn solve-b
+(defn part-2
   []
   (let [numbers (vec (map read-string (clojure.string/split-lines input)))
         target-number 26796446                              ;; From a
@@ -46,6 +47,7 @@
           :else (recur length (inc i)))))))
 
 (comment
-  (solve-b)
+  (time (part-2))
   ; 3353494
+  ; "Elapsed time: 14.521916 msecs"
   )

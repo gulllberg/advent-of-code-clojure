@@ -22,7 +22,7 @@
           false
           rules))
 
-(defn solve-a
+(defn part-1
   []
   (let [rules (reduce (fn [a rule]
                         (let [[f s] (re-seq #"\d+-\d+" rule)]
@@ -41,8 +41,9 @@
             (clojure.string/split-lines nearby-tickets-input))))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 26026
+  ; "Elapsed time: 6.115667 msecs"
   )
 
 (defn filter-valid-tickets
@@ -74,7 +75,7 @@
           true
           tickets))
 
-(defn solve-b
+(defn part-2
   []
   (let [rules (reduce (fn [a rule]
                         (let [[f s] (re-seq #"\d+-\d+" rule)
@@ -96,7 +97,8 @@
             (range 20))))
 
 (comment
-  (solve-b)
+  (time (part-2))
+  ; "Elapsed time: 31.960125 msecs"
   ; output
   ;[[(33 430) (456 967) "departure location" [0 1 5 8 11 12 13 16]]
   ; [(42 864) (875 957) "departure station" [0 1 3 5 8 10 11 12 13 16 19]]

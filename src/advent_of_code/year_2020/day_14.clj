@@ -60,7 +60,7 @@
           (left-pad binary-string (count mask))
           (range (count mask))))
 
-(defn solve-a
+(defn part-1
   []
   (apply + (vals (first (reduce (fn [[memory mask] line]
                                   (if-let [matches (re-matches #"mask = (.*)" line)]
@@ -71,13 +71,14 @@
                                 (clojure.string/split-lines input))))))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 3059488894985
+  ; "Elapsed time: 39.607458 msecs"
   )
 
-(defn apply-mask-b
+(defn apply-mask-2
   {:test (fn []
-           (is= (apply-mask-b "101010" "000000000000000000000000000000X1001X") "000000000000000000000000000000X1101X"))}
+           (is= (apply-mask-2 "101010" "000000000000000000000000000000X1001X") "000000000000000000000000000000X1101X"))}
   [binary-string mask]
   (reduce (fn [s i]
             (if (= (nth mask i) \0)
@@ -107,7 +108,7 @@
           #{}
           (range (count address))))
 
-(defn solve-b
+(defn part-2
   []
   (apply + (vals (first (reduce (fn [[memory mask] line]
                                   (if-let [matches (re-matches #"mask = (.*)" line)]
@@ -116,12 +117,13 @@
                                       [(reduce (fn [m address]
                                                  (assoc m address (read-string value)))
                                                memory
-                                               (get-all-addresses (apply-mask-b (base10->binary-string (read-string mem)) mask)))
+                                               (get-all-addresses (apply-mask-2 (base10->binary-string (read-string mem)) mask)))
                                        mask])))
                                 [{} nil]
                                 (clojure.string/split-lines input))))))
 
 (comment
-  (solve-b)
+  (time (part-2))
   ; 2900994392308
+  ; "Elapsed time: 315.502625 msecs"
   )

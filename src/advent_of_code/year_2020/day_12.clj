@@ -38,17 +38,18 @@
       "R" (update state :facing - number)
       "F" (execute-movement state (get-movement-direction (:facing state)) number))))
 
-(defn solve-a
+(defn part-1
   []
   (let [final-state (reduce get-next-state (create-state) (clojure.string/split-lines input))]
     (+ (Math/abs (:north final-state)) (Math/abs (:east final-state)))))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 2057
+  ; "Elapsed time: 3.166042 msecs"
   )
 
-(defn create-state-b
+(defn create-state-2
   []
   {:east           0
    :north          0
@@ -79,7 +80,7 @@
   (assoc state :east (+ (:east state) (* number (:waypoint-east state)))
                :north (+ (:north state) (* number (:waypoint-north state)))))
 
-(defn get-next-state-b
+(defn get-next-state-2
   [state line]
   (let [parts (re-seq #"[A-Z]+|\d+" line)
         instruction (first parts)
@@ -93,12 +94,13 @@
       "R" (execute-waypoint-rotation state instruction number)
       "F" (execute-ship-movement state number))))
 
-(defn solve-b
+(defn part-2
   []
-  (let [final-state (reduce get-next-state-b (create-state-b) (clojure.string/split-lines input))]
+  (let [final-state (reduce get-next-state-2 (create-state-2) (clojure.string/split-lines input))]
     (+ (Math/abs (:north final-state)) (Math/abs (:east final-state)))))
 
 (comment
-  (solve-b)
+  (time (part-2))
   ; 71504
+  ; "Elapsed time: 3.219834 msecs"
   )

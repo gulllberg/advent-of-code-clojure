@@ -38,18 +38,19 @@
          (string->binary-string \R)
          (binary-string->base10))))
 
-(defn solve-a
+(defn part-1
   []
   (apply max (map boarding-pass->seat-id (clojure.string/split-lines input))))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 994
+  ; "Elapsed time: 1.963166 msecs"
   )
 
 ; Not in first row -> id >= 8
 ; Not in last row -> id <= 1016
-(defn solve-b
+(defn part-2
       []
       ; Gives too many, because more than just first and last row is missing
       ;(clojure.set/difference (set (range 8 1017)) (set (map boarding-pass->seat-id (clojure.string/split-lines input))))
@@ -65,6 +66,7 @@
         (recur (inc id))))))
 
 (comment
-  (solve-b)
+  (time (part-2))
   ; 741
+  ; "Elapsed time: 2.838375 msecs"
   )

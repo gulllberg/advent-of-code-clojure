@@ -23,16 +23,17 @@
           0
           (range 0 (count map-rows) down-n)))
 
-(defn solve-a
+(defn part-1
   []
   (check-slope (clojure.string/split-lines input) 3 1))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 148
+  ; "Elapsed time: 0.474708 msecs"
   )
 
-(defn solve-b
+(defn part-2
   []
   (let [map-rows (clojure.string/split-lines input)]
     (reduce (fn [a [right-n down-n]]
@@ -41,6 +42,7 @@
             [[1 1] [3 1] [5 1] [7 1] [1 2]])))
 
 (comment
-  (solve-b)
+  (time (part-2))
   ; 727923200
+  ; "Elapsed time: 2.089084 msecs"
   )

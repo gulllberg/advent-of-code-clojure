@@ -30,15 +30,16 @@
           0
           (range (count deck))))
 
-(defn solve-a
+(defn part-1
   []
   (-> (play-game (map read-string (clojure.string/split-lines player-1-input)) (map read-string (clojure.string/split-lines player-2-input)))
       (second)
       (score-deck)))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 31809
+  ; "Elapsed time: 1.868375 msecs"
   )
 
 (defn play-recursive-game
@@ -70,15 +71,14 @@
                     (recur (concat (rest deck1) [c1 c2]) (rest deck2) (conj previous-states state))
                     (recur (rest deck1) (concat (rest deck2) [c2 c1]) (conj previous-states state)))))))))
 
-(defn solve-b
+(defn part-2
   []
   (-> (play-recursive-game (map read-string (clojure.string/split-lines player-1-input)) (map read-string (clojure.string/split-lines player-2-input)))
       (second)
       (score-deck)))
 
 (comment
-  (time
-    (solve-b))
+  (time (part-2))
   ; 32835
   ; "Elapsed time: 4159.820439 msecs"
   )

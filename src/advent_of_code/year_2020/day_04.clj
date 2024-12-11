@@ -4,11 +4,11 @@
 
 (def input (slurp "src/advent_of_code/year_2020/inputs/day04.txt"))
 
-(defn valid-password-a?
+(defn valid-password-1?
   {:test (fn []
-           (is (valid-password-a? ["byr" "iyr" "eyr" "hgt" "hcl" "pid" "ecl"]))
-           (is (valid-password-a? ["byr" "iyr" "eyr" "hgt" "hcl" "pid" "ecl" "cid"]))
-           (is-not (valid-password-a? ["byr" "eyr" "hgt" "hcl" "pid" "ecl" "cid"])))}
+           (is (valid-password-1? ["byr" "iyr" "eyr" "hgt" "hcl" "pid" "ecl"]))
+           (is (valid-password-1? ["byr" "iyr" "eyr" "hgt" "hcl" "pid" "ecl" "cid"]))
+           (is-not (valid-password-1? ["byr" "eyr" "hgt" "hcl" "pid" "ecl" "cid"])))}
   [fields]
   (let [required-fields ["byr" "iyr" "eyr" "hgt" "hcl" "ecl" "pid"]]
     (reduce (fn [is-valid required-field]
@@ -16,34 +16,35 @@
             true
             required-fields)))
 
-(defn extract-fields-from-line-a
+(defn extract-fields-from-line-1
   {:test (fn []
-           (is= (extract-fields-from-line-a "cid:101 hgt:166cm byr:1986 ecl:amb") ["cid" "hgt" "byr" "ecl"]))}
+           (is= (extract-fields-from-line-1 "cid:101 hgt:166cm byr:1986 ecl:amb") ["cid" "hgt" "byr" "ecl"]))}
   [line]
   (let [kvs (clojure.string/split line #" ")]
     (map (fn [kv]
            (first (clojure.string/split kv #":")))
          kvs)))
 
-(defn solve-a
+(defn part-1
   []
   (first (reduce (fn [[n-valid found-fields] line]
                    (if (= line "")
-                     [(+ n-valid (if (valid-password-a? found-fields) 1 0)) []]
-                     [n-valid (concat found-fields (extract-fields-from-line-a line))]))
+                     [(+ n-valid (if (valid-password-1? found-fields) 1 0)) []]
+                     [n-valid (concat found-fields (extract-fields-from-line-1 line))]))
                  [0 []]
                  (conj (clojure.string/split-lines input) ""))))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 206
+  ; "Elapsed time: 2.957291 msecs"
   )
 
-(defn valid-password-b?
+(defn valid-password-2?
   {:test (fn []
-           (is-not (valid-password-b? ["eyr:1972" "cid:100" "hcl:#18171d" "ecl:amb" "hgt:170" "pid:186cm" "iyr:2018" "byr:1926"]))
-           (is-not (valid-password-b? ["eyr:2029" "ecl:blu" "cid:129" "byr:1989" "iyr:2014"]))
-           (is (valid-password-b? ["iyr:2010" "hgt:158cm" "hcl:#b6652a" "ecl:blu" "byr:1944" "eyr:2021" "pid:093154719"])))}
+           (is-not (valid-password-2? ["eyr:1972" "cid:100" "hcl:#18171d" "ecl:amb" "hgt:170" "pid:186cm" "iyr:2018" "byr:1926"]))
+           (is-not (valid-password-2? ["eyr:2029" "ecl:blu" "cid:129" "byr:1989" "iyr:2014"]))
+           (is (valid-password-2? ["iyr:2010" "hgt:158cm" "hcl:#b6652a" "ecl:blu" "byr:1944" "eyr:2021" "pid:093154719"])))}
   [kvs]
   (let [validation-functions {"byr" (fn [v]
                                       (<= 1920 (read-string v) 2002))
@@ -78,16 +79,17 @@
                  kvs))))
 
 
-(defn solve-b
+(defn part-2
   []
   (first (reduce (fn [[n-valid found-kvs] line]
                    (if (= line "")
-                     [(+ n-valid (if (valid-password-b? found-kvs) 1 0)) []]
+                     [(+ n-valid (if (valid-password-2? found-kvs) 1 0)) []]
                      [n-valid (concat found-kvs (clojure.string/split line #" "))]))
                  [0 []]
                  (conj (clojure.string/split-lines input) ""))))
 
 (comment
-  (solve-b)
+  (time (part-2))
   ; 123
+  ; "Elapsed time: 6.302042 msecs"
   )

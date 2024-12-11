@@ -3,7 +3,7 @@
 
 (def input (slurp "src/advent_of_code/year_2020/inputs/day13.txt"))
 
-(defn solve-a
+(defn part-1
   []
   (let [parts (clojure.string/split-lines input)
         timestamp (read-string (first parts))
@@ -18,8 +18,9 @@
         (recur (inc ts))))))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 156
+  ; "Elapsed time: 0.598375 msecs"
   )
 
 ; Way too slow
@@ -60,7 +61,7 @@
   [buses]
   (first (reduce add-bus [0 1] buses)))
 
-(defn solve-b
+(defn part-2
   []
   (let [parts (clojure.string/split-lines input)
         b (clojure.string/split (second parts) #",")
@@ -71,8 +72,7 @@
     (add-buses buses)))
 
 (comment
-  (time
-    (solve-b))
+  (time (part-2))
   ; 404517869995362
   ; "Elapsed time: 2.644881 msecs"
   )

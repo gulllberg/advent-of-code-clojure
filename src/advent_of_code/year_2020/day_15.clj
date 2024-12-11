@@ -26,23 +26,22 @@
                0)
              (assoc s n i)))))
 
-(defn solve-a
+(defn part-1
   []
   (solve-for-number 2020))
 
 (comment
-  (time
-    (solve-a))
+  (time (part-1))
   ; 441
+  ; "Elapsed time: 1.533917 msecs"
   )
 
-(defn solve-b
+(defn part-2
   []
   (solve-for-number 30000000))
 
 (comment
-  (time
-    (solve-b))
+  (time (part-2))
   ; 10613991
   ; "Elapsed time: 16521.881516 msecs"
   )

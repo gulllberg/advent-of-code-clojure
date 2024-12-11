@@ -2,9 +2,7 @@
 
 (def input (slurp "src/advent_of_code/year_2020/inputs/day01.txt"))
 
-; https://adventofcode.com/2020/day/1
-
-(defn solve-a
+(defn part-1
   []
   (let [numbers (map read-string (clojure.string/split-lines input))
         length (count numbers)]
@@ -19,11 +17,12 @@
             (range length))))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 32064
+  ; "Elapsed time: 33.021625 msecs"
   )
 
-(defn solve-b
+(defn part-2
   []
   (let [numbers (map read-string (clojure.string/split-lines input))
         length (count numbers)]
@@ -42,6 +41,7 @@
             (range length))))
 
 (comment
-  (solve-b)
+  (time (part-2))
   ; 193598720
+  ; "Elapsed time: 512.604916 msecs"
   )

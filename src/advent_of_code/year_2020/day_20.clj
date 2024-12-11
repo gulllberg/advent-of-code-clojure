@@ -49,7 +49,7 @@
                                      (update (nth ids j) inc)))
                 (recur i (inc j) count-state))))))
 
-(defn solve-a
+(defn part-1
   []
   (let [count-state (count-possible-neighbours (create-tile-state (clojure.string/split input #"\n\n")))]
     (apply * (map read-string (keys (filter (fn [[k v]]
@@ -57,8 +57,9 @@
                                             count-state))))))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 18449208814679
+  ; "Elapsed time: 492.8945 msecs"
   )
 
 (defn parse-input
@@ -166,7 +167,7 @@
                                (inc count)
                                count)))))
 
-(defn solve-b
+(defn part-2
   []
   (let [tile-state (parse-input input)
         solved-puzzle (loop [row-i 0
@@ -203,8 +204,7 @@
     (- number-of-# (* number-of-monsters 15))))
 
 (comment
-  (time
-    (solve-b))
+  (time (part-2))
   ; 1559
   ; "Elapsed time: 1079.383947 msecs"
   )

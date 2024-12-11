@@ -2,7 +2,7 @@
 
 (def input (slurp "src/advent_of_code/year_2020/inputs/day06.txt"))
 
-(defn solve-a
+(defn part-1
   []
   (reduce (fn [sum group]
             (-> group
@@ -15,11 +15,12 @@
           (clojure.string/split input #"\n\n")))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 6587
+  ; "Elapsed time: 2.818958 msecs"
   )
 
-(defn solve-b
+(defn part-2
   []
   (reduce (fn [sum group]
             (->> group
@@ -45,6 +46,7 @@
           (clojure.string/split input #"\n\n")))
 
 (comment
-  (solve-b)
+  (time (part-2))
   ; 3235
+  ; "Elapsed time: 4.671792 msecs"
   )

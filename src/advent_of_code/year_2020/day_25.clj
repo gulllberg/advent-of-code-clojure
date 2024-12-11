@@ -20,12 +20,13 @@
       number
       (recur (inc i) (rem (* number subject-number) 20201227)))))
 
-(defn solve-a
+(defn part-1
   []
   (let [door-loop-size (find-loop-size 7 (read-string card-input))]
     (perform-loop (read-string door-input) door-loop-size)))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 19414467
+  ; "Elapsed time: 270.267584 msecs"
   )

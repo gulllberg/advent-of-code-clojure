@@ -3,7 +3,7 @@
 
 (def input (slurp "src/advent_of_code/year_2020/inputs/day10.txt"))
 
-(defn solve-a
+(defn part-1
   []
   (let [adapters (sort (map read-string (clojure.string/split-lines input)))]
     (apply * (reduce (fn [[n-1-diff n-3-diff] i]
@@ -19,8 +19,9 @@
                      (range (inc (count adapters)))))))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 1885
+  ; "Elapsed time: 1.206917 msecs"
   )
 
 (defn get-valid-next-i
@@ -49,7 +50,7 @@
                  (>= 3 (- (nth adapters j) (nth adapters i)))))
           (range (- i 3) i)))
 
-(defn solve-b
+(defn part-2
   []
   (let [adapters (concat (reverse (sort (map read-string (clojure.string/split-lines input)))) [0])]
     (last (reduce (fn [n-possible-arrangements i]
@@ -60,6 +61,7 @@
                   (range 1 (count adapters))))))
 
 (comment
-  (solve-b)
+  (time (part-2))
   ; 2024782584832
+  ; "Elapsed time: 1.154291 msecs"
   )

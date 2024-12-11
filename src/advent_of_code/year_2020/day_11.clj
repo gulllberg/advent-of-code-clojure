@@ -36,7 +36,7 @@
           state
           (keys state)))
 
-(defn solve-a
+(defn part-1
   []
   (loop [state (create-state input)]
     (let [new-state (get-next-state state)]
@@ -50,11 +50,12 @@
         (recur new-state)))))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 2472
+  ; "Elapsed time: 2404.368375 msecs"
   )
 
-(defn get-n-occupied-adjacent-b
+(defn get-n-occupied-adjacent-2
   [state position]
   (let [directions [[1 0] [1 -1] [0 -1] [-1 -1] [-1 0] [-1 1] [0 1] [1 1]]]
     (reduce (fn [n direction]
@@ -67,20 +68,20 @@
             0
             directions)))
 
-(defn get-next-state-b
+(defn get-next-state-2
   [state]
   (reduce (fn [new-state position]
             (condp = (get state position)
-              true (assoc new-state position (if (>= (get-n-occupied-adjacent-b state position) 5) false true))
-              false (assoc new-state position (if (= (get-n-occupied-adjacent-b state position) 0) true false))
+              true (assoc new-state position (if (>= (get-n-occupied-adjacent-2 state position) 5) false true))
+              false (assoc new-state position (if (= (get-n-occupied-adjacent-2 state position) 0) true false))
               new-state))
           state
           (keys state)))
 
-(defn solve-b
+(defn part-2
   []
   (loop [state (create-state input)]
-    (let [new-state (get-next-state-b state)]
+    (let [new-state (get-next-state-2 state)]
       (if (= state new-state)
         (reduce (fn [n-occupied position]
                   (if (get new-state position)
@@ -92,6 +93,7 @@
 
 
 (comment
-  (solve-b)
+  (time (part-2))
   ; 2197
+  ; "Elapsed time: 3308.979708 msecs"
   )
