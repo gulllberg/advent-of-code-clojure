@@ -105,21 +105,22 @@
                  (= pixel "#")))
        (count)))
 
-(defn solve-a
+(defn part-1
   []
   (count-light-pixels (enhance-image-n-times input-algorithm "." (create-image-state input-image) 2)))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 5229
+  ; "Elapsed time: 125.286167 msecs"
   )
 
-(defn solve-b
+(defn part-2
   []
   (count-light-pixels (enhance-image-n-times input-algorithm "." (create-image-state input-image) 50)))
 
 (comment
-  (time (solve-b))
+  (time (part-2))
   ; "Elapsed time: 14478.145676 msecs"
   ; 17009
   )

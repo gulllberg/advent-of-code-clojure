@@ -12,7 +12,7 @@
   [line]
   (drop 10 (re-seq #"\w+" line)))
 
-(defn solve-a
+(defn part-1
   []
   (reduce (fn [sum line]
             (->> line
@@ -28,8 +28,9 @@
           (clojure.string/split-lines input)))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 514
+  ; "Elapsed time: 1.893042 msecs"
   )
 
 ;, https://stackoverflow.com/questions/10192602/return-first-item-in-a-map-list-sequence-that-satisfies-a-predicate
@@ -133,7 +134,7 @@
           0
           (range 4)))
 
-(defn solve-b
+(defn part-2
   []
   (reduce (fn [sum line]
             (let [configuration (get-configuration (get-ten-digit-input line))]
@@ -142,6 +143,7 @@
           (clojure.string/split-lines input)))
 
 (comment
-  (solve-b)
+  (time (part-2))
   ; 1012272
+  ; "Elapsed time: 75.714125 msecs"
   )

@@ -35,21 +35,21 @@
             #{}
             (map parse-line lines))))
 
-(defn solve-a
+(defn part-1
   []
   (count (reboot-sequence input true)))
 
 (comment
-  (time (solve-a))
+  (time (part-1))
   ; "Elapsed time: 2997.809172 msecs"
   ; 648023
   )
 
-(defn solve-b
+(defn part-2
   []
   (count (reboot-sequence input false)))
 
 (comment
-  (solve-b)
+  (part-2)
   ; too slow
   )

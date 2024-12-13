@@ -6,7 +6,7 @@
 (def extra "#D#C#B#A#\n#D#B#A#C#")
 
 (comment
-  ; part a: 12530 (pen and paper, hehe...)
+  ; part 1: 12530 (pen and paper, hehe...)
   )
 
 (defn create-state
@@ -73,7 +73,6 @@
            (is= (get-valid-to-positions {:hall-left-2 :A :hall-central-right :A :A (list :A)} :A) [])
            (is= (get-valid-to-positions (create-state input) :A) [:hall-left-1 :hall-left-2 :hall-central-left :hall-central :hall-central-right :hall-right-1 :hall-right-2]))}
   [state from-position]
-
   (let [amphipod (get-amphipod state from-position)]
     (remove nil?
             (condp = from-position
@@ -262,7 +261,7 @@
                                                 possible-solutions)]
         (recur new-possible new-finished)))))
 
-(defn solve-b
+(defn part-2
   []
   (->> input
        (create-state)
@@ -271,7 +270,7 @@
        (apply min)))
 
 (comment
-  (time (solve-b))
+  (time (part-2))
   ; "Elapsed time: 4450.787652 msecs"
   ; 50492
 

@@ -38,7 +38,7 @@
              0
              (vec (reverse binary-list))))
 
-(defn solve-a
+(defn part-1
   []
   (let [most-common (sum-binary-strings (clojure.string/split-lines input))
         [gamma-list epsilon-list] (reduce (fn [[g e] sum-in-position]
@@ -50,8 +50,9 @@
     (* (binary-list->number gamma-list) (binary-list->number epsilon-list))))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 845186
+  , "Elapsed time: 5.79525 msecs"
   )
 
 (defn filter-number
@@ -71,7 +72,7 @@
   ([binary-strings criterion]
    (filter-number binary-strings criterion 0)))
 
-(defn solve-b
+(defn part-2
   []
   (let [binary-strings (clojure.string/split-lines input)
         oxygen-generator-rating-string (filter-number binary-strings >=)
@@ -80,6 +81,7 @@
        (binary-list->number (map read-string (clojure.string/split CO2-scrubber-rating-string #""))))))
 
 (comment
-  (solve-b)
+  (time (part-2))
   ; 4636702
+  ; "Elapsed time: 20.175083 msecs"
   )

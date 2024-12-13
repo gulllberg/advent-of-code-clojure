@@ -12,7 +12,7 @@
            (is= (get-height [[0 1] [2 3]] [2 0]) 9)
            (is= (get-height [[0 1] [2 3]] [2 2]) 9))}
   [grid [i j]]
-  ; Default to 9, because it is easy to exclude in part b
+  ; Default to 9, because it is easy to exclude in part 2
   (-> (nth grid i [9])
       (nth j 9)))
 
@@ -28,7 +28,7 @@
          (< height down-height)
          (< height left-height))))
 
-(defn solve-a
+(defn part-1
   []
   (let [grid (map (fn [line]
                     (map read-string (clojure.string/split line #"")))
@@ -41,8 +41,9 @@
             (combo/cartesian-product (range (count grid)) (range (count (first grid)))))))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 607
+  ; "Elapsed time: 111.242834 msecs"
   )
 
 (defn get-basin
@@ -75,7 +76,7 @@
           (recur (conj basin [i j]) (clojure.set/difference (conj basin-candidates up right down left) (conj basin [i j])))
           (recur basin (disj basin-candidates [i j])))))))
 
-(defn solve-b
+(defn part-2
   []
   (let [grid (map (fn [line]
                     (map read-string (clojure.string/split line #"")))
@@ -91,6 +92,7 @@
          (apply *))))
 
 (comment
-  (solve-b)
+  (time (part-2))
   ; 900864
+  ; "Elapsed time: 98.866625 msecs"
   )

@@ -125,7 +125,7 @@
                          (drop (+ i 2) sn)))
         (recur (inc i) sn)))))
 
-(defn solve-a
+(defn part-1
   []
   (let [lines (clojure.string/split-lines input)]
     (get-magnitude (reduce (fn [sn line]
@@ -134,11 +134,12 @@
                            (drop 1 lines)))))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 3647
+  ; "Elapsed time: 142.652417 msecs"
   )
 
-(defn solve-b
+(defn part-2
   []
   (let [snailfish-numbers (map create-snailfish-number (clojure.string/split-lines input))]
     (loop [i 0
@@ -153,7 +154,7 @@
           (recur i (inc j) (max max-magnitude (get-magnitude (reduce-snailfish-number (add-snailfish-numbers (nth snailfish-numbers i) (nth snailfish-numbers j)))))))))))
 
 (comment
-  (time (solve-b))
+  (time (part-2))
   ; "Elapsed time: 3429.437926 msecs"
   ; 4600
   )

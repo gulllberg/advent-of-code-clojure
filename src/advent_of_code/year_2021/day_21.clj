@@ -44,13 +44,14 @@
                      (+ n-dice-rolls 3)
                      (drop 3 dice-rolls))))))
 
-(defn solve-a
+(defn part-1
   []
   (deterministic-dice player-1-start player-2-start))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 916083
+  ; "Elapsed time: 1.521084 msecs"
   )
 
 ; Outcome - number of ways to do it (3 sides, 3 rolls -> 27 outcomes)
@@ -100,14 +101,14 @@
                                      (dirac-dice p1-position p1-score p (+ p2-score p) :p1 (* (i->magnitude i) magnitude))))
                                  new-positions)))))
 
-(defn solve-b
+(defn part-2
   []
   (apply max (dirac-dice player-1-start 0 player-2-start 0 :p1 1)))
 
 (comment
   ; Could possibly do this more efficiently with one loop keeping track of positions and scores as turns go back and forth.
   ; Then the outcomes that diverge and then join only takes up 1 space.
-  (time (solve-b))
+  (time (part-2))
   ; "Elapsed time: 18963.576984 msecs"
   ; 49982165861983
   )

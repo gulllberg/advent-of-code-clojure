@@ -27,17 +27,18 @@
   (reduce execute-instruction position instructions))
 
 
-(defn solve-a
+(defn part-1
   []
   (let [[horizontal depth] (execute-instructions [0 0] (clojure.string/split-lines input))]
     (* horizontal depth)))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 1714950
+  ; "Elapsed time: 1.336 msecs"
   )
 
-(defn execute-instruction-b
+(defn execute-instruction-2
   [[horizontal depth aim] instruction]
   (let [split-instruction (clojure.string/split instruction #" ")
         direction (first split-instruction)
@@ -48,9 +49,9 @@
       "down" [horizontal depth (+ aim distance)]
       [horizontal depth aim])))
 
-(defn execute-instructions-b
+(defn execute-instructions-2
   {:test (fn []
-           (is= (execute-instructions-b [0 0 0] ["forward 5"
+           (is= (execute-instructions-2 [0 0 0] ["forward 5"
                                              "down 5"
                                              "forward 8"
                                              "up 3"
@@ -58,14 +59,15 @@
                                              "forward 2"])
                 [15 60 10]))}
   [position instructions]
-  (reduce execute-instruction-b position instructions))
+  (reduce execute-instruction-2 position instructions))
 
-(defn solve-b
+(defn part-2
   []
-  (let [[horizontal depth aim] (execute-instructions-b [0 0 0] (clojure.string/split-lines input))]
+  (let [[horizontal depth aim] (execute-instructions-2 [0 0 0] (clojure.string/split-lines input))]
     (* horizontal depth)))
 
 (comment
-  (solve-b)
+  (time (part-2))
   ; 1281977850
+  ; "Elapsed time: 1.26775 msecs"
   )

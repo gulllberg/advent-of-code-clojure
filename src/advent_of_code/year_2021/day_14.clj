@@ -47,7 +47,7 @@
                               (vals character-counts))]
     (- max-v min-v)))
 
-(defn solve-a
+(defn part-1
   []
   (let [rules-state (create-rules-state input-rules)
         polymer (n-steps input-template rules-state 10)
@@ -55,11 +55,12 @@
     (get-difference-biggest-smallest character-counts)))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 2321
+  ; "Elapsed time: 23.684916 msecs"
   )
 
-;; Part a version too slow for part b
+;; Part 1 version too slow for part 2
 
 (defn create-pairs-state
   [template]
@@ -77,7 +78,7 @@
     (update pairs-state pair + cnt)
     (assoc pairs-state pair cnt)))
 
-(defn one-step-b
+(defn one-step-2
   [pairs-state rules-state]
   (reduce (fn [new-pairs-state pair]
             (let [add (get rules-state pair)
@@ -113,17 +114,18 @@
             {}
             (keys doubled-counts))))
 
-(defn solve-b
+(defn part-2
   []
   (let [rules-state (create-rules-state input-rules)
         pairs-state (reduce (fn [pairs-state _]
-                              (one-step-b pairs-state rules-state))
+                              (one-step-2 pairs-state rules-state))
                             (create-pairs-state input-template)
                             (range 40))
         character-counts (pairs-state->character-counts pairs-state (first input-template) (last input-template))]
     (get-difference-biggest-smallest character-counts)))
 
 (comment
-  (solve-b)
+  (time (part-2))
   ; 2399822193707
+  ; "Elapsed time: 3.243792 msecs"
   )

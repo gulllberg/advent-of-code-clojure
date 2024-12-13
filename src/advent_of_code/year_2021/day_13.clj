@@ -29,13 +29,14 @@
             #{}
             state)))
 
-(defn solve-a
+(defn part-1
   []
   (count (fold (create-state input-dots) (first (clojure.string/split-lines input-folds)))))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 810
+  ; "Elapsed time: 3.775917 msecs"
   )
 
 (defn print-state
@@ -52,12 +53,13 @@
     (doseq [x (range (inc max-x))]
       (println (apply str (nth print-state x))))))
 
-(defn solve-b
+(defn part-2
   []
   (-> (reduce fold (create-state input-dots) (clojure.string/split-lines input-folds))
       (print-state)))
 
 (comment
-  (solve-b)
+  (time (part-2))
   ; HLBUBGFR
+  ; "Elapsed time: 9.118291 msecs"
   )

@@ -51,7 +51,7 @@
   [lines]
   (reduce mark-points-for-line {} lines))
 
-(defn solve-a
+(defn part-1
   []
   (->> (clojure.string/split-lines input)
        (map row->coordinates)
@@ -62,11 +62,12 @@
        (count)))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 6572
+  ; "Elapsed time: 88.403417 msecs"
   )
 
-(defn solve-b
+(defn part-2
   []
   (->> (clojure.string/split-lines input)
        (map row->coordinates)
@@ -77,6 +78,7 @@
 
 
 (comment
-  (solve-b)
+  (time (part-2))
   ; 21466
+  ; "Elapsed time: 141.059084 msecs"
   )

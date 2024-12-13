@@ -129,27 +129,27 @@
           (let [[new-paths new-visited] (get-new-paths-and-visited risk-level-state visited path)]
             (recur (insert-paths-into-sorted-list risk-level-state (rest paths) new-paths) new-visited (inc i))))))))
 
-(defn solve-a
+(defn part-1
   []
   (get-safest-route-risk-level input false))
 
 (comment
-  (time (solve-a))
+  (time (part-1))
   ; Elapsed time: 3993.875522 msecs" (1)
   ; Elapsed time: ~40000 msecs" (2)
   ; "Elapsed time: 20010.912602 msecs" (3)
   ; 755
   )
 
-(defn solve-b
+(defn part-2
   []
   (get-safest-route-risk-level input true))
 
 (comment
-  (time (solve-b))
+  (time (part-2))
   ; "Elapsed time: 3.2201793502699E7 msecs" (lol, only 9 hours)
   ; 3016
-  ; 1. Explored paths breadth first, and when getting to an already visited node stopped if the old path was faster. Resulted in a lot of active paths since if a new path was faster the old one was still allowed to continue. Solved part a pretty well.
+  ; 1. Explored paths breadth first, and when getting to an already visited node stopped if the old path was faster. Resulted in a lot of active paths since if a new path was faster the old one was still allowed to continue. Solved part 1 pretty well.
   ; 2. Like 1, but removed the old path if a new was faster. But doing so was also very slow.
   ; 3. Only take the shortest current path and continue. Guaranteed that when arriving at a node for the first time it is the optimal path.
   ; Saving entire paths (and maybe the big lookup table for risk levels) is probably what makes this so slow in all versions...

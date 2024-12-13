@@ -78,16 +78,17 @@
           [state 0]
           (range n)))
 
-(defn solve-a
+(defn part-1
   []
   (second (n-steps (create-state input) 100)))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 1793
+  ; "Elapsed time: 17.742583 msecs"
   )
 
-(defn solve-b
+(defn part-2
   []
   (loop [state (create-state input)
          n 0]
@@ -98,6 +99,7 @@
         (recur state n)))))
 
 (comment
-  (solve-b)
+  (time (part-2))
   ; 247
+  ; "Elapsed time: 49.50575 msecs"
   )

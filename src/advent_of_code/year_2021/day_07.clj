@@ -24,36 +24,39 @@
           0
           numbers))
 
-(defn solve-a
+(defn part-1
   []
   (let [numbers (map read-string (clojure.string/split input #","))
         position (median numbers)]
     (get-fuel-consumption numbers position)))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 336120
+  ; "Elapsed time: 21.551417 msecs"
   )
 
-(defn get-fuel-consumption-b
+(defn get-fuel-consumption-2
   [numbers position]
   (reduce (fn [s n]
             (apply + s (range 1 (inc (Math/abs (- n position))))))
           0
           numbers))
 
-(defn solve-b
+(defn part-2
   []
   (let [numbers (map read-string (clojure.string/split input #","))
         position (Math/round (float (mean numbers)))]
     ;; THIS DOES NOT ACTUALLY SOLVE THE PROBLEM, POSITION IS OFF BY ONE
     (println position)
-    (get-fuel-consumption-b numbers position)))
+    (get-fuel-consumption-2 numbers position)))
 
 (comment
-  (solve-b) ; TOO HIGH 96864332
+  (time (part-2))
+  ; TOO HIGH 96864332
+  ; "Elapsed time: 20.160917 msecs"
   (mean (map read-string (clojure.string/split input #","))) ;; 462.508
-  (get-fuel-consumption-b (map read-string (clojure.string/split input #",")) 462) ;; 96864235 CORRECT
+  (get-fuel-consumption-2 (map read-string (clojure.string/split input #",")) 462) ;; 96864235 CORRECT
   ;; The mean minimises d^2 and not d * (d + 1) as is the formula in this case.
   ;; The mean is however a good approximation, but off by one in my case. 462.508 needed to be rounded down.
   )

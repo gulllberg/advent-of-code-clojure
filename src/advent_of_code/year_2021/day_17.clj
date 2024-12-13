@@ -60,13 +60,14 @@
           (recur dy (inc dx) (max ymax (get-y-max dy)))
           (recur dy (inc dx) ymax))))))
 
-(defn solve-a
+(defn part-1
   []
   (apply find-highest-trajectory (parse-input input)))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 4560
+  ; "Elapsed time: 163.630791 msecs"
   )
 
 (defn find-number-of-trajectories
@@ -82,11 +83,12 @@
           (recur dy (inc dx) (inc number-of-working-trajectories))
           (recur dy (inc dx) number-of-working-trajectories))))))
 
-(defn solve-b
+(defn part-2
   []
   (apply find-number-of-trajectories (parse-input input)))
 
 (comment
-  (solve-b)
+  (time (part-2))
   ; 3344
+  ; "Elapsed time: 204.520584 msecs"
   )

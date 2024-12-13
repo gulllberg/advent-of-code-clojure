@@ -72,21 +72,22 @@
   ([connections]
    (get-all-paths connections false)))
 
-(defn solve-a
+(defn part-1
   []
   (count (get-all-paths (create-connections input))))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 5874
+  ; "Elapsed time: 74.089334 msecs"
   )
 
-(defn solve-b
+(defn part-2
   []
   (count (get-all-paths (create-connections input) true)))
 
 (comment
-  (time (solve-b))
+  (time (part-2))
   ; "Elapsed time: 6836.101561 msecs"
   ; 153592
   )

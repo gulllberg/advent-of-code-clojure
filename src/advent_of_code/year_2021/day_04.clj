@@ -60,7 +60,7 @@
           boards
           numbers))
 
-(defn solve-a
+(defn part-1
   []
   (let [numbers (map read-string (clojure.string/split input-numbers #","))
         boards (map board-string->board (clojure.string/split input-boards #"\n\n"))]
@@ -68,8 +68,9 @@
 
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 67716
+  ; "Elapsed time: 9.08275 msecs"
   )
 
 (defn play-losing-bingo
@@ -83,7 +84,7 @@
           boards
           numbers))
 
-(defn solve-b
+(defn part-2
   []
   (let [numbers (map read-string (clojure.string/split input-numbers #","))
         boards (map board-string->board (clojure.string/split input-boards #"\n\n"))]
@@ -91,6 +92,7 @@
 
 
 (comment
-  (solve-b)
+  (time (part-2))
   ; 1830
+  ; "Elapsed time: 17.636375 msecs"
   )

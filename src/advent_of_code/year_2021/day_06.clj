@@ -18,14 +18,15 @@
           fish-timers
           (range n)))
 
-(defn solve-a
+(defn part-1
   []
   (let [starting-timers (map read-string (clojure.string/split input #","))]
     (count (n-days starting-timers 80))))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 386536
+  ; "Elapsed time: 128.647667 msecs"
   )
 
 (defn one-day-dp
@@ -40,7 +41,7 @@
           [1 1 1 1 1 1 1 1 1]
           (range n)))
 
-(defn solve-b
+(defn part-2
   []
   (let [starting-timers (map read-string (clojure.string/split input #","))
         dp-list (n-days-dp 256)]
@@ -51,6 +52,7 @@
 
 (comment
   (count (n-days [1] 256))
-  (solve-b)
+  (time (part-2))
   ; 1732821262171
+  ; "Elapsed time: 1.132042 msecs"
   )

@@ -63,13 +63,14 @@
           0
           (clojure.string/split-lines input)))
 
-(defn solve-a
+(defn part-1
   []
   (get-corrupting-score input))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 339411
+  ; "Elapsed time: 2.543375 msecs"
   )
 
 (defn get-incomplete-character-score
@@ -81,7 +82,7 @@
     \< 4
     0))
 
-(defn solve-b
+(defn part-2
   []
   (let [incomplete-lines-opening-characters (reduce (fn [a line]
                                                       (let [maybe-corrupting-character (get-maybe-corrupting-character line)]
@@ -99,6 +100,7 @@
     (nth (sort incomplete-lines-scores) (/ (dec (count incomplete-lines-scores)) 2))))
 
 (comment
-  (solve-b)
+  (time (part-2))
   ; 2289754624
+  ; "Elapsed time: 2.245334 msecs"
   )

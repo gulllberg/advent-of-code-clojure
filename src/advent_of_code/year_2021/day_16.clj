@@ -95,13 +95,14 @@
                                      (subs remaining-string 11)
                                      :version)))))
 
-(defn solve-a
+(defn part-1
   []
   (parse-structure (hex->binary input)))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 989
+  ; "Elapsed time: 2.47725 msecs"
   )
 
 (defn get-type
@@ -204,11 +205,12 @@
                        (dec length)
                        (conj previous-result result))))))
 
-(defn solve-b
+(defn part-2
   []
   (first (flatten (read-packages (hex->binary input) :sub-packets 1 []))))
 
 (comment
-  (solve-b)
+  (time (part-2))
   ; 7936430475134
+  ; "Elapsed time: 4.319 msecs"
   )

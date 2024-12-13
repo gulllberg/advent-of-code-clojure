@@ -17,20 +17,22 @@
            (range (- (count numbers) gap))))
   ([numbers] (sonar-sweep numbers 1)))
 
-(defn solve-a
+(defn part-1
   []
   (sonar-sweep (map read-string (clojure.string/split-lines input))))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ; 1121
+  ; "Elapsed time: 54.487875 msecs"
   )
 
-(defn solve-b
+(defn part-2
   []
   (sonar-sweep (map read-string (clojure.string/split-lines input)) 3))
 
 (comment
-  (solve-b)
+  (time (part-2))
   ; 1065
+  ; "Elapsed time: 48.635958 msecs"
   )
