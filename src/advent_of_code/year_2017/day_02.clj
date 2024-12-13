@@ -2,7 +2,7 @@
 
 (def input (slurp "src/advent_of_code/year_2017/inputs/day02.txt"))
 
-(defn problem-2a
+(defn part-1
   [input]
   (reduce (fn [sum row-string]
             (let [row-numbers (->> (clojure.string/split row-string #"\t")
@@ -11,7 +11,7 @@
           0
           (clojure.string/split-lines input)))
 
-(defn problem-2b
+(defn part-2
   [input]
   (reduce (fn [sum row-string]
             (let [row-numbers (->> (clojure.string/split row-string #"\t")
@@ -33,7 +33,7 @@
           0
           (clojure.string/split-lines input)))
 
-(defn problem-2b'
+(defn part-2'
   [input]
   (reduce (fn [sum row-string]
             (let [row-numbers (->> (clojure.string/split row-string #"\t")
@@ -65,10 +65,13 @@
 
 (comment
 
-  (problem-2a input)
+  (time (part-1 input))
   ;; 21845
+  ;; "Elapsed time: 0.371791 msecs"
 
-  (problem-2b input)
+  (time (part-2 input))
   ;; 191
-  (problem-2b' input)
+  ;; "Elapsed time: 2.759417 msecs"
+  (time (part-2' input))
+  ;; "Elapsed time: 2.864083 msecs"
   )

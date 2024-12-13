@@ -3,16 +3,16 @@
 
 (def input (slurp "src/advent_of_code/year_2017/inputs/day09.txt"))
 
-(defn problem-9a
+(defn part-1
   {:test (fn []
-           (is= (problem-9a "{}") 1)
-           (is= (problem-9a "{{{}}}") 6)
-           (is= (problem-9a "{{},{}}") 5)
-           (is= (problem-9a "{{{},{},{{}}}}") 16)
-           (is= (problem-9a "{<a>,<a>,<a>,<a>}") 1)
-           (is= (problem-9a "{{<ab>},{<ab>},{<ab>},{<ab>}}") 9)
-           (is= (problem-9a "{{<!!>},{<!!>},{<!!>},{<!!>}}") 9)
-           (is= (problem-9a "{{<a!>},{<a!>},{<a!>},{<ab>}}") 3))}
+           (is= (part-1 "{}") 1)
+           (is= (part-1 "{{{}}}") 6)
+           (is= (part-1 "{{},{}}") 5)
+           (is= (part-1 "{{{},{},{{}}}}") 16)
+           (is= (part-1 "{<a>,<a>,<a>,<a>}") 1)
+           (is= (part-1 "{{<ab>},{<ab>},{<ab>},{<ab>}}") 9)
+           (is= (part-1 "{{<!!>},{<!!>},{<!!>},{<!!>}}") 9)
+           (is= (part-1 "{{<a!>},{<a!>},{<a!>},{<ab>}}") 3))}
   [input]
   (let [slimmed-input (clojure.string/replace input #"!." "")]
     (->> slimmed-input
@@ -40,15 +40,15 @@
                  )
          (first))))
 
-(defn problem-9b
+(defn part-2
   {:test (fn []
-           (is= (problem-9b "{<>}") 0)
-           (is= (problem-9b "{<random characters>}") 17)
-           (is= (problem-9b "{<<<<>}") 3)
-           (is= (problem-9b "{<{!>}>}") 2)
-           (is= (problem-9b "{<!!>}") 0)
-           (is= (problem-9b "{<!!!>>}") 0)
-           (is= (problem-9b "{<{o\"i!a,<{i<a>}") 10))}
+           (is= (part-2 "{<>}") 0)
+           (is= (part-2 "{<random characters>}") 17)
+           (is= (part-2 "{<<<<>}") 3)
+           (is= (part-2 "{<{!>}>}") 2)
+           (is= (part-2 "{<!!>}") 0)
+           (is= (part-2 "{<!!!>>}") 0)
+           (is= (part-2 "{<{o\"i!a,<{i<a>}") 10))}
   [input]
   (let [slimmed-input (clojure.string/replace input #"!." "")]
     (->> slimmed-input
@@ -71,8 +71,11 @@
          (first))))
 
 (comment
-  (problem-9a input)
+  (time (part-1 input))
   ;; 14212
-  (problem-9b input)
+  ;; "Elapsed time: 7.409 msecs"
+
+  (time (part-2 input))
   ;; 6569
+  ;; "Elapsed time: 4.688084 msecs"
   )

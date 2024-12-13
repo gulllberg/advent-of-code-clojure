@@ -3,9 +3,9 @@
 
 (def input (slurp "src/advent_of_code/year_2017/inputs/day08.txt"))
 
-(defn problem-8a
+(defn part-1
   {:test (fn []
-           (is= (problem-8a "b inc 5 if a > 1\na inc 1 if b < 5\nc dec -10 if a >= 1\nc inc -20 if c == 10\n")
+           (is= (part-1 "b inc 5 if a > 1\na inc 1 if b < 5\nc dec -10 if a >= 1\nc inc -20 if c == 10\n")
                 1))}
   [input]
   (let [instructions (-> (clojure.string/replace input #"!=" "not=")
@@ -36,9 +36,9 @@
          (vals)
          (apply max))))
 
-(defn problem-8b
+(defn part-2
   {:test (fn []
-           (is= (problem-8b "b inc 5 if a > 1\na inc 1 if b < 5\nc dec -10 if a >= 1\nc inc -20 if c == 10\n")
+           (is= (part-2 "b inc 5 if a > 1\na inc 1 if b < 5\nc dec -10 if a >= 1\nc inc -20 if c == 10\n")
                 10))}
   [input]
   (let [instructions (-> (clojure.string/replace input #"!=" "not=")
@@ -72,9 +72,11 @@
          (second))))
 
 (comment
-  (problem-8a input)
+  (time (part-1 input))
   ; 5143
+  ; "Elapsed time: 7.811167 msecs"
 
-  (problem-8b input)
+  (time (part-2 input))
   ; 6209
+  ; "Elapsed time: 12.53425 msecs"
   )

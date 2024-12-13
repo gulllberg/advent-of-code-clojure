@@ -26,10 +26,10 @@
           firewall
           (keys firewall)))
 
-;; Doesn't need to simulate everything - see 13 b
-(defn problem-13a
+;; Doesn't need to simulate everything - see part 2
+(defn part-1
   {:test (fn []
-           (is= (problem-13a "0: 3\n1: 2\n4: 4\n6: 4")
+           (is= (part-1 "0: 3\n1: 2\n4: 4\n6: 4")
                 24))}
   [input]
   (let [firewall (reduce (fn [firewall layer]
@@ -66,9 +66,9 @@
              0))
         (keys firewall)))
 
-(defn problem-13b
+(defn part-2
   {:test (fn []
-           (is= (problem-13b "0: 3\n1: 2\n4: 4\n6: 4")
+           (is= (part-2 "0: 3\n1: 2\n4: 4\n6: 4")
                 10))}
   [input]
   (let [firewall (reduce (fn [firewall layer]
@@ -88,9 +88,11 @@
           (range))))
 
 (comment
-  (problem-13a input)
+  (time (part-1 input))
   ;; 1632
+  ;; "Elapsed time: 7.941209 msecs"
 
-  (problem-13b input)
+  (time (part-2 input))
   ;; 3834136
+  ;; "Elapsed time: 1543.504916 msecs"
   )

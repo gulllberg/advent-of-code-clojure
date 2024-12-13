@@ -19,7 +19,7 @@
                        (take-last 16)))]
     (= (conv-fn n1) (conv-fn n2))))
 
-(defn problem-15a
+(defn part-1
   []
   (let [gen-a-factor 16807
         gen-b-factor 48271
@@ -34,7 +34,8 @@
                 (range 40000000))
         (first))))
 
-(defn problem-15b []
+(defn part-2
+  []
   (let [gen-a-factor 16807
         gen-a-multiple 4
         gen-b-factor 48271
@@ -64,8 +65,10 @@
 
 (comment
   ;; 619 (slow)
-  (problem-15a)
+  ;; "Elapsed time: 110331.826833 msecs"
+  (time (part-1))
 
   ;; 290 (slow maybe)
-  (problem-15b)
+  ;; "Elapsed time: 15759.218458 msecs"
+  (time (part-2))
   )

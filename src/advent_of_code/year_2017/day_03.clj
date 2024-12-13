@@ -18,15 +18,14 @@
         step-number (- input (* previous-level-length previous-level-length))
         mod-step-number (mod step-number (dec level-length))
         max-side-distance (/ (dec level-length) 2)]
-    (Math/abs (- max-side-distance mod-step-number))
-    ))
+    (Math/abs (- max-side-distance mod-step-number))))
 
-(defn problem-3a
+(defn part-1
   [input]
   (+ (dec (get-level input))
      (get-side-steps input)))
 
-(defn problem-3b
+(defn part-2
   [input]
   (loop [[x y] [0 1]
          grid {"0+0" 1}]
@@ -75,8 +74,11 @@
                  (str (inc x) "+" (inc y)) north-east))))))
 (comment
 
-  (problem-3a input)
+  (time (part-1 input))
   ;; 552
-  (problem-3b input)
+  ;; "Elapsed time: 4.162667 msecs"
+
+  (time (part-2 input))
   ;; 330785
+  ;; "Elapsed time: 1.600041 msecs"
   )

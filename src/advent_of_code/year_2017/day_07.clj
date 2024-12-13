@@ -4,7 +4,7 @@
 
 (def input (slurp "src/advent_of_code/year_2017/inputs/day07.txt"))
 
-(defn problem-7a
+(defn part-1
   [input]
   (let [programs (clojure.string/split input #"\n")
         dependencies (reduce (fn [dependencies program]
@@ -22,8 +22,7 @@
                          (nth 0)))
                    programs)]
     (-> (remove (fn [name] (seq-contains? dependencies name)) names)
-        (first)))
-  )
+        (first))))
 
 (defn get-dependencies
   [programs program]
@@ -53,7 +52,7 @@
                 (get-total-weight programs dependency))
               (get-dependencies programs program))))
 
-(defn problem-7b
+(defn part-2
   [input]
   (let [programs (clojure.string/split input #"\n")
         unbalanced-program (->> programs
@@ -83,9 +82,11 @@
             (apply min sorted-unbalanced-program-dependencies-weights))))))
 
 (comment
-  (problem-7a input)
+  (time (part-1 input))
   ;; hlqnsbe
+  ;; "Elapsed time: 51.620083 msecs"
 
-  (problem-7b input)
+  (time (part-2 input))
   ;; 1993
+  ;; "Elapsed time: 1903.368208 msecs"
   )

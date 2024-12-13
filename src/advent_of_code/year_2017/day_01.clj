@@ -6,7 +6,7 @@
 ;; 2. Jämför varje siffra med nästa (sista med första)
 ;; 3. Om dom är lika, summera siffran till totalen
 
-(defn problem-1a
+(defn part-1
   [input]
   (reduce (fn [sum index]
             (let [number (-> (subs input index (inc index))
@@ -24,7 +24,7 @@
 ;; Om någon matchar i första halvan kommer den matcha med samma i andra halvan
 ;; --> Gå bara igenom halva strängen
 
-(defn problem-1b
+(defn part-2
   [input]
   (reduce (fn [sum index]
             (let [number (-> (subs input index (inc index))
@@ -39,11 +39,12 @@
           (range (/ (count input) 2))))
 
 (comment
-
-  (problem-1a input)
+  (time (part-1 input))
   ;; 1049
+  ;; "Elapsed time: 2.020375 msecs"
 
-  (problem-1b input)
+  (time (part-2 input))
   ;; 1508
+  ;; "Elapsed time: 1.453625 msecs"
 
   )

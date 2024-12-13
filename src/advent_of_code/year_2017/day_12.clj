@@ -13,9 +13,9 @@
             (get connections node))))
 
 
-(defn problem-12a
+(defn part-1
   {:test (fn []
-           (is= (problem-12a "0 <-> 2\n1 <-> 1\n2 <-> 0, 3, 4\n3 <-> 2, 4\n4 <-> 2, 3, 6\n5 <-> 6\n6 <-> 4, 5")
+           (is= (part-1 "0 <-> 2\n1 <-> 1\n2 <-> 0, 3, 4\n3 <-> 2, 4\n4 <-> 2, 3, 6\n5 <-> 6\n6 <-> 4, 5")
                 6))}
   [input]
   (as-> input $
@@ -35,9 +35,9 @@
         (get-system $ [] "0")
         (count $)))
 
-(defn problem-12b
+(defn part-2
   {:test (fn []
-           (is= (problem-12b "0 <-> 2\n1 <-> 1\n2 <-> 0, 3, 4\n3 <-> 2, 4\n4 <-> 2, 3, 6\n5 <-> 6\n6 <-> 4, 5")
+           (is= (part-2 "0 <-> 2\n1 <-> 1\n2 <-> 0, 3, 4\n3 <-> 2, 4\n4 <-> 2, 3, 6\n5 <-> 6\n6 <-> 4, 5")
                 2))}
   [input]
   (as-> input $
@@ -63,8 +63,10 @@
 
 (comment
   ;; 175
-  (problem-12a input)
+  ;; "Elapsed time: 11.235833 msecs"
+  (time (part-1 input))
 
-  (problem-12b input)
+  (time (part-2 input))
   ;; 213
+  ;; "Elapsed time: 326.233042 msecs"
   )

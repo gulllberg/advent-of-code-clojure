@@ -3,7 +3,7 @@
 
 (def input (slurp "src/advent_of_code/year_2017/inputs/day05.txt"))
 
-(defn problem-5a
+(defn part-1
   [input]
   (loop [list (mapv read-string (clojure.string/split input #"\n"))
          index 0
@@ -15,7 +15,7 @@
              (+ index (get list index))
              (inc number-of-jumps)))))
 
-(defn problem-5b
+(defn part-2
   [input]
   (loop [list (mapv read-string (clojure.string/split input #"\n"))
          index 0
@@ -31,8 +31,11 @@
              (inc number-of-jumps)))))
 
 (comment
-  (problem-5a input)
+  (time (part-1 input))
   ;; 391540
-  (problem-5b input)
+  ;; "Elapsed time: 59.748416 msecs"
+
+  (time (part-2 input))
   ;; 30513679
+  ;; "Elapsed time: 2721.312583 msecs"
   )

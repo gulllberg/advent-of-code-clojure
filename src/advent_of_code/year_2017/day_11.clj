@@ -3,7 +3,7 @@
 
 (def input (slurp "src/advent_of_code/year_2017/inputs/day11.txt"))
 
-(defn problem-11-calculate-distance
+(defn calculate-distance
   [x y]
   (let [x (max x (- x))
         y (max y (- y))]
@@ -11,11 +11,11 @@
       x
       (int (+ x (- y (/ x 2)))))))
 
-(defn problem-11a
+(defn part-1
   {:test (fn []
-           (is= (problem-11a "ne,ne,ne") 3)
-           (is= (problem-11a "ne,ne,sw,sw") 0)
-           (is= (problem-11a "se,sw,se,sw,sw") 3))}
+           (is= (part-1 "ne,ne,ne") 3)
+           (is= (part-1 "ne,ne,sw,sw") 0)
+           (is= (part-1 "se,sw,se,sw,sw") 3))}
   [input]
   (let [steps (-> (clojure.string/trim input)
                   (clojure.string/split #","))
@@ -29,9 +29,9 @@
                           "sw" [(dec x) (- y 0.5)]))
                       [0 0]
                       steps)]
-    (problem-11-calculate-distance x y)))
+    (calculate-distance x y)))
 
-(defn problem-11b
+(defn part-2
   [input]
   (let [steps (-> (clojure.string/trim input)
                   (clojure.string/split #","))]
@@ -44,13 +44,16 @@
                                  "s" [x (dec y)]
                                  "se" [(inc x) (- y 0.5)]
                                  "sw" [(dec x) (- y 0.5)])]
-                     [x y (max max-distance (problem-11-calculate-distance x y))]))
+                     [x y (max max-distance (calculate-distance x y))]))
                  [0 0 0])
          (last))))
 
 (comment
-  (problem-11a input)
+  (time (part-1 input))
   ;; 747
-  (problem-11b input)
+  ;; "Elapsed time: 7.102166 msecs"
+
+  (time (part-2 input))
   ;; 1544
+  ;; "Elapsed time: 23.002875 msecs"
   )
