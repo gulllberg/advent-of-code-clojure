@@ -1,12 +1,12 @@
 (ns advent-of-code.year_2018.day_06
-  (:require [clojure.test]))
+  (:require [ysera.test :refer [is= is is-not]]))
 
 (def input (slurp "src/advent_of_code/year_2018/inputs/day06.txt"))
 
 (defn input->coordinates
   {:test (fn []
-           (clojure.test/is (= (input->coordinates "1, 1\n1, 6\n8, 3\n3, 4\n5, 5\n8, 9")
-                               [[1 1] [1 6] [8 3] [3 4] [5 5] [8 9]])))}
+           (is= (input->coordinates "1, 1\n1, 6\n8, 3\n3, 4\n5, 5\n8, 9")
+                [[1 1] [1 6] [8 3] [3 4] [5 5] [8 9]]))}
   [input]
   (as-> input $
         (clojure.string/split-lines $)
@@ -17,8 +17,8 @@
 
 (defn find-corners
   {:test (fn []
-           (clojure.test/is (= (find-corners (input->coordinates "1, 1\n1, 6\n8, 3\n3, 4\n5, 5\n8, 9"))
-                               [[1 1] [8 9]])))}
+           (is= (find-corners (input->coordinates "1, 1\n1, 6\n8, 3\n3, 4\n5, 5\n8, 9"))
+                [[1 1] [8 9]]))}
   [coordinates]
   (let [x-coordinates (map first coordinates)
         y-coordinates (map second coordinates)]
@@ -26,24 +26,24 @@
 
 (defn get-manhattan-distance
   {:test (fn []
-           (clojure.test/is (= (get-manhattan-distance [1 2] [3 4]) 4))
-           (clojure.test/is (= (get-manhattan-distance [3 4] [1 2]) 4)))}
+           (is= (get-manhattan-distance [1 2] [3 4]) 4)
+           (is= (get-manhattan-distance [3 4] [1 2]) 4))}
   [c1 c2]
   (+ (Math/abs (- (first c1) (first c2))) (Math/abs (- (second c1) (second c2)))))
 
 (defn edgy?
   {:test (fn []
-           (clojure.test/is (edgy? (find-corners (input->coordinates "1, 1\n1, 6\n8, 3\n3, 4\n5, 5\n8, 9"))
-                                   [1 4]))
-           (clojure.test/is (not (edgy? (find-corners (input->coordinates "1, 1\n1, 6\n8, 3\n3, 4\n5, 5\n8, 9"))
-                                        [2 4]))))}
+           (is (edgy? (find-corners (input->coordinates "1, 1\n1, 6\n8, 3\n3, 4\n5, 5\n8, 9"))
+                      [1 4]))
+           (is-not (edgy? (find-corners (input->coordinates "1, 1\n1, 6\n8, 3\n3, 4\n5, 5\n8, 9"))
+                          [2 4])))}
   [corners coordinate]
   (or (= (first coordinate) (get-in corners [0 0]))
       (= (first coordinate) (get-in corners [1 0]))
       (= (second coordinate) (get-in corners [1 0]))
       (= (second coordinate) (get-in corners [1 1]))))
 
-(defn solve-a
+(defn part-1
   []
   (let [coordinates (input->coordinates input)
         corners (find-corners coordinates)]
@@ -71,11 +71,12 @@
                              (range (get-in corners [0 0]) (inc (get-in corners [1 0]))))))))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ;; 4829
+  ;; "Elapsed time: 20610.067708 msecs"
   )
 
-(defn solve-b
+(defn part-2
   []
   (let [coordinates (input->coordinates input)
         corners (find-corners coordinates)]
@@ -94,6 +95,7 @@
             (range (get-in corners [0 0]) (inc (get-in corners [1 0]))))))
 
 (comment
-  (solve-b)
+  (time (part-2))
   ;; 46966
+  ;; "Elapsed time: 20156.139542 msecs"
   )

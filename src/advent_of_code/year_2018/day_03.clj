@@ -1,9 +1,8 @@
-(ns advent-of-code.year_2018.day_03
-  (:require [clojure.set]))
+(ns advent-of-code.year_2018.day_03)
 
 (def input (slurp "src/advent_of_code/year_2018/inputs/day03.txt"))
 
-(defn solve-a
+(defn part-1
   []
   (let [claims (clojure.string/split-lines input)]
     (->> (reduce (fn [fabric claim]
@@ -32,12 +31,13 @@
          (count))))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ;; 101781
+  ;; "Elapsed time: 242.723709 msecs"
   )
 
 
-(defn solve-b
+(defn part-2
   []
   (let [claims (clojure.string/split-lines input)]
     (->> (reduce (fn [[candidates fabric] claim]
@@ -73,6 +73,7 @@
          (first))))
 
 (comment
-  (solve-b)
+  (time (part-2))
   ;; 909
+  ;; "Elapsed time: 310.995208 msecs"
   )

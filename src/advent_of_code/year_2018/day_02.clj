@@ -24,7 +24,7 @@
                 $)
         (count $)))
 
-(defn solve-a
+(defn part-1
   []
   (let [box-ids (clojure.string/split-lines input)
         number-2-occurrences (count-n-occurrences box-ids 2)
@@ -32,8 +32,9 @@
     (* number-2-occurrences number-3-occurrences)))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ;; 8296
+  ;; "Elapsed time: 9.982875 msecs"
   )
 
 (defn get-string-diff
@@ -54,7 +55,7 @@
           ""
           (range (count s1))))
 
-(defn solve-b
+(defn part-2
   []
   (let [box-ids (clojure.string/split-lines input)]
     (->> (some (fn [index]
@@ -68,6 +69,7 @@
          (apply get-matching-characters))))
 
 (comment
-  (solve-b)
+  (time (part-2))
   ;; pazvmqbftrbeosiecxlghkwud
+  ;; "Elapsed time: 18.530125 msecs"
   )

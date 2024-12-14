@@ -17,13 +17,14 @@
           (recur polymer
                  (inc position)))))))
 
-(defn solve-a
+(defn part-1
   []
   (count (react-polymer input)))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ;; 9822
+  ;; "Elapsed time: 143.624875 msecs"
   )
 
 (defn clear-letter
@@ -33,7 +34,7 @@
                      (= (int char) (+ alphabet-index 65 32))))
                polymer)))
 
-(defn solve-b
+(defn part-2
   []
   (reduce (fn [best-score alphabet-index]
             (min best-score (count (react-polymer (clear-letter input alphabet-index)))))
@@ -42,6 +43,7 @@
 
 
 (comment
-  (solve-b)
+  (time (part-2))
   ;; 5726
+  ;; "Elapsed time: 2616.870667 msecs"
   )

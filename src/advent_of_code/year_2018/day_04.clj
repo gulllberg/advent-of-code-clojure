@@ -1,5 +1,5 @@
 (ns advent-of-code.year_2018.day_04
-  (:require [clojure.test]))
+  (:require [ysera.test :refer [is= is is-not]]))
 
 (def input (slurp "src/advent_of_code/year_2018/inputs/day04.txt"))
 
@@ -11,10 +11,10 @@
 
 (defn get-timestamp
   {:test (fn []
-           (clojure.test/is (= (get-timestamp "[1518-11-10 00:43] falls asleep")
-                               43))
-           (clojure.test/is (= (get-timestamp "[1518-11-10 00:09] falls asleep")
-                               9)))}
+           (is= (get-timestamp "[1518-11-10 00:43] falls asleep")
+                43)
+           (is= (get-timestamp "[1518-11-10 00:09] falls asleep")
+                9))}
   [instruction]
   (let [number-string (-> instruction
                           (clojure.string/split #"]")
@@ -27,8 +27,8 @@
 
 (defn get-guard-id
   {:test (fn []
-           (clojure.test/is (= (get-guard-id "[1518-11-09 23:58] Guard #853 begins shift")
-                               "#853")))}
+           (is= (get-guard-id "[1518-11-09 23:58] Guard #853 begins shift")
+                "#853"))}
   [instruction]
   (as-> instruction $
         (clojure.string/split $ #" ")
@@ -39,12 +39,12 @@
 
 (defn get-type-of-instruction
   {:test (fn []
-           (clojure.test/is (= (get-type-of-instruction "[1518-11-09 23:58] Guard #853 begins shift")
-                               :begin))
-           (clojure.test/is (= (get-type-of-instruction "[1518-11-23 00:07] falls asleep")
-                               :asleep))
-           (clojure.test/is (= (get-type-of-instruction "[1518-11-23 00:37] wakes up")
-                               :awake)))}
+           (is= (get-type-of-instruction "[1518-11-09 23:58] Guard #853 begins shift")
+                :begin)
+           (is= (get-type-of-instruction "[1518-11-23 00:07] falls asleep")
+                :asleep)
+           (is= (get-type-of-instruction "[1518-11-23 00:37] wakes up")
+                :awake))}
   [instruction]
   (cond
     (clojure.string/includes? instruction "begins shift") :begin
@@ -69,7 +69,7 @@
                  [{} nil nil]
                  (get-sorted-input))))
 
-(defn solve-a
+(defn part-1
   []
   (let [guard-sleep-times (get-guard-sleep-times)
         most-sleepy-guard-id (->> guard-sleep-times
@@ -86,11 +86,12 @@
     (* (read-string (subs most-sleepy-guard-id 1)) most-sleepy-minute)))
 
 (comment
-  (solve-a)
+  (time (part-1))
   ;; 101194
+  ;; "Elapsed time: 6.286291 msecs"
   )
 
-(defn solve-b
+(defn part-2
   []
   (let [guard-sleep-times (get-guard-sleep-times)
         most-sleepy-guard-id (->> guard-sleep-times
@@ -107,6 +108,7 @@
     (* (read-string (subs most-sleepy-guard-id 1)) most-sleepy-minute)))
 
 (comment
-  (solve-b)
+  (time (part-2))
   ;; 102095
+  ;; "Elapsed time: 6.957208 msecs"
   )

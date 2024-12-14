@@ -1,6 +1,5 @@
 (ns advent-of-code.year_2018.day_07
-  (:require [clojure.test]
-            [clojure.set]))
+  (:require [ysera.test :refer [is= is is-not]]))
 
 (def input (slurp "src/advent_of_code/year_2018/inputs/day07.txt"))
 
@@ -8,20 +7,20 @@
 
 (defn parse-line
   {:test (fn []
-           (clojure.test/is (= (parse-line "Step S must be finished before step G can begin.") ["S" "G"])))}
+           (is= (parse-line "Step S must be finished before step G can begin.") ["S" "G"]))}
   [line]
   (let [words (clojure.string/split line #" ")]
     [(second words) (nth words 7)]))
 
 (defn get-dependencies
   {:test (fn []
-           (clojure.test/is (= (get-dependencies test-input)
-                               {"C" #{}
-                                "A" #{"C"}
-                                "F" #{"C"}
-                                "B" #{"A"}
-                                "D" #{"A"}
-                                "E" #{"B" "D" "F"}})))}
+           (is= (get-dependencies test-input)
+                {"C" #{}
+                 "A" #{"C"}
+                 "F" #{"C"}
+                 "B" #{"A"}
+                 "D" #{"A"}
+                 "E" #{"B" "D" "F"}}))}
   [input]
   (reduce (fn [dependencies line]
             (let [[enabler depender] (parse-line line)]
@@ -39,8 +38,8 @@
 
 (defn get-next-job
   {:test (fn []
-           (clojure.test/is (= (get-next-job (get-dependencies test-input))
-                               "C")))}
+           (is= (get-next-job (get-dependencies test-input))
+                "C"))}
   [dependencies]
   (->> dependencies
        (keys)
@@ -51,22 +50,22 @@
 
 (defn update-dependencies
   {:test (fn []
-           (clojure.test/is (= (update-dependencies (get-dependencies test-input) "C")
-                               {"A" #{}
-                                "F" #{}
-                                "B" #{"A"}
-                                "D" #{"A"}
-                                "E" #{"B" "D" "F"}}))
-           (clojure.test/is (= (update-dependencies {"A" #{"C"}
-                                                     "F" #{"C"}
-                                                     "B" #{"A"}
-                                                     "D" #{"A"}
-                                                     "E" #{"B" "D" "F"}} "C")
-                               {"A" #{}
-                                "F" #{}
-                                "B" #{"A"}
-                                "D" #{"A"}
-                                "E" #{"B" "D" "F"}})))}
+           (is= (update-dependencies (get-dependencies test-input) "C")
+                {"A" #{}
+                 "F" #{}
+                 "B" #{"A"}
+                 "D" #{"A"}
+                 "E" #{"B" "D" "F"}})
+           (is= (update-dependencies {"A" #{"C"}
+                                      "F" #{"C"}
+                                      "B" #{"A"}
+                                      "D" #{"A"}
+                                      "E" #{"B" "D" "F"}} "C")
+                {"A" #{}
+                 "F" #{}
+                 "B" #{"A"}
+                 "D" #{"A"}
+                 "E" #{"B" "D" "F"}}))}
   [dependencies job]
   (let [dependencies (dissoc dependencies job)]
     (reduce (fn [dependencies key]
@@ -74,10 +73,10 @@
             dependencies
             (keys dependencies))))
 
-(defn solve-a
+(defn part-1
   {:test (fn []
-           (clojure.test/is (= (solve-a test-input)
-                               "CABDFE")))}
+           (is= (part-1 test-input)
+                "CABDFE"))}
   [input]
   (let [dependencies (get-dependencies input)]
     (first (reduce (fn [[order dependencies] _]
@@ -87,16 +86,17 @@
                    (range (count (keys dependencies)))))))
 
 (comment
-  (solve-a input)
+  (time (part-1 input))
   ;; FDSEGJLPKNRYOAMQIUHTCVWZXB
+  ;; "Elapsed time: 0.904417 msecs"
   )
 
 (defn get-completion-time
   {:test (fn []
-           (clojure.test/is (= (get-completion-time "A" 0)
-                               61))
-           (clojure.test/is (= (get-completion-time "A" 60)
-                               1)))}
+           (is= (get-completion-time "A" 0)
+                61)
+           (is= (get-completion-time "A" 60)
+                1))}
   [job time-subtraction]
   (-> job
       (first)
@@ -113,10 +113,10 @@
   (and (empty? dependencies)
        (empty? (remove nil? workers))))
 
-(defn solve-b
+(defn part-2
   {:test (fn []
-           (clojure.test/is (= (solve-b test-input 60 2)
-                               15)))}
+           (is= (part-2 test-input 60 2)
+                15))}
   [input time-subtraction number-of-workers]
   (reduce (fn [[dependencies workers time] _]
             (let [[dependencies workers] (reduce (fn [[dependencies workers] worker]
@@ -147,6 +147,7 @@
           (range)))
 
 (comment
-  (solve-b input 0 5)
+  (time (part-2 input 0 5))
   ;; 1000
+  ;; "Elapsed time: 6.180417 msecs"
   )
