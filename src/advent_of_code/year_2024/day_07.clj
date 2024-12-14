@@ -19,16 +19,14 @@
              (rest numbers)
              (rest operands)))))
 
-(defn get-operands-to-test
-  [number-of-operands]
-  (combo/selections [+ *] number-of-operands))
-
-(def get-operands-to-test-memoized
-  (memoize get-operands-to-test))
+(def get-operands-to-test
+  (memoize
+    (fn [possible-operands number-of-operands]
+      (combo/selections possible-operands number-of-operands))))
 
 (defn can-make-valid-equation?
-  [test-value numbers]
-  (loop [operands-to-test (get-operands-to-test-memoized (dec (count numbers)))]
+  [test-value numbers possible-operands]
+  (loop [operands-to-test (get-operands-to-test possible-operands (dec (count numbers)))]
     (cond
       (empty? operands-to-test)
       false
@@ -48,21 +46,33 @@
               (->> (re-seq #"\d+" line)
                    (map read-string))))
        (keep (fn [[test-value & numbers]]
-               (when (can-make-valid-equation? test-value numbers)
+               (when (can-make-valid-equation? test-value numbers [+ *])
                  test-value)))
        (reduce +)))
 
+(defn concatenation
+  [x y]
+  (read-string (str x y)))
+
 (defn part-2
   {:test (fn []
-           (is= (part-2 test-input) 42))}
+           (is= (part-2 test-input) 11387))}
   [input]
-  42)
+  (->> (clojure.string/split-lines input)
+       (map (fn [line]
+              (->> (re-seq #"\d+" line)
+                   (map read-string))))
+       (keep (fn [[test-value & numbers]]
+               (when (can-make-valid-equation? test-value numbers [+ * concatenation])
+                 test-value)))
+       (reduce +)))
 
 (comment
   ;; "Elapsed time: 170.270709 msecs"
   ;=> 1708857123053
   (time (part-1 input))
 
-  ;;
+  ;; "Elapsed time: 24995.581166 msecs"
+  ;=> 189207836795655
   (time (part-2 input))
   )
