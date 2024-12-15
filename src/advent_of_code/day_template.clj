@@ -17,9 +17,9 @@
   42)
 
 (comment
-  ;;
   (time (part-1 input))
-
   ;;
+
   (time (part-2 input))
+  ;;
   )
