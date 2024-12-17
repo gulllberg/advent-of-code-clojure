@@ -155,12 +155,8 @@
         (clojure.string/join "," (:output state))
         (recur next-state)))))
 
-(def test-state-2 {:registers {:A "ignored"
-                               :B 0
-                               :C 0}
-                   :pointer   0
-                   :output    []
-                   :program   [0 3 5 4 3 0]})
+(def test-input-2 "Register A: 2024\nRegister B: 0\nRegister C: 0\n\nProgram: 0,3,5,4,3,0")
+(def test-state-2 (create-state test-input-2))
 
 (defn part-2
   {:test (fn []

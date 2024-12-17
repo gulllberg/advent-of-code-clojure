@@ -19,4 +19,4 @@ and also higher-order versions of algorithms such as a-star. (Although this will
 
 ## Visualisations
 
-See [github](https://github.com/gulllberg/advent-of-code-visualisations). So far only for 2024 Day 14b
+See [github](https://github.com/gulllberg/advent-of-code-visualisations). So far only for 2024 Day 14
