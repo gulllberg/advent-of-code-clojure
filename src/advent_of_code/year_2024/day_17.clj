@@ -5,6 +5,8 @@
 (def input (slurp "src/advent_of_code/year_2024/inputs/day17.txt"))
 (def test-input "Register A: 729\nRegister B: 0\nRegister C: 0\n\nProgram: 0,1,5,4,3,0\n")
 
+
+
 (def test-state {:registers {:A 729
                              :B 0
                              :C 0}
@@ -27,7 +29,7 @@
   [state operand]
   (update-in state [:registers :A] (fn [A]
                                      (long (/ A (clojure.math/pow 2
-                                                                 (get-combo-operand state operand)))))))
+                                                                  (get-combo-operand state operand)))))))
 
 (defn bxl
   {:test (fn []
@@ -88,8 +90,8 @@
                              :B 182}}))}
   [state operand]
   (assoc-in state [:registers :B] (long (/ (get-in state [:registers :A])
-                                          (clojure.math/pow 2
-                                                            (get-combo-operand state operand))))))
+                                           (clojure.math/pow 2
+                                                             (get-combo-operand state operand))))))
 
 (defn cdv
   {:test (fn []
@@ -99,8 +101,8 @@
                              :C 182}}))}
   [state operand]
   (assoc-in state [:registers :C] (long (/ (get-in state [:registers :A])
-                                          (clojure.math/pow 2
-                                                            (get-combo-operand state operand))))))
+                                           (clojure.math/pow 2
+                                                             (get-combo-operand state operand))))))
 
 (defn do-one-instruction
   [state]
@@ -142,38 +144,40 @@
                    :output    []
                    :program   [0 3 5 4 3 0]})
 
-(defn compare-programs
-  {:test (fn []
-           (is (compare-programs [1 2 3] [1 2]))
-           (is-not (compare-programs [1 2 3] [2 2 3])))}
-  [goal-program program]
-  (every? true? (map = goal-program program)))
-
 (defn part-2
   {:test (fn []
            (is= (part-2 test-state-2) 117440))}
   [state]
   (let [program (:program state)]
-    (loop [A 0]
-      ;(when (zero? (mod A 1000))
-      ;  (println A))
-      (let [result (loop [state (assoc-in state [:registers :A] A)]
-                     (let [next-state (do-one-instruction state)]
-                       (cond
-                         (= next-state state) (:output state)
-                         (not (compare-programs program (:output next-state))) :fail
-                         :else (recur next-state))))]
-        (if (= result program)
-          A
-          (recur (inc A)))))))
+    (loop [candidates (range 8)
+           number-of-numbers-to-check 1]
+      (let [partial-program (take-last number-of-numbers-to-check program)
+            working-candidates (reduce (fn [working-candidates candidate]
+                                         (let [output (loop [state (assoc-in state [:registers :A] candidate)]
+                                                        (let [next-state (do-one-instruction state)]
+                                                          (if (= next-state state)
+                                                            (:output state)
+                                                            (recur next-state))))]
+                                           (if (= output partial-program)
+                                             (conj working-candidates candidate)
+                                             working-candidates)))
+                                       []
+                                       candidates)]
+        (if (= number-of-numbers-to-check (count program))
+          (first working-candidates)
+          (recur (reduce (fn [new-candidates working-candidate]
+                           (reduce conj new-candidates (->> (range 8)
+                                                            (map (fn [i] (+ i (* working-candidate 8)))))))
+                         []
+                         working-candidates)
+                 (inc number-of-numbers-to-check)))))))
 
 (comment
   (time (part-1 state))
   ;; "Elapsed time: 0.259833 msecs"
   ;=> "3,4,3,1,7,6,5,6,0"
 
-  (part-1 (assoc-in state [:registers :A] 28147497671037))
-
   (time (part-2 state))
-  ;;
+  ;; "Elapsed time: 43.436667 msecs"
+  ;=> 109019930331546
   )
