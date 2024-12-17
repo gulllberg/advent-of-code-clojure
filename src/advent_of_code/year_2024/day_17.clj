@@ -5,14 +5,32 @@
 (def input (slurp "src/advent_of_code/year_2024/inputs/day17.txt"))
 (def test-input "Register A: 729\nRegister B: 0\nRegister C: 0\n\nProgram: 0,1,5,4,3,0\n")
 
+(defn get-numbers-from-pattern
+  [input pattern]
+  (->> input
+       (re-find pattern)
+       (second)
+       (re-seq #"\d+")
+       (map read-string)))
 
-
-(def test-state {:registers {:A 729
+(defn create-state
+  {:test (fn []
+           (is= (create-state test-input)
+                {:registers {:A 729
                              :B 0
                              :C 0}
                  :pointer   0
                  :output    []
-                 :program   [0 1 5 4 3 0]})
+                 :program   [0 1 5 4 3 0]}))}
+  [input]
+  {:pointer 0
+   :output []
+   :registers {:A (first (get-numbers-from-pattern input #"Register A: ([\d,]+)"))
+               :B (first (get-numbers-from-pattern input #"Register B: ([\d,]+)"))
+               :C (first (get-numbers-from-pattern input #"Register C: ([\d,]+)"))}
+   :program (get-numbers-from-pattern input #"Program: ([\d,]+)")})
+
+(def test-state (create-state test-input))
 
 (defn get-combo-operand
   [state operand]
@@ -148,6 +166,13 @@
   {:test (fn []
            (is= (part-2 test-state-2) 117440))}
   [state]
+  ; Analysis of program shows that
+  ; 1) Program will output n numbers if A is within 8^n, i.e. 0-7 for 1, 8-63 for 2, ...
+  ; 2) A will reduce by factor of 8 for each number output
+  ; 3) Output at end of program depends on value of A when A small, (and beginning when A big)
+  ; -> We can test our program one number output at a time, and for each working candidate
+  ; get candidates for next iteration that are on the form (+ i (* working-candidate 8))
+  ; i.e. numbers that when divided by 8 and truncated to integer, produce the candidate A
   (let [program (:program state)]
     (loop [candidates (range 8)
            number-of-numbers-to-check 1]
@@ -173,11 +198,11 @@
                  (inc number-of-numbers-to-check)))))))
 
 (comment
-  (time (part-1 state))
+  (time (part-1 (create-state input)))
   ;; "Elapsed time: 0.259833 msecs"
   ;=> "3,4,3,1,7,6,5,6,0"
 
-  (time (part-2 state))
+  (time (part-2 (create-state input)))
   ;; "Elapsed time: 43.436667 msecs"
   ;=> 109019930331546
   )
