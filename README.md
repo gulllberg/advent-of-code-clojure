@@ -16,3 +16,7 @@ Some days have been improved, that's typically seen in the git history.
 I previously had one repo per year, but I will collect them all here.
 Maybe this will encourage me to go back and complete some previous days and years. I would also like to create a library of helper functions for things that are often done,
 and also higher-order versions of algorithms such as a-star. (Although this will mean that some of the git history gets lost.)
+
+## Visualisations
+
+See [github](https://github.com/gulllberg/advent-of-code-visualisations). So far only for 2024 Day 14b
