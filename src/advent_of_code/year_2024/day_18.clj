@@ -4,8 +4,6 @@
 (def input (slurp "src/advent_of_code/year_2024/inputs/day18.txt"))
 (def test-input "5,4\n4,2\n4,5\n3,0\n2,1\n6,3\n2,4\n1,5\n0,6\n3,3\n2,6\n5,1\n1,2\n5,5\n2,5\n6,5\n1,4\n0,4\n6,4\n1,1\n6,1\n1,0\n0,5\n1,6\n2,0")
 
-; test size 6, real size 70 (start at 0,0).Test simulate 12 bytes fall, real 1024
-
 (defn get-obstacles
   {:test (fn []
            (is= (get-obstacles test-input 3)
@@ -82,10 +80,8 @@
         (recur (walk-a-step state))))))
 
 (defn part-1
-  {:test (fn []
-           (is= (part-1 test-input) 42))}
-  [input]
-  42)
+  [input n max-value]
+  (walk (create-state input n max-value)))
 
 (defn part-2
   {:test (fn []
@@ -95,7 +91,6 @@
         max-n (count (clojure.string/split-lines input))]
     (loop [max-n max-n
            min-n start-n]
-      (println max-n min-n)
       (if (<= max-n (inc min-n))
         (nth lines (dec max-n))
         (let [n (int (/ (+ max-n min-n) 2))
@@ -105,10 +100,8 @@
             (recur n min-n)
             (recur max-n n)))))))
 
-(def state (create-state input 1024 70))
-
 (comment
-  (time (walk state))
+  (time (part-1 input 1024 70))
   ;; "Elapsed time: 25.268792 msecs"
   ;=> 296
 
