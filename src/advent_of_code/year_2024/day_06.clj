@@ -33,39 +33,61 @@
   [dir]
   [(second dir) (* -1 (first dir))])
 
+(defn guard-walk
+  [room-map start-pos num-rows num-cols]
+  (loop [dir [-1 0]
+         pos start-pos
+         visited-with-dir #{[start-pos dir]}]
+    (let [next-pos (vector-add pos dir)]
+      (cond
+        (contains? visited-with-dir [next-pos dir])
+        :loop
+
+        (outside-room? next-pos num-rows num-cols)
+        visited-with-dir
+
+        (contains? room-map next-pos)
+        (let [new-dir (rotate-90-degrees-right dir)]
+          (recur new-dir
+                 pos
+                 (conj visited-with-dir [pos new-dir])))
+        :else
+        (recur dir
+               next-pos
+               (conj visited-with-dir [next-pos dir]))))))
+
 (defn part-1
   {:test (fn []
            (is= (part-1 test-input) 41))}
   [input]
-  (let [[room-map start-pos num-rows num-cols] (parse-input input)]
-    (loop [dir [-1 0]
-           pos start-pos
-           visited #{start-pos}]
-      (let [next-pos (vector-add pos dir)]
-        (cond
-          (outside-room? next-pos num-rows num-cols)
-          (count visited)
-
-          (contains? room-map next-pos)
-          (recur (rotate-90-degrees-right dir)
-                 pos
-                 visited)
-          :else
-          (recur dir
-                 next-pos
-                 (conj visited next-pos)))))))
+  (let [visited-with-dir (apply guard-walk (parse-input input))]
+    (->> visited-with-dir
+         (map first)
+         (into #{})
+         (count))))
 
 (defn part-2
   {:test (fn []
-           (is= (part-2 test-input) 42))}
+           (is= (part-2 test-input) 6))}
   [input]
-  42)
+  (let [[room-map start-pos num-rows num-cols] (parse-input input)
+        possible-positions (as-> (guard-walk room-map start-pos num-rows num-cols) $
+                                 (map first $)
+                                 (into #{} $)
+                                 (disj $ start-pos))]
+    (reduce (fn [a p]
+              (if (= :loop (guard-walk (conj room-map p) start-pos num-rows num-cols))
+                (inc a)
+                a))
+            0
+            possible-positions)))
 
 (comment
+  (time (part-1 input))
   ;; "Elapsed time: 17.465458 msecs"
   ;=> 5318
-  (time (part-1 input))
 
-  ;;
   (time (part-2 input))
+  ;; "Elapsed time: 13844.201709 msecs"
+  ;=> 1831
   )
