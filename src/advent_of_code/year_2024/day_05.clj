@@ -17,10 +17,15 @@
                                                                  #{before})))))
                                          {}))
         all-pages-to-produce (->> (clojure.string/split-lines h2)
-                              (map (fn [line]
-                                     (->> (re-seq #"\d+" line)
-                                          (map read-string)))))]
+                                  (map (fn [line]
+                                         (->> (re-seq #"\d+" line)
+                                              (map read-string)))))]
     [page-ordering-rules all-pages-to-produce]))
+
+(defn page-violates-rules?
+  [page-ordering-rules later-pages page]
+  (and (contains? page-ordering-rules page)
+       (some (get page-ordering-rules page) later-pages)))
 
 (defn right-order?
   [page-ordering-rules pages-to-produce]
@@ -30,8 +35,7 @@
       true
       (let [page (first pages-to-produce)
             later-pages (rest pages-to-produce)]
-        (if (and (contains? page-ordering-rules page)
-                 (some (get page-ordering-rules page) later-pages))
+        (if (page-violates-rules? page-ordering-rules later-pages page)
           false
           (recur (conj produced page)
                  later-pages))))))
@@ -51,17 +55,55 @@
                    (get-middle-page-number pages-to-produce))))
          (reduce +))))
 
+(defn bubble-up
+  [page-ordering-rules pages-to-produce]
+  (loop [i 0
+         pages-to-produce pages-to-produce]
+    (if (= i (count pages-to-produce))
+      pages-to-produce
+      (recur (inc i)
+             (loop [j i
+                    pages-to-produce pages-to-produce]
+               (if-not (page-violates-rules? page-ordering-rules (drop j pages-to-produce) (nth pages-to-produce j))
+                 pages-to-produce
+                 (recur (inc j)
+                        (-> pages-to-produce
+                            (assoc j (nth pages-to-produce (inc j)))
+                            (assoc (inc j) (nth pages-to-produce j))))))))))
+
+(defn put-in-right-order
+  {:test (fn []
+           (let [[page-ordering-rules _] (parse-input test-input)]
+             (is= (put-in-right-order page-ordering-rules [75 97 47 61 53])
+                  [97 75 47 61 53])
+             (is= (put-in-right-order page-ordering-rules [61 13 29])
+                  [61 29 13])
+             (is= (put-in-right-order page-ordering-rules [97 13 75 29 47])
+                  [97 75 47 29 13])))}
+  [page-ordering-rules pages-to-produce]
+  (loop [pages-to-produce (into [] pages-to-produce)]
+    (if (right-order? page-ordering-rules pages-to-produce)
+      pages-to-produce
+      (recur (bubble-up page-ordering-rules pages-to-produce)))))
+
 (defn part-2
   {:test (fn []
-           (is= (part-2 test-input) 42))}
+           (is= (part-2 test-input) 123))}
   [input]
-  42)
+  (let [[page-ordering-rules all-pages-to-produce] (parse-input input)]
+    (->> all-pages-to-produce
+         (keep (fn [pages-to-produce]
+                 (when-not (right-order? page-ordering-rules pages-to-produce)
+                   (-> (put-in-right-order page-ordering-rules pages-to-produce)
+                       (get-middle-page-number)))))
+         (reduce +))))
 
 (comment
+  (time (part-1 input))
   ;; "Elapsed time: 9.340125 msecs"
   ;=> 5651
-  (time (part-1 input))
 
-  ;;
   (time (part-2 input))
+  ;; "Elapsed time: 17.309916 msecs"
+  ;=> 4743
   )
