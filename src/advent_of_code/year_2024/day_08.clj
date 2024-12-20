@@ -73,7 +73,7 @@
                  #{})
          (count))))
 
-(defn get-antionodes-in-direction
+(defn get-antinodes-in-direction
   [position direction i-max j-max]
   (loop [result #{position}
          position position]
@@ -96,8 +96,8 @@
                        [i2 j2] p2
                        di (- i2 i1)
                        dj (- j2 j1)
-                       antinodes-d1 (get-antionodes-in-direction p2 [di dj] i-max j-max)
-                       antinodes-d2 (get-antionodes-in-direction p1 [(- di) (- dj)] i-max j-max)]
+                       antinodes-d1 (get-antinodes-in-direction p2 [di dj] i-max j-max)
+                       antinodes-d2 (get-antinodes-in-direction p1 [(- di) (- dj)] i-max j-max)]
                    (clojure.set/union acc antinodes-d1 antinodes-d2)))
                #{})))
 
