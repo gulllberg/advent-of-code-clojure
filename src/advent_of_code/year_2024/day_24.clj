@@ -156,6 +156,133 @@
   [n length]
   (zero-pad-string (str n) length))
 
+(defn swap-output-wires
+  [state g1 g2]
+  (let [w1 (get-in state [:gates g1 :out])
+        w2 (get-in state [:gates g2 :out])]
+    (-> state
+        (assoc-in [:gates g1 :out] w2)
+        (assoc-in [:gates g2 :out] w1)
+        (assoc-in [:wires w1 :gets-value-from] g2)
+        (assoc-in [:wires w2 :gets-value-from] g1))))
+
+; https://www.101computing.net/binary-additions-using-logic-gates/
+(defn parse-half-adder
+  [state in1 in2]
+  (let [gates (get-in state [:wires in1 :gives-value-to])]
+    (cond
+      (not= gates (get-in state [:wires in2 :gives-value-to]))
+      (println in1 "and" in2 "point to different gates" gates (get-in state [:wires in2 :gives-value-to]))
+
+      (not= (count gates) 2)
+      (println in1 "and" in2 "point to wrong number of gates" gates)
+
+      :else
+      (let [gate1 (get-in state [:gates (first gates)])
+            gate2 (get-in state [:gates (second gates)])
+            sum-gate (first (filter (fn [g] (= (:op g) "XOR")) [gate1 gate2]))
+            carry-gate (first (filter (fn [g] (= (:op g) "AND")) [gate1 gate2]))]
+        (if (or (nil? sum-gate) (nil? carry-gate))
+          (println "incorrect gates" in1 in2 gate1 gate2)
+
+          (if (clojure.string/starts-with? (:out carry-gate) "z")
+            (println "z wire incorrectly used as carry wire" carry-gate sum-gate)
+            {:carry-wire (:out carry-gate)
+             :sum-wire   (:out sum-gate)}))))))
+
+;; Assumes all swaps happen within one full-adder
+;; Checking some structure on the input you can maybe convince yourself of this,
+;; but it's a bit of a cheat based on the fact that it happens to be true.
+;; Assumes x-in, y-in and c-in are correct
+;; Five gates are involved, 2 XOR, 2 AND, 1 OR (2 half-adders (intermediate/final), 1 OR)
+(defn fix-full-adder
+  [state swaps x-in y-in c-in z-out]
+  (let [intermediate-gate-ids (get-in state [:wires x-in :gives-value-to])
+        intermediate-gates (->> intermediate-gate-ids
+                                (map (fn [g-id] (get-in state [:gates g-id]))))
+        intermediate-xor-gate (->> intermediate-gates
+                                   (filter (fn [g] (= (:op g) "XOR")))
+                                   (first))
+        intermediate-and-gate (->> intermediate-gates
+                                   (filter (fn [g] (= (:op g) "AND")))
+                                   (first))
+        final-gate-ids (get-in state [:wires c-in :gives-value-to])
+        final-gates (->> final-gate-ids
+                                (map (fn [g-id] (get-in state [:gates g-id]))))
+        final-xor-gate (->> final-gates
+                                   (filter (fn [g] (= (:op g) "XOR")))
+                                   (first))
+        final-and-gate (->> final-gates
+                                   (filter (fn [g] (= (:op g) "AND")))
+                                   (first))
+        ; intermediate-xor should connect to final-gates
+        intermediate-xor-wrong (not= final-gate-ids (get-in state [:wires (:out intermediate-xor-gate) :gives-value-to]))
+        ; final-xor should connect to z-out
+        final-xor-wrong (not= z-out (:out final-xor-gate))
+        intermediate-and-out (:out intermediate-and-gate)
+        intermediate-and-connected-to-gate-ids (get-in state [:wires intermediate-and-out :gives-value-to])
+        intermediate-and-connected-to-gate (get-in state [:gates (first intermediate-and-connected-to-gate-ids)])
+        ; intermediate-and should connect to a wire that only leads to an OR gate
+        intermediate-and-wrong (or (not= 1 (count intermediate-and-connected-to-gate-ids))
+                                   (not= "OR" (:op intermediate-and-connected-to-gate)))
+        final-and-out (:out final-and-gate)
+        final-and-connected-to-gate-ids (get-in state [:wires final-and-out :gives-value-to])
+        final-and-connected-to-gate (get-in state [:gates (first final-and-connected-to-gate-ids)])
+        ; final-and should connect to a wire that only leads to an OR gate
+        final-and-wrong (or (not= 1 (count final-and-connected-to-gate-ids))
+                                   (not= "OR" (:op final-and-connected-to-gate)))
+        ; or has to be wrong if exactly 1 other is wrong
+        or-wrong (= 1 (count (filter boolean [intermediate-xor-wrong final-xor-wrong intermediate-and-wrong final-and-wrong])))
+        or-gate-id (if-not intermediate-and-wrong (first intermediate-and-connected-to-gate-ids) (first final-and-connected-to-gate-ids))
+        or-gate (get-in state [:gates or-gate-id])]
+    (if-not (or intermediate-xor-wrong final-xor-wrong intermediate-and-wrong final-and-wrong or-wrong)
+      [state swaps (:out final-and-connected-to-gate)]
+      (let [swap-wires (remove nil? [(when intermediate-xor-wrong (:out intermediate-xor-gate))
+                                     (when final-xor-wrong (:out final-xor-gate))
+                                     (when intermediate-and-wrong intermediate-and-out)
+                                     (when final-and-wrong final-and-out)
+                                     (when or-wrong (:out or-gate))])
+            swap-gates (map (fn [w] (get-in state [:wires w :gets-value-from])) swap-wires)
+            state (swap-output-wires state (first swap-gates) (second swap-gates))]
+        [state (reduce conj swaps swap-wires) (get-in state [:gates or-gate-id :out])]))))
+
+(defn fix-circuit
+  [state]
+  (loop [n-to-check 1
+         state state
+         swaps []
+         c-in (:carry-wire (parse-half-adder state (str "x" (number->padded-string 0 2)) (str "y" (number->padded-string 0 2))))]
+    (if (or (= 8 (count swaps))
+            (= n-to-check 45))
+      swaps
+      (let [x-in (str "x" (number->padded-string n-to-check 2))
+            y-in (str "y" (number->padded-string n-to-check 2))
+            z-out (str "z" (number->padded-string n-to-check 2))
+            [state swaps c-in] (fix-full-adder state swaps x-in y-in c-in z-out)]
+        (recur (inc n-to-check)
+               state
+               swaps
+               c-in)))))
+
+(defn part-2
+  [input]
+  (->> (parse-input input)
+       (fix-circuit)
+       (sort)
+       (clojure.string/join ",")))
+
+(comment
+  (time (part-1 input))
+  ;; "Elapsed time: 6.74 msecs"
+  ;=> 58740594706150
+
+  (time (part-2 input))
+  ; "Elapsed time: 4.600083 msecs"
+  ;=> "cvh,dbb,hbk,kvn,tfn,z14,z18,z23"
+  )
+
+;; Stuff used for half-manual solution
+
 (defn clear-values
   [state]
   (update state :wires (fn [wires]
@@ -192,40 +319,6 @@
   (-> (set-input-values-from-binary-strings state x-binary-string y-binary-string length)
       (simulate-system)
       (get-output-binary-string)))
-
-(defn swap-output-wires
-  [state g1 g2]
-  (let [w1 (get-in state [:gates g1 :out])
-        w2 (get-in state [:gates g2 :out])]
-    (-> state
-        (assoc-in [:gates g1 :out] w2)
-        (assoc-in [:gates g2 :out] w1)
-        (assoc-in [:wires w1 :gets-value-from] g2)
-        (assoc-in [:wires w2 :gets-value-from] g1))))
-
-; https://www.101computing.net/binary-additions-using-logic-gates/
-(defn parse-half-adder
-  [state in1 in2]
-  (let [gates (get-in state [:wires in1 :gives-value-to])]
-    (cond
-      (not= gates (get-in state [:wires in2 :gives-value-to]))
-      (println in1 "and" in2 "point to different gates" gates (get-in state [:wires in2 :gives-value-to]))
-
-      (not= (count gates) 2)
-      (println in1 "and" in2 "point to wrong number of gates" gates)
-
-      :else
-      (let [gate1 (get-in state [:gates (first gates)])
-            gate2 (get-in state [:gates (second gates)])
-            sum-gate (first (filter (fn [g] (= (:op g) "XOR")) [gate1 gate2]))
-            carry-gate (first (filter (fn [g] (= (:op g) "AND")) [gate1 gate2]))]
-        (if (or (nil? sum-gate) (nil? carry-gate))
-          (println "incorrect gates" in1 in2 gate1 gate2)
-
-          (if (clojure.string/starts-with? (:out carry-gate) "z")
-            (println "z wire incorrectly used as carry wire" carry-gate sum-gate)
-            {:carry-wire (:out carry-gate)
-             :sum-wire   (:out sum-gate)}))))))
 
 (defn parse-full-adder
   [state in1 in2 carry-in]
@@ -276,9 +369,6 @@
                                (:carry-wire last-result))))))
 
 (comment
-  (time (part-1 input))
-  ;; "Elapsed time: 6.74 msecs"
-  ;=> 58740594706150
 
   (circuit-diagnostics (parse-input input))
   ; incorrect sum wire last time 15 {:sum-wire hbk, :carry-wire z14}
@@ -369,4 +459,3 @@
          (+ n1 n2)))
     )
   )
-
