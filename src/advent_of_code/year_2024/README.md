@@ -1,7 +1,8 @@
 # 2024
 
-This year I've promised to do some of the days with my wife (in Python).
-Hopefully I'll have time to do some of it in clojure too.
+This was a great year! Some very fun days, with the "find a Christmas tree", "build your own computer" and "recursive keypads" coming to mind.
+The difficulty felt lower than last year. Many problems were solved with Tomas and other colleagues.
+And I got around to doing my first visualisation, which was fun!
 
 ## Day 14 visualisation
 
