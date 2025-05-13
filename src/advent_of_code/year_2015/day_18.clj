@@ -17,8 +17,8 @@
                                                (map (fn [p] (get grid p)))
                                                (filter true?)
                                                (count))]
-                 (cond (and on (contains? #{2 3} number-of-neighbours)) (assoc a p true)
-                       (and (not on) (= 3 number-of-neighbours)) (assoc a p true)
+                 (cond (= 3 number-of-neighbours) (assoc a p true)
+                       (and on (= 2 number-of-neighbours)) (assoc a p true)
                        :else (assoc a p false))))
              {}
              grid))
@@ -63,8 +63,8 @@
                                                  (map (fn [p] (get grid p)))
                                                  (filter true?)
                                                  (count))]
-                   (cond (and on (contains? #{2 3} number-of-neighbours)) (assoc a p true)
-                         (and (not on) (= 3 number-of-neighbours)) (assoc a p true)
+                   (cond (= 3 number-of-neighbours) (assoc a p true)
+                         (and on (= 2 number-of-neighbours)) (assoc a p true)
                          :else (assoc a p false)))))
              {}
              grid))
@@ -98,4 +98,59 @@
   (time (part-2 input))
   ;; "Elapsed time: 3682.30175 msecs"
   ;=> 781
+  )
+
+(defn get-neighbours-in-grid
+  [cell size]
+  (->> (g/get-neighbours cell g/directions-with-diagonals)
+       (filter (fn [[x y]]
+                 (and (>= x 0)
+                      (>= y 0)
+                      (<= x (dec size))
+                      (<= y (dec size)))))))
+
+(defn next-generation-sparse
+  [live-cells size]
+  (let [neighbors (reduce (fn [counts cell]
+                            (reduce (fn [counts neighbor]
+                                      (update counts neighbor (fnil inc 0)))
+                                    counts
+                                    (get-neighbours-in-grid cell size)))
+                          {}
+                          live-cells)]
+    (into #{}
+          (keep (fn [[cell count]]
+                  (if (or (= 3 count)
+                          (and (live-cells cell) (= 2 count)))
+                    cell
+                    nil))
+                neighbors))))
+
+(defn n-generations-sparse
+  {:test (fn []
+           (let [grid (parse-input test-input)
+                 live-cells (->> (keys grid)
+                                 (filter (fn [k]
+                                           (get grid k)))
+                                 (into #{}))]
+             (is= (->> (n-generations-sparse live-cells 6 4)
+                       (count))
+                  4)))}
+  [live-cells size n]
+  (nth (iterate (fn [live-cells] (next-generation-sparse live-cells size)) live-cells) n))
+
+(defn part-1-sparse
+  [input]
+  (let [grid (parse-input input)
+        live-cells (->> (keys grid)
+                        (filter (fn [k]
+                                  (get grid k)))
+                        (into #{}))]
+    (->> (n-generations-sparse live-cells 100 100)
+         (count))))
+
+(comment
+  (time (part-1-sparse input))
+  ;; "Elapsed time: 804.19525 msecs"
+  ;=> 768
   )
