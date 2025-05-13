@@ -23,34 +23,27 @@
   [input]
   (get-number-of-combinations (parse-input input) 150))
 
-(defn get-fewest-containers
+(defn get-number-of-combinations-with-fewest-containers
   {:test (fn []
-           (is= (get-fewest-containers (parse-input test-input) 25 0) 2))}
+           (is= (get-number-of-combinations-with-fewest-containers (parse-input test-input) 25 0) [2 3]))}
   [remaining-containers remaining-eggnog containers-used]
-  (cond (zero? remaining-eggnog) containers-used
+  (cond (zero? remaining-eggnog) [containers-used 1]
         (neg? remaining-eggnog) nil
         (empty? remaining-containers) nil
         :else (let [[container & remaining-containers] remaining-containers
-                    number-without-using-container (get-fewest-containers remaining-containers remaining-eggnog containers-used)
-                    number-using-container (get-fewest-containers remaining-containers (- remaining-eggnog container) (inc containers-used))]
-                (min (or number-using-container ##Inf) (or number-without-using-container ##Inf)))))
-
-(defn get-number-of-combinations-with-fewest-containers
-  {:test (fn []
-           (is= (get-number-of-combinations-with-fewest-containers (parse-input test-input) 25 2 0) 3))}
-  [remaining-containers remaining-eggnog allowed-containers containers-used]
-  (cond (zero? remaining-eggnog) (if (= allowed-containers containers-used) 1 0)
-        (neg? remaining-eggnog) 0
-        (empty? remaining-containers) 0
-        :else (let [[container & remaining-containers] remaining-containers]
-                (+ (get-number-of-combinations-with-fewest-containers remaining-containers remaining-eggnog allowed-containers containers-used)
-                   (get-number-of-combinations-with-fewest-containers remaining-containers (- remaining-eggnog container) allowed-containers (inc containers-used))))))
+                    [cu-1 n1] (get-number-of-combinations-with-fewest-containers remaining-containers remaining-eggnog containers-used)
+                    [cu-2 n2] (get-number-of-combinations-with-fewest-containers remaining-containers (- remaining-eggnog container) (inc containers-used))]
+                (cond (and (nil? cu-1) (nil? cu-2)) nil
+                      (nil? cu-2) [cu-1 n1]
+                      (nil? cu-1) [cu-2 n2]
+                      (= cu-1 cu-2) [cu-1 (+ n1 n2)]
+                      (< cu-1 cu-2) [cu-1 n1]
+                      :else [cu-2 n2]))))
 
 (defn part-2
   [input]
-  (let [containers (parse-input input)
-        allowed-containers (get-fewest-containers containers 150 0)]
-    (get-number-of-combinations-with-fewest-containers containers 150 allowed-containers 0)))
+  (let [containers (parse-input input)]
+    (second (get-number-of-combinations-with-fewest-containers containers 150 0))))
 
 (comment
   (time (part-1 input))
