@@ -3,7 +3,7 @@
 
 (def input (slurp "src/advent_of_code/year_2015/inputs/day25.txt"))
 
-;; https://en.wikipedia.org/wiki/Pairing_function#Cantor_pairing_function
+;; https://en.wikipedia.org/wiki/Pairing_function#Shifted_Cantor_pairing_function
 (defn cantor-pairing-function
   {:test (fn []
            (is= (cantor-pairing-function 0 0) 0)
@@ -16,13 +16,15 @@
   [x y]
   (/ (+ (* x x) x (* 2 x y) (* 3 y) (* y y)) 2))
 
-(defn get-order-in-sequence
+;; https://en.wikipedia.org/wiki/Pairing_function#Shifted_Cantor_pairing_function
+(defn shifted-cantor-pairing-function
   {:test (fn []
-           (is= (get-order-in-sequence 2 2) 5)
-           (is= (get-order-in-sequence 5 2) 17)
-           (is= (get-order-in-sequence 2 4) 14))}
-  [row column]
-  (inc (cantor-pairing-function (dec row) (dec column))))
+           (is= (shifted-cantor-pairing-function 2 2) 5)
+           (is= (shifted-cantor-pairing-function 5 2) 17)
+           (is= (shifted-cantor-pairing-function 2 4) 14))}
+  [i j]
+  ;; Note: The article uses j for row and i for column, here it's reversed.
+  (+ (/ (* (+ i j -2) (+ i j -1)) 2) j))
 
 (defn get-next-code
   {:test (fn []
@@ -41,7 +43,7 @@
 (defn part-1
   [input]
   (let [[row column] (map read-string (re-seq #"\d+" input))]
-    (get-code-n (get-order-in-sequence row column))))
+    (get-code-n (shifted-cantor-pairing-function row column))))
 
 (comment
   (time (part-1 input))
