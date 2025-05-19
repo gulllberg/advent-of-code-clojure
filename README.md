@@ -1,7 +1,7 @@
 # Advent of Code
 
-I love clojure as a language, but most of my professional work has been in other languages.
-AoC has often been my "happy place" once a year, where I get to work in clojure for a month.
+I love Clojure as a language, but most of my professional work has been in other languages.
+AoC has often been my "happy place" once a year, where I get to work in Clojure for a month.
 I also love the puzzles, story and community on reddit.
 
 I was introduced to it at work in 2017, and did a few days that year and the next.
@@ -10,12 +10,12 @@ I'm sure it also helped that I was more experienced to tackle the harder problem
 
 Since then, I have completed most or all of the puzzles during December.
 
-I mostly don't go back to days I have already solved. Keeping them as they were is in my opinion interesting for historical reasons.
+I mostly don't go back to days I have already solved. Keeping them as they were is in my opinion interesting for posterity.
 Some days have been improved, that's typically seen in the git history.
 
-I previously had one repo per year, but I will collect them all here.
+I previously had one repo per year, but I have collected them all here.
 Maybe this will encourage me to go back and complete some previous days and years. I would also like to create a library of helper functions for things that are often done,
-and also higher-order versions of algorithms such as a-star. (Although this will mean that some of the git history gets lost.)
+and also higher-order versions of algorithms such as a-star.
 
 ## Visualisations
 
