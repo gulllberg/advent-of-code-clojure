@@ -1,6 +1,7 @@
 (ns advent-of-code.year-2023.day-17
   (:require [ysera.test :refer [is= is is-not]]
-            [clojure.data.priority-map :refer [priority-map priority-map-keyfn]]))
+            [clojure.data.priority-map :refer [priority-map priority-map-keyfn]]
+            [advent-of-code.grid :refer [manhattan-distance]]))
 
 (def input (slurp "src/advent_of_code/year_2023/inputs/day17.txt"))
 (def test-input "2413432311323\n3215453535623\n3255245654254\n3446585845452\n4546657867536\n1438598798454\n4457876987766\n3637877979653\n4654967986887\n4564679986453\n1224686865563\n2546548887735\n4322674655533")
@@ -29,11 +30,6 @@
                     (or (and (= d direction) (= straight 3))
                         (= d (mapv * direction [-1 -1]))))
                   [[1 0] [-1 0] [0 1] [0 -1]])))
-
-(defn manhattan-distance
-  [p1 p2]
-  (+ (abs (- (first p1) (first p2)))
-     (abs (- (second p1) (second p2)))))
 
 ;; https://en.wikipedia.org/wiki/A*_search_algorithm
 (defn part-1

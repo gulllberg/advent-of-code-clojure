@@ -1,5 +1,6 @@
 (ns advent-of-code.year-2022.day-15
-  (:require [ysera.test :refer [is= is is-not]]))
+  (:require [ysera.test :refer [is= is is-not]]
+            [advent-of-code.grid :refer [manhattan-distance]]))
 
 (def test-input "Sensor at x=2, y=18: closest beacon is at x=-2, y=15\nSensor at x=9, y=16: closest beacon is at x=10, y=16\nSensor at x=13, y=2: closest beacon is at x=15, y=3\nSensor at x=12, y=14: closest beacon is at x=10, y=16\nSensor at x=10, y=20: closest beacon is at x=10, y=16\nSensor at x=14, y=17: closest beacon is at x=10, y=16\nSensor at x=8, y=7: closest beacon is at x=2, y=10\nSensor at x=2, y=0: closest beacon is at x=2, y=10\nSensor at x=0, y=11: closest beacon is at x=2, y=10\nSensor at x=20, y=14: closest beacon is at x=25, y=17\nSensor at x=17, y=20: closest beacon is at x=21, y=22\nSensor at x=16, y=7: closest beacon is at x=15, y=3\nSensor at x=14, y=3: closest beacon is at x=15, y=3\nSensor at x=20, y=1: closest beacon is at x=15, y=3")
 (def input (slurp "src/advent_of_code/year_2022/inputs/day15.txt"))
@@ -12,22 +13,17 @@
                    (map read-string)
                    (partition 2))))))
 
-(defn get-manhattan-distance
-  [p1 p2]
-  (+ (abs (- (first p1) (first p2)))
-     (abs (- (second p1) (second p2)))))
-
 (defn get-sensor-beacon-distances
   [readings]
   (reduce (fn [a [sensor-p beacon-p]]
-            (assoc a sensor-p (get-manhattan-distance sensor-p beacon-p)))
+            (assoc a sensor-p (manhattan-distance sensor-p beacon-p)))
           {}
           readings))
 
 (defn possible?
   [sensor-beacon-distances position]
   (reduce (fn [_ [sensor-p distance]]
-            (if (<= (get-manhattan-distance sensor-p position) distance)
+            (if (<= (manhattan-distance sensor-p position) distance)
               (reduced false)
               true))
           true

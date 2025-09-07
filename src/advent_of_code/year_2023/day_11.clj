@@ -1,5 +1,6 @@
 (ns advent-of-code.year-2023.day-11
-  (:require [ysera.test :refer [is= is is-not]]))
+  (:require [ysera.test :refer [is= is is-not]]
+            [advent-of-code.grid :refer [manhattan-distance]]))
 
 (def input (slurp "src/advent_of_code/year_2023/inputs/day11.txt"))
 (def test-input "...#......\n.......#..\n#.........\n..........\n......#...\n.#........\n.........#\n..........\n.......#..\n#...#.....")
@@ -47,11 +48,6 @@
                        ))
                    [[] 0]
                    (range (count lines))))))
-
-(defn manhattan-distance
-  [p1 p2]
-  (+ (abs (- (first p1) (first p2)))
-     (abs (- (second p1) (second p2)))))
 
 (defn sum-galaxy-distances
   [galaxy-positions]
