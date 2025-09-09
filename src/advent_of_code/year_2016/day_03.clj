@@ -6,7 +6,7 @@
 (defn possible-triangle?
   {:test (fn []
            (is-not (possible-triangle? [5 10 25]))
-           (not (possible-triangle? [5 10 12])))}
+           (is (possible-triangle? [5 10 12])))}
   [sides]
   (let [[s1 s2 s3] (sort sides)]
     (> (+ s1 s2) s3)))
