@@ -75,7 +75,6 @@
         damage (calculate-damage state attacker-id defender-id)
         killed-units (min (quot damage (:hit-points defender))
                           (:units defender))]
-    ;(println "A" attacker-id "D" defender-id "damage" damage "ku" killed-units)
     killed-units))
 
 (defn get-group-ids
@@ -139,7 +138,6 @@
                                                      :effective-power (get-effective-power state d)
                                                      :initiative      (get-initiative state d)}))
                                        (remove (fn [d] (zero? (:damage d))))
-                                       ;; BUGG HÄR! Saknar :initiative
                                        (sort-by (juxt :damage :effective-power :initiative) #(compare %2 %1))
                                        (first)
                                        (:id))]
@@ -203,20 +201,12 @@
                                       :initiative 4}}}))}
   [state]
   (let [planned-attacks (target-selection state)]
-    ;(println "planned attacks:" planned-attacks)
     (attack-phase state planned-attacks)))
 
 (defn end?
   [state]
   (or (= (get state :immune) {})
       (= (get state :infection) {})))
-
-;(defn get-units
-;  [state]
-;  (->> (get-group-ids state)
-;       (reduce (fn [a v]
-;                 (assoc a v (:units (get-group state v))))
-;               {})))
 
 (defn count-units
   [state]
@@ -246,8 +236,6 @@
                                       :initiative 4}}}))}
   [state]
   (let [new-state (play-a-round state)]
-    ;(println (get-units new-state))
-    ;(println (count-units new-state))
     (cond
       (= state new-state) state
       (end? new-state) new-state
@@ -279,7 +267,6 @@
   (loop [lower 0
          higher 2048]
     (let [curr (long (Math/floor (/ (+ lower higher) 2)))
-          _ (println lower higher curr)
           end-state (play (boost-immune-system state curr))]
       (cond
         (and (immune-won? end-state)
@@ -299,7 +286,6 @@
 (defn loop-search
   [state]
   (loop [boost 1]
-    ;(println boost)
     (let [end-state (play (boost-immune-system state boost))]
       (if (immune-won? end-state)
         (count-units end-state)
