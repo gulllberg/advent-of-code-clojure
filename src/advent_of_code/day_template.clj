@@ -1,7 +1,7 @@
 (ns advent-of-code.day-template
   (:require [ysera.test :refer [is= is is-not]]))
 
-(def input (slurp "src/advent_of_code/year_2024/inputs/day01.txt"))
+(def input (slurp "src/advent_of_code/year_2025/inputs/day01.txt"))
 (def test-input "")
 
 (defn part-1
