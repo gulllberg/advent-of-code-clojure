@@ -16,7 +16,7 @@
                  (if (and (= c \@)
                           (->> (get-neighbours position directions-with-diagonals)
                                (filter (fn [p]
-                                         (= (get grid p nil) \@)))
+                                         (= (get grid p) \@)))
                                (count)
                                (> 4)))
                    (inc a)
@@ -28,21 +28,26 @@
   {:test (fn []
            (is= (part-2 test-input) 43))}
   [input]
-  (loop [grid (parse-grid input)]
-    (let [next-grid (reduce-kv (fn [next-grid position c]
-                                 (if (and (= c \@)
-                                          (->> (get-neighbours position directions-with-diagonals)
-                                               (filter (fn [p]
-                                                         (= (get grid p nil) \@)))
-                                               (count)
-                                               (<= 4)))
-                                   (assoc next-grid position c)
-                                   next-grid))
-                               {}
-                               grid)]
-      (if (= grid next-grid)
-        (- (count (re-seq #"@" input)) (count (keys grid)))
-        (recur next-grid)))))
+  (let [grid (parse-grid input)]
+    (loop [paper-positions (->> grid
+                                (keys)
+                                (filter (fn [p] (= (get grid p) \@)))
+                                (into #{}))
+           positions-to-check paper-positions]
+      (if (empty? positions-to-check)
+        (- (count (re-seq #"@" input)) (count paper-positions))
+        (let [[next-paper-positions potential-positions-to-check] (reduce (fn [[next-paper-positions potential-positions-to-check] position]
+                                                                       (let [paper-neighbours (->> (get-neighbours position directions-with-diagonals)
+                                                                                                   (filter (fn [p]
+                                                                                                             (contains? paper-positions p))))]
+                                                                         (if (->> paper-neighbours
+                                                                                  (count)
+                                                                                  (> 4))
+                                                                           [(disj next-paper-positions position) (reduce conj potential-positions-to-check paper-neighbours)]
+                                                                           [next-paper-positions potential-positions-to-check])))
+                                                                     [paper-positions #{}]
+                                                                     positions-to-check)]
+          (recur next-paper-positions (clojure.set/intersection next-paper-positions potential-positions-to-check)))))))
 
 (comment
   (time (part-1 input))
@@ -50,6 +55,6 @@
   ;  => 1493
 
   (time (part-2 input))
-  ;; "Elapsed time: 1026.859291 msecs"
+  ;; "Elapsed time: 174.924458 msecs"
   ;=> 9194
   )
