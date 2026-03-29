@@ -79,3 +79,12 @@
   [p1 p2]
   (+ (abs (- (first p1) (first p2)))
      (abs (- (second p1) (second p2)))))
+
+(defn manhattan-distance-3d
+  {:test (fn []
+           (is= (manhattan-distance-3d [1 2 3] [3 4 5]) 6)
+           (is= (manhattan-distance-3d [3 4 -1] [1 2 7]) 12))}
+  [p1 p2]
+  (+ (abs (- (first p1) (first p2)))
+     (abs (- (second p1) (second p2)))
+     (abs (- (nth p1 2) (nth p2 2)))))
