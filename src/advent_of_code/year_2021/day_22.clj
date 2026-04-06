@@ -20,24 +20,14 @@
      :y       y
      :z       z}))
 
+(defn valid-region-option?
+  [[p1 p2]]
+  (<= p1 p2))
+
 (defn get-region-options-for-dimension
   [p1 p2 cp1 cp2]
-  (cond
-    ;; Region completely included in command region
-    (and (<= cp1 p1) (<= p2 cp2))
-    [[p1 p2]]
-
-    ;; Command region completely included in region
-    (and (< p1 cp1) (< cp2 p2))
-    [[p1 (dec cp1)] [cp1 cp2] [(inc cp2) p2]]
-
-    ;; Command region includes starts of region
-    (and (<= cp1 p1) (< cp2 p2))
-    [[p1 cp2] [(inc cp2) p2]]
-
-    ;; Command region includes end of region
-    (and (< p1 cp1) (<= p2 cp2))
-    [[p1 (dec cp1)] [cp1 p2]]))
+  (->> [[p1 (dec cp1)] [(inc cp2) p2] [(max p1 cp1) (min p2 cp2)]]
+       (filter valid-region-option?)))
 
 (defn intersects?
   [on-region command-region]
