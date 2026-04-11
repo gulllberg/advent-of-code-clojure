@@ -2,7 +2,6 @@
   (:require [ysera.test :refer [is= is is-not]]))
 
 (def input (slurp "src/advent_of_code/year_2019/inputs/day01.txt"))
-(def test-input "")
 
 (defn get-module-fuel-requirement
   {:test (fn []
