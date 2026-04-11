@@ -17,9 +17,7 @@
 
 (defn not-decreasing?
   [number-seq]
-  (not (some (fn [i]
-               (> (nth number-seq i) (nth number-seq (inc i))))
-             (range (dec (count number-seq))))))
+  (apply <= number-seq))
 
 (defn valid-password?
   {:test (fn []
