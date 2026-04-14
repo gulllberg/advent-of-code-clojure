@@ -5,16 +5,20 @@
 (def input (slurp "src/advent_of_code/year_2019/inputs/day05.txt"))
 
 (defn part-1
+  {:test (fn []
+           (is= (part-1 input) 7692125))}
   [input]
   (-> (parse-program input)
-      (run-intcode-program 1)
+      (run-intcode-program [1])
       (:program-output)
       (last)))
 
 (defn part-2
+  {:test (fn []
+           (is= (part-2 input) 14340395))}
   [input]
   (-> (parse-program input)
-      (run-intcode-program 5)
+      (run-intcode-program [5])
       (:program-output)
       (last)))
 

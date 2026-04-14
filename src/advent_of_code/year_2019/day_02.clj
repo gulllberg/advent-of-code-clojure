@@ -5,6 +5,8 @@
 (def input (slurp "src/advent_of_code/year_2019/inputs/day02.txt"))
 
 (defn part-1
+  {:test (fn []
+           (is= (part-1 input) 12490719))}
   [input]
   (-> (parse-program input)
       (assoc 1 12 2 2)
@@ -13,6 +15,8 @@
       (first)))
 
 (defn part-2
+  {:test (fn []
+           (is= (part-2 input) 2003))}
   [input]
   (let [program (parse-program input)]
     (->> (for [noun (range 100)
