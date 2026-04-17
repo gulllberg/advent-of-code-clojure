@@ -3,12 +3,6 @@
 
 (defn third [[_ _ z]] z)
 
-(defn parse-program
-  [input]
-  (->> (re-seq #"-?\d+" input)
-       (map read-string)
-       (into [])))
-
 (def opcode->number-of-parameters {1  3
                                    2  3
                                    3  1
@@ -17,6 +11,7 @@
                                    6  2
                                    7  3
                                    8  3
+                                   9  1
                                    99 0})
 
 (def opcode->parameter-types {1  [:read :read :write]
@@ -27,7 +22,28 @@
                               6  [:read :read]
                               7  [:read :read :write]
                               8  [:read :read :write]
+                              9  [:read]
                               99 []})
+
+(defn parse-program
+  [input]
+  (->> (re-seq #"-?\d+" input)
+       (map read-string)
+       (into [])))
+
+(defn program->memory
+  [program]
+  (zipmap (range) program))
+
+(defn read-from-memory
+  [memory position]
+  (if (neg? position)
+    (println "Error: Cannot read negative memory position: " position)
+    (get memory position 0)))
+
+(defn write-to-memory
+  [memory position value]
+  (assoc memory position value))
 
 (defn get-opcode
   {:test (fn []
@@ -36,6 +52,9 @@
   [instruction]
   (mod instruction 100))
 
+;; 0 - position
+;; 1 - immediate (value)
+;; 2 - relative (like position, but with relative base)
 (defn get-parameter-modes
   {:test (fn []
            (is= (get-parameter-modes 1002) [0 1 0])
@@ -52,8 +71,9 @@
 
 (defn get-parameters
   {:test (fn []
-           (is= (get-parameters [1002 4 3 4 33] 1002 0) [33 3 4]))}
-  [memory instruction instruction-pointer]
+           (is= (get-parameters (program->memory [1002 4 3 4 33]) 1002 0 0) [33 3 4])
+           (is= (get-parameters (program->memory [109 1 204 -1]) 204 2 1) [109]))}
+  [memory instruction instruction-pointer relative-base]
   (let [opcode (get-opcode instruction)
         parameter-modes (get-parameter-modes instruction)
         parameter-types (opcode->parameter-types opcode)]
@@ -61,23 +81,26 @@
          (map (fn [index]
                 (let [parameter-mode (nth parameter-modes index)
                       parameter-type (nth parameter-types index)
-                      memory-value (nth memory (+ instruction-pointer 1 index))]
+                      memory-value (read-from-memory memory (+ instruction-pointer 1 index))
+                      relative-base-adjusted-memory-value (if (= 2 parameter-mode) (+ memory-value relative-base) memory-value)]
                   (if (or (= :write parameter-type)
                           (= 1 parameter-mode))
-                    memory-value
-                    (nth memory memory-value))))))))
+                    relative-base-adjusted-memory-value
+                    (read-from-memory memory relative-base-adjusted-memory-value))))))))
 
 (defn run-intcode-program
   {:test (fn []
            ;; Adds 1+1 and puts in first memory position
            (is= (-> (run-intcode-program [1 0 0 0 99])
                     (:memory)
-                    (first))
+                    (read-from-memory 0))
                 2)
            ;; Addition and multiplication
-           (is= (-> (run-intcode-program [1 1 1 4 99 5 6 0 99])
-                    (:memory))
-                [30 1 1 4 2 5 6 0 99])
+           (let [memory (-> (run-intcode-program [1 1 1 4 99 5 6 0 99])
+                            (:memory))]
+             ;; [30 1 1 4 2 5 6 0 99]
+             (is= (read-from-memory memory 0) 30)
+             (is= (read-from-memory memory 4) 2))
            ;; Takes an input and outputs it
            (is= (-> (run-intcode-program [3 0 4 0 99] [42])
                     (:program-output)
@@ -85,8 +108,10 @@
                 42)
            ;; Multiplies 3 and 33
            (is= (-> (run-intcode-program [1002 4 3 4 33])
-                    (:memory))
-                [1002 4 3 4 99])
+                    (:memory)
+                    (read-from-memory 4))
+                ;; [1002 4 3 4 99]
+                99)
            ;; Checks if input is equal to 8 (using position mode) and outputs 1 or 0
            (let [program [3 9 8 9 10 9 4 9 99 -1 8]]
              (is= (-> (run-intcode-program program [8])
@@ -154,36 +179,57 @@
              (is= (:reason result) :waiting-for-input)
              (is (:memory result))
              (is (:program-output result))
-             (is (:instruction-pointer result))))}
+             (is (:instruction-pointer result)))
+           ;; Outputs a copy of itself
+           (let [program [109 1 204 -1 1001 100 1 100 1008 100 16 101 1006 101 0 99]]
+             (is= (-> (run-intcode-program program)
+                      (:program-output))
+                  program))
+           ;; Outputs 16-digit number
+           (is= (-> (run-intcode-program [1102 34915192 34915192 7 4 7 99 0])
+                    (:program-output)
+                    (first)
+                    (str)
+                    (count))
+                16)
+           ;; Outputs the large number in program
+           (is= (-> (run-intcode-program [104 1125899906842624 99])
+                    (:program-output)
+                    (first))
+                1125899906842624))}
   ([program]
    (run-intcode-program program []))
   ([program program-input]
-   (run-intcode-program program 0 program-input []))
+   (run-intcode-program (program->memory program) 0 program-input []))
   ([memory instruction-pointer program-input program-output]
    (loop [memory memory
           instruction-pointer instruction-pointer
           program-input program-input
-          program-output program-output]
-     (let [instruction (get memory instruction-pointer)
+          program-output program-output
+          relative-base 0]
+     (let [instruction (read-from-memory memory instruction-pointer)
            opcode (get-opcode instruction)
-           parameters (get-parameters memory instruction instruction-pointer)]
+           parameters (get-parameters memory instruction instruction-pointer relative-base)]
        (condp = opcode
          99 {:memory         memory
              :program-output program-output
              :reason         :halted}
-         1 (recur (assoc memory (third parameters) (+ (first parameters) (second parameters)))
+         1 (recur (write-to-memory memory (third parameters) (+ (first parameters) (second parameters)))
                   (+ 4 instruction-pointer)
                   program-input
-                  program-output)
-         2 (recur (assoc memory (third parameters) (* (first parameters) (second parameters)))
+                  program-output
+                  relative-base)
+         2 (recur (write-to-memory memory (third parameters) (* (first parameters) (second parameters)))
                   (+ 4 instruction-pointer)
                   program-input
-                  program-output)
+                  program-output
+                  relative-base)
          3 (if-let [input (first program-input)]
-             (recur (assoc memory (first parameters) input)
+             (recur (write-to-memory memory (first parameters) input)
                     (+ 2 instruction-pointer)
                     (rest program-input)
-                    program-output)
+                    program-output
+                    relative-base)
              {:memory              memory
               :program-output      program-output
               :instruction-pointer instruction-pointer
@@ -191,25 +237,35 @@
          4 (recur memory
                   (+ 2 instruction-pointer)
                   program-input
-                  (conj program-output (first parameters)))
+                  (conj program-output (first parameters))
+                  relative-base)
          5 (recur memory
                   (if (not (zero? (first parameters)))
                     (second parameters)
                     (+ 3 instruction-pointer))
                   program-input
-                  program-output)
+                  program-output
+                  relative-base)
          6 (recur memory
                   (if (zero? (first parameters))
                     (second parameters)
                     (+ 3 instruction-pointer))
                   program-input
-                  program-output)
-         7 (recur (assoc memory (third parameters) (if (< (first parameters) (second parameters)) 1 0))
+                  program-output
+                  relative-base)
+         7 (recur (write-to-memory memory (third parameters) (if (< (first parameters) (second parameters)) 1 0))
                   (+ 4 instruction-pointer)
                   program-input
-                  program-output)
-         8 (recur (assoc memory (third parameters) (if (= (first parameters) (second parameters)) 1 0))
+                  program-output
+                  relative-base)
+         8 (recur (write-to-memory memory (third parameters) (if (= (first parameters) (second parameters)) 1 0))
                   (+ 4 instruction-pointer)
                   program-input
-                  program-output)
+                  program-output
+                  relative-base)
+         9 (recur memory
+                  (+ 2 instruction-pointer)
+                  program-input
+                  program-output
+                  (+ relative-base (first parameters)))
          (println "Invalid instruction" instruction))))))
