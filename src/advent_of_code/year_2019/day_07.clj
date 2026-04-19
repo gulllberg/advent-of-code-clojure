@@ -50,7 +50,7 @@
         (recur (-> program-states
                    (update prev-index assoc :program-output [])
                    (update program-state-index (fn [{memory :memory instruction-pointer :instruction-pointer}]
-                                                 (run-intcode-program memory instruction-pointer (get-in program-states [prev-index :program-output]) []))))
+                                                 (run-intcode-program memory instruction-pointer (get-in program-states [prev-index :program-output]) [] 0))))
                next-index)))))
 
 (defn part-2

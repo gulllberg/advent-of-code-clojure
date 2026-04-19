@@ -200,13 +200,13 @@
   ([program]
    (run-intcode-program program []))
   ([program program-input]
-   (run-intcode-program (program->memory program) 0 program-input []))
-  ([memory instruction-pointer program-input program-output]
+   (run-intcode-program (program->memory program) 0 program-input [] 0))
+  ([memory instruction-pointer program-input program-output relative-base]
    (loop [memory memory
           instruction-pointer instruction-pointer
           program-input program-input
           program-output program-output
-          relative-base 0]
+          relative-base relative-base]
      (let [instruction (read-from-memory memory instruction-pointer)
            opcode (get-opcode instruction)
            parameters (get-parameters memory instruction instruction-pointer relative-base)]
@@ -233,6 +233,7 @@
              {:memory              memory
               :program-output      program-output
               :instruction-pointer instruction-pointer
+              :relative-base       relative-base
               :reason              :waiting-for-input})
          4 (recur memory
                   (+ 2 instruction-pointer)
