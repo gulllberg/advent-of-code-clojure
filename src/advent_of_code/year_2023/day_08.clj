@@ -1,5 +1,6 @@
 (ns advent-of-code.year-2023.day-08
-  (:require [ysera.test :refer [is= is is-not]]))
+  (:require [ysera.test :refer [is= is is-not]]
+            [advent-of-code.maths :refer [lcm]]))
 
 (def input (slurp "src/advent_of_code/year_2023/inputs/day08.txt"))
 (def test-input "RL\n\nAAA = (BBB, CCC)\nBBB = (DDD, EEE)\nCCC = (ZZZ, GGG)\nDDD = (DDD, DDD)\nEEE = (EEE, EEE)\nGGG = (GGG, GGG)\nZZZ = (ZZZ, ZZZ)")
@@ -65,16 +66,6 @@
   (let [[cycle-start end] (find-exit desert-map instructions node ends)
         [cycle-length _] (find-exit desert-map (drop cycle-start instructions) end #{end})]
     [cycle-start cycle-length]))
-
-(defn gcd [a b]
-  (if (zero? b)
-    a
-    (recur b (mod a b))))
-
-(defn lcm [a b]
-  (if (or (zero? a) (zero? b))
-    0
-    (/ (abs (* a b)) (gcd a b))))
 
 (defn part-2
   {:test (fn [] (is= (part-2 test-input-2) 6))}
