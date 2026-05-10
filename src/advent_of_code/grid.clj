@@ -22,16 +22,27 @@
                  [1 2] true
                  [2 0] false
                  [2 1] false
-                 [2 2] false}))}
-  ([input parse-fn]
+                 [2 2] false})
+           (is= (parse-grid "#.#\n###\n..." identity (fn [c] (= c \#)))
+                {[0 0] \#
+                 [0 2] \#
+                 [1 0] \#
+                 [1 1] \#
+                 [1 2] \#}))}
+  ([input parse-fn filter-fn]
    (let [lines (into [] (clojure.string/split-lines input))]
      (reduce-kv (fn [a i line]
                   (reduce-kv (fn [a j c]
-                               (assoc a [i j] (parse-fn c)))
+                               (let [c (parse-fn c)]
+                                 (if (filter-fn c)
+                                   (assoc a [i j] c)
+                                   a)))
                              a
                              (into [] line)))
                 {}
                 lines)))
+  ([input parse-fn]
+   (parse-grid input parse-fn (fn [_] true)))
   ([input]
    (parse-grid input identity)))
 
@@ -60,8 +71,9 @@
            (is= (turn-left [0 -1]) [1 0])
            (is= (turn-left [1 0]) [0 1])
            (is= (turn-left [-1 0]) [0 -1]))}
-  [[i j]]
-  [(- j) i])
+  [direction]
+  (let [[i j] direction]
+    [(- j) i]))
 
 (defn turn-right
   {:test (fn []
@@ -69,8 +81,9 @@
            (is= (turn-right [1 0]) [0 -1])
            (is= (turn-right [0 1]) [1 0])
            (is= (turn-right [0 -1]) [-1 0]))}
-  [[i j]]
-  [j (- i)])
+  [direction]
+  (let [[i j] direction]
+    [j (- i)]))
 
 (defn manhattan-distance
   {:test (fn []
