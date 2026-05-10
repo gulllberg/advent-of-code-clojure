@@ -16,3 +16,11 @@
   (if (or (zero? a) (zero? b))
     0
     (/ (abs (* a b)) (gcd a b))))
+
+(defn binomial
+  [n k]
+  ;; nCk = nC(n-k)
+  (let [k (min k (- n k))]
+    (if (zero? k)
+      1
+      (reduce *' 1 (map #(/ (- (+ n 1) %) %) (range 1 (inc k)))))))
