@@ -270,3 +270,8 @@
                   program-output
                   (+ relative-base (first parameters)))
          (println "Invalid instruction" instruction))))))
+
+(defn continue-intcode-program
+  [computer program-input]
+  (let [{memory :memory instruction-pointer :instruction-pointer program-output :program-output relative-base :relative-base} computer]
+    (run-intcode-program memory instruction-pointer program-input program-output relative-base)))
