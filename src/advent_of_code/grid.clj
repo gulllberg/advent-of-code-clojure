@@ -47,6 +47,7 @@
    (parse-grid input identity)))
 
 (def directions-without-diagonals [[-1 0] [1 0] [0 -1] [0 1]])
+(def directions-with-only-diagonals [[-1 -1] [-1 1] [1 -1] [1 1]])
 (def directions-with-diagonals (for [x (range -1 2)
                                      y (range -1 2)
                                      :when (not= 0 x y)]
