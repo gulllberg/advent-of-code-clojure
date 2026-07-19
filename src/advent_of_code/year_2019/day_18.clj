@@ -17,7 +17,7 @@
                                 (update a :walls conj [i j])
 
                                 (= c \@)
-                                (assoc a :entrance [i j])
+                                (update a :entrances conj [i j])
 
                                 (re-matches #"[A-Z]" (str c))
                                 (update a :doors assoc [i j] (str c))
@@ -29,10 +29,10 @@
                                 a))
                             a
                             (into [] line)))
-               {:entrance nil
-                :doors    {}
-                :keys     {}
-                :walls    #{}}
+               {:entrances []
+                :doors     {}
+                :keys      {}
+                :walls     #{}}
                lines)))
 
 (defn remove-key
@@ -42,22 +42,11 @@
         (clojure.set/map-invert $)
         (assoc state :remaining-keys $)))
 
-(defn update-position
-  [state k]
+(defn update-positions
+  [state position-index k]
   (as-> (clojure.set/map-invert (:remaining-keys state)) $
         (get $ k)
-        (assoc state :position $)))
-
-(defn finished?
-  [states]
-  (= #{} (ffirst (keys states))))
-
-(defn get-answer
-  [states]
-  (->> (vals states)
-       (map :steps)
-       (sort)
-       (first)))
+        (assoc-in state [:positions position-index] $)))
 
 (defn door-locked?
   [door remaining-keys]
@@ -112,94 +101,28 @@
         ks (into #{} (keys key-positions))]
     (reduce (fn [a k]
               (assoc a k (get-distances-to-keys the-map (get key-positions k) (disj ks k))))
-            {:entrance (get-distances-to-keys the-map (:entrance the-map) ks)}
-            ks)))
-
-(defn part-1
-  {:test (fn []
-           (is= (part-1 test-input) 86))}
-  [input]
-  (let [the-map (parse-input input)
-        key-distances (get-key-distances the-map)
-        ks (into #{} (vals (:keys the-map)))]
-    (loop [states {[ks (:entrance the-map)] {:position       (:entrance the-map)
-                                             :remaining-keys (:keys the-map)
-                                             :steps          0}}]
-      (if (finished? states)
-        (get-answer states)
-        (recur (reduce (fn [states state]
-                         (reduce-kv (fn [states k {distance :distance doors-passed :doors-passed}]
-                                      ;; If k already visited, or any door locked on the way -> skip k
-                                      (if (or (not (contains? (into #{} (vals (:remaining-keys state))) k))
-                                              (any-door-locked? doors-passed (:remaining-keys state)))
-                                        states
-                                        (let [s (-> state
-                                                    (update-position k)
-                                                    (remove-key k)
-                                                    (update :steps + distance))
-                                              remaining-keys (into #{} (vals (:remaining-keys s)))
-                                              position (:position s)]
-                                          (if (and (contains? states [remaining-keys position])
-                                                   (< (get-in states [[remaining-keys position] :steps])
-                                                      (:steps s)))
-                                            states
-                                            (assoc states [remaining-keys position] s)))))
-                                    states
-                                    (get key-distances (get-in the-map [:keys (:position state)] :entrance))))
-                       {}
-                       (vals states)))))))
-
-(defn parse-input-2
-  [input]
-  (let [lines (into [] (clojure.string/split-lines input))]
-    (reduce-kv (fn [a i line]
-                 (reduce-kv (fn [a j c]
-                              (cond
-                                (= c \#)
-                                (update a :walls conj [i j])
-
-                                (= c \@)
-                                (update a :entrances conj [i j])
-
-                                (re-matches #"[A-Z]" (str c))
-                                (update a :doors assoc [i j] (str c))
-
-                                (re-matches #"[a-z]" (str c))
-                                (update a :keys assoc [i j] (str c))
-
-                                :else
-                                a))
-                            a
-                            (into [] line)))
-               {:entrances []
-                :doors     {}
-                :keys      {}
-                :walls     #{}}
-               lines)))
-
-(defn get-key-distances-2
-  [the-map]
-  (let [key-positions (clojure.set/map-invert (:keys the-map))
-        ks (into #{} (keys key-positions))]
-    (reduce (fn [a k]
-              (assoc a k (get-distances-to-keys the-map (get key-positions k) (disj ks k))))
             (zipmap (:entrances the-map) (map (fn [entrance]
                                                 (get-distances-to-keys the-map entrance ks))
                                               (:entrances the-map)))
             ks)))
 
-(defn update-positions
-  [state position-index k]
-  (as-> (clojure.set/map-invert (:remaining-keys state)) $
-        (get $ k)
-        (assoc-in state [:positions position-index] $)))
+(defn finished?
+  [states]
+  (= #{} (ffirst (keys states))))
 
-(defn solve-multi-vault
+(defn get-answer
+  [states]
+  (->> (vals states)
+       (map :steps)
+       (sort)
+       (first)))
+
+(defn solve-maze
   {:test (fn []
-           (is= (solve-multi-vault (parse-input-2 test-input-2)) 24)
-           (is= (solve-multi-vault (parse-input-2 test-input-3)) 72))}
+           (is= (solve-maze (parse-input test-input-2)) 24)
+           (is= (solve-maze (parse-input test-input-3)) 72))}
   [the-map]
-  (let [key-distances (get-key-distances-2 the-map)
+  (let [key-distances (get-key-distances the-map)
         ks (into #{} (vals (:keys the-map)))]
     (loop [states {[ks (:entrances the-map)] {:positions      (:entrances the-map)
                                               :remaining-keys (:keys the-map)
@@ -228,24 +151,31 @@
                                                 states
                                                 (get key-distances (get-in the-map [:keys position] position)))))
                                  states
-                                 (range 4)))
+                                 (range (count (:entrances the-map)))))
                        {}
                        (vals states)))))))
 
+(defn part-1
+  {:test (fn []
+           (is= (part-1 test-input) 86))}
+  [input]
+  (-> (parse-input input)
+      (solve-maze)))
+
 (defn convert-to-p2-map
   [the-map]
-  (-> the-map
-      (dissoc :entrance)
-      (update :walls (fn [walls]
-                       (reduce conj walls (conj (get-neighbours (:entrance the-map))
-                                                (:entrance the-map)))))
-      (assoc :entrances (into [] (get-neighbours (:entrance the-map) directions-with-only-diagonals)))))
+  (let [entrance (first (:entrances the-map))]
+    (-> the-map
+        (update :walls (fn [walls]
+                         (reduce conj walls (conj (get-neighbours entrance)
+                                                  entrance))))
+        (assoc :entrances (into [] (get-neighbours entrance directions-with-only-diagonals))))))
 
 (defn part-2
   [input]
   (-> (parse-input input)
       (convert-to-p2-map)
-      (solve-multi-vault)))
+      (solve-maze)))
 
 (comment
   (time (part-1 input))
