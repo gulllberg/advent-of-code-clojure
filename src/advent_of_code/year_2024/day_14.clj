@@ -1,4 +1,4 @@
-(ns advent-of-code.year-2024.day_14
+(ns advent-of-code.year-2024.day-14
   (:require [ysera.test :refer [is= is is-not]]))
 
 (def input (slurp "src/advent_of_code/year_2024/inputs/day14.txt"))

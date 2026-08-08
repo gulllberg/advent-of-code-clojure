@@ -1,4 +1,4 @@
-(ns advent-of-code.year_2018.day_06
+(ns advent-of-code.year-2018.day-06
   (:require [ysera.test :refer [is= is is-not]]
             [advent-of-code.grid :refer [manhattan-distance]]))
 

@@ -1,4 +1,4 @@
-(ns advent-of-code.year_2018.day_03)
+(ns advent-of-code.year-2018.day-03)
 
 (def input (slurp "src/advent_of_code/year_2018/inputs/day03.txt"))
 

@@ -1,4 +1,4 @@
-(ns advent-of-code.year_2018.day_02
+(ns advent-of-code.year-2018.day-02
   (:require [ysera.collections :refer [seq-contains?]]))
 
 (def input (slurp "src/advent_of_code/year_2018/inputs/day02.txt"))
