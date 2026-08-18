@@ -24,3 +24,16 @@
     (if (zero? k)
       1
       (reduce *' 1 (map #(/ (- (+ n 1) %) %) (range 1 (inc k)))))))
+
+(defn mod-inverse
+  "Modular multiplicative inverse"
+  [a m]
+  (let [big-a (biginteger a)
+        big-m (biginteger m)]
+    (bigint (.modInverse big-a big-m))))
+
+(defn mod-pow
+  [base exp m]
+  (.modPow (biginteger base)
+           (biginteger exp)
+           (biginteger m)))
